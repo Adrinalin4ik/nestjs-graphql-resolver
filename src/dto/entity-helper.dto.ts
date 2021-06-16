@@ -84,25 +84,26 @@ export const getEntityPrimitiveType = (entity: BaseEntity) => {
 
 export const getEntityNameEnum = () => {
   if (!EntityNameEnum) {
-    const entityMeta = getMetadataArgsStorage();
-    const tablesNames = entityMeta.tables.reduce((acc, t) => {
-      if (t.target['prototype'] instanceof BaseEntity) {
-        acc.add(t.target['name']);
-      }
-      return acc;
-    }, new Set<string>());
-
     enum EntityName {}
+    setTimeout(() => {
+      const entityMeta = getMetadataArgsStorage();
+      const tablesNames = entityMeta.tables.reduce((acc, t) => {
+        if (t.target['prototype'] instanceof BaseEntity) {
+          acc.add(t.target['name']);
+        }
+        return acc;
+      }, new Set<string>());
 
-    tablesNames.forEach((name) => {
-      EntityName[name] = name;
-    });
+      tablesNames.forEach((name) => {
+        EntityName[name] = name;
+      });
 
-    EntityName['test'] = 'test';
+      // EntityName['test'] = 'test';
 
-    registerEnumType(EntityName, {
-      name: 'EntityName',
-    });
+      registerEnumType(EntityName, {
+        name: 'EntityName',
+      });
+    })
 
     EntityNameEnum = EntityName;
   }
