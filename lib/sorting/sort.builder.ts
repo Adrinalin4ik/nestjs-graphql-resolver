@@ -1,6 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { sanitizeSqlValue } from '../helpers/sanitizer';
-import { capitalize } from '../helpers/string.helper';
 import { SortingType, SortTypeNullEnum } from './sort.dto';
 
 export class SortBuilder<Entity> {

@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { getEntityNameEnum } from 'src/utils/dto/entity-helper.dto';
-import { OperationQuery, OperatorQuery } from 'src/utils/filters/filter.dto';
-import { decorateField } from 'src/utils/helpers/decorators';
+import { getEntityNameEnum } from '../../dto/entity-helper.dto';
+import { OperationQuery, OperatorQuery } from '../../filters/filter.dto';
+import { decorateField } from '../../helpers/decorators';
 import { AggregationEnum } from '../aggregations.dto';
 
 export class HavingFilterItem {

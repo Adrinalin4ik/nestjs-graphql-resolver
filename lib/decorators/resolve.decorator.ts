@@ -14,7 +14,6 @@ import { Joins } from '../joins/join.decorator';
 import { Paginate } from '../pagination/pagination.decorator';
 import { addMethodToResolverClass } from '../helpers/decorators';
 import { Having } from '../aggregations/having/having.decorator';
-import { generateGroupAggType } from '../aggregations/aggregations.dto';
 
 export const AutoResolver = (entity): any => {
   return (t) => {

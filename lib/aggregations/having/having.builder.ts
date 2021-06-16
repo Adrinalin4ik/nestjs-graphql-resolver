@@ -1,5 +1,5 @@
-import { OperationQuery, OperatorQuery } from 'src/utils/filters/filter.dto';
-import { castValueType } from 'src/utils/helpers/string.helper';
+import { OperationQuery } from '../../filters/filter.dto';
+import { castValueType } from '../../helpers/string.helper';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { sanitizeSqlValue } from '../../helpers/sanitizer';
 import {
