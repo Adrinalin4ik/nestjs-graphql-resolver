@@ -157,7 +157,7 @@ NOTNULL = 'IS NOT NULL',
 ```
 
 ##### This example joins two nested tables and make a filtring by joined SubCompetency model.
-```graphq
+```graphql
 
 {
   seniorities(
