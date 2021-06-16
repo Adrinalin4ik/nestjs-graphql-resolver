@@ -98,7 +98,7 @@ export const getEntityNameEnum = () => {
       EntityName[name] = name;
     });
 
-    // EntityName['test'] = 'test';
+    EntityName['test'] = 'test';
 
     registerEnumType(EntityName, {
       name: 'EntityName',
