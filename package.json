@@ -1,0 +1,19 @@
+{
+  "name": "nestjs-graphql-resolver",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Alexey Panfilkin",
+  "private": false,
+  "license": "UNLICENSED",
+  "main": "index.ts",
+  "scripts": {},
+  "dependencies": {
+    "@nestjs/common": "^7.6.17",
+    "@nestjs/graphql": "^7.10.6",
+    "dataloader": "^2.0.0",
+    "graphql": "^15.5.0",
+    "pluralize": "^8.0.0",
+    "tsc": "^2.0.3",
+    "typeorm": "^0.2.34"
+  }
+}
