@@ -27,10 +27,9 @@ input JoinItemQuery {
 }
 
 ```
-Examples
-```
-# Join two tables to one model
-
+#### Examples
+##### Join two tables to one model
+```graphql
 {
   competencies(
     joins: [
@@ -48,10 +47,9 @@ Examples
 
 ```
 
-Examples
-```
-# Join table Competency to Seniority and SubCompetency to Competency
-
+#### Examples
+##### Join table Competency to Seniority and SubCompetency to Competency
+```graphql
 {
   seniorities(
     joins: [{
@@ -105,12 +103,9 @@ NOTBETWEEN = 'NOT BETWEEN',
 NULL = 'IS NULL',
 NOTNULL = 'IS NOT NULL',
 ```
-Examples:
-
+#### Examples:
+##### Simple filter
 ```graphql
-
-# Simple filter
-
 {
   subcompetencies(filters: {
     filters: [
@@ -128,10 +123,10 @@ Examples:
 ```
 
 
+##### Filter with groups.
+##### This will generates query: where (title ilike '%1%' or title ilike '%2%')
 ```graphql
 
-# Filter with groups.
-# This will generates query: where (title ilike '%1%' or title ilike '%2%')
 
 {
   competencies(
@@ -161,8 +156,8 @@ Examples:
 
 ```
 
+##### This example joins two nested tables and make a filtring by joined SubCompetency model.
 ```graphq
-# This example joins two nested tables and make a filtring by joined SubCompetency model.
 
 {
   seniorities(
@@ -206,7 +201,7 @@ Each generated resolver will have `groupAgg` field. This field cannot be combine
 
 `groupAgg` object type looks like this
 
-```
+```graphql
 {
   competencies {
     groupAgg {
@@ -240,11 +235,11 @@ Each generated resolver will have `groupAgg` field. This field cannot be combine
 
 You can combine it with having filter which allow to use aggregation functions and the input type looks exactly like in filtring feature, but with one additional attribute - `aggregator`. This feature can be combined with joining feature.
 
-Examples
+#### Examples
 
+##### This example returns an array of seniorities which includes more than one competency.
 ```graphql
 
-# This example returns an array of seniorities which includes more than one competency.
 
 {
   seniorities (
@@ -274,10 +269,8 @@ Examples
 
 ```
 
+##### This example returns groups which has seniority_id value equal or more than 1
 ```graphql
-
-# This example returns groups which has seniority_id value equal or more than 1
-
 {
   competencies(
     joins: {
