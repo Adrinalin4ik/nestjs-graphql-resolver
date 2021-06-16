@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "version": "npm run build"
+    "version": "npm run build && npm publish"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.17",

@@ -85,6 +85,7 @@ export const getEntityPrimitiveType = (entity: BaseEntity) => {
 export const getEntityNameEnum = () => {
   if (!EntityNameEnum) {
     enum EntityName {}
+    // костыль!!!
     setTimeout(() => {
       const entityMeta = getMetadataArgsStorage();
       const tablesNames = entityMeta.tables.reduce((acc, t) => {

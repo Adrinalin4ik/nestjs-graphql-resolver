@@ -111,7 +111,6 @@ export const getMany = async (
   } else if (!aggb.isGroupping && having) {
     res = await qb.getRawMany();
     res = res.map((x) => x.fields[0]);
-    console.log(res);
   } else {
     const sortb = new SortBuilder(qb, sorting);
     sortb.build();
