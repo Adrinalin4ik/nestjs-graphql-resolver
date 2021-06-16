@@ -25,8 +25,6 @@ export enum OperationQuery {
   NOTBETWEEN = 'NOT BETWEEN',
   NULL = 'IS NULL',
   NOTNULL = 'IS NOT NULL',
-  IS = 'IS',
-  ISNOT = 'IS NOT',
 }
 
 registerEnumType(OperationQuery, {
