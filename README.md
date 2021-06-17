@@ -478,3 +478,6 @@ Pagination allows paging the response data. Pagination will not work well with `
 }
 
 ```
+
+## Limitations
+- Date and scalars are not supported, use string instead
