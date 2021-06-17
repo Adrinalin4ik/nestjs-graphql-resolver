@@ -45,7 +45,21 @@ export class SubCompetencyResolver {
 }
 
 ```
-4. Done! Launch the project and test it.
+4. Naming convention. Postgres table names should be snake_case. You can make it simply add first parameter to entity decorator
+
+```typescript
+@EntityObjectType()
+@Entity('user_competency') // <--- Here
+export class UserCompetency extends BaseEntity {
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  id: number;
+
+
+```
+5. You should have an entity class for additional table in `Many to Many` relation. This stuff is needed because graphql should expose this table and types for enums.
+
+6. Done! Launch the project and test it.
 ----
 ## Features
 The library automatically resolves `One to Many`, `Many`, `Many to One` relations and solves n+1 problem.
