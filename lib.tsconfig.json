@@ -10,7 +10,8 @@
     "sourceMap": true,
     "outDir": "./dist-lib",
     "baseUrl": "lib",
+    "rootDir": "./lib",
     "incremental": true
   },
-  "exclude": ["node_modules", "dist", "example"]
+  "exclude": ["node_modules", "dist", "src"]
 }

@@ -13,13 +13,13 @@
     "resolver"
   ],
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist-lib/index.js",
+  "types": "dist-lib/index.d.ts",
   "files": [
-    "dist"
+    "dist-lib"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p lib.tsconfig.json",
     "version": "npm run build && npm publish",
     "start:dev": "nest start --watch"
   },
