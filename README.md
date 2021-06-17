@@ -51,11 +51,11 @@ export class SubCompetencyResolver {
 The library automatically resolves One to Many, Many, Many to One relations.
 
 All resolvers provide additional features:
-- Joining
-- Filtring
-- Grouping
-- Sorting
-- Paginating
+- [Joining](#joining)
+- [Filtring](#filtring)
+- [Grouping](#grouping)
+- [Sorting](#sorting)
+- [Paginating](#pagination)
 
 You can override any resolver, just define it in resolver's class just like that
 
