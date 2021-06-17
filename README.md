@@ -80,7 +80,7 @@ export class SubCompetencyResolver {
 ```
 
 ----
-### Joining
+## Joining
 Joining feature allows to join some tables and use them for filtering or grouping.
 
 Joining input type looks like this
@@ -112,8 +112,6 @@ input JoinItemQuery {
 }
 
 ```
-
-#### Examples
 ##### Join table Competency to Seniority and SubCompetency to Competency
 ```graphql
 {
@@ -131,7 +129,7 @@ input JoinItemQuery {
 
 ```
 
-### Filtring
+## Filtring
 Filter feature generates SQL query for filtering. It could be combined with the joining feature if you'd like to filter by some nested model.
 
 Filter input type looks like this
