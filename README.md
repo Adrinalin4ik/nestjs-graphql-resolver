@@ -73,9 +73,9 @@ export class SubCompetencyResolver {
   async subcompetencies() { // <--- this method will redefine automatically created resolver
     return [];
   }
-}
 
-... // <--- Btw, you can make mutations here as well
+  ... // <--- Btw, you can make mutations here as well
+}
 
 ```
 
