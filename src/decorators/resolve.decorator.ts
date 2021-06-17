@@ -5,7 +5,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { getMetadataArgsStorage } from 'typeorm';
+import { BaseEntity, getMetadataArgsStorage } from 'typeorm';
 import * as plularize from 'pluralize';
 import { Filters } from '../filters/filtrable-field.decorator';
 import { Loader } from '../loaders/query-exctractor.decorator';
@@ -15,11 +15,11 @@ import { Paginate } from '../pagination/pagination.decorator';
 import { addMethodToResolverClass } from '../helpers/decorators';
 import { Having } from '../aggregations/having/having.decorator';
 
-export const AutoResolver = (entity): any => {
-  return (t) => {
+export const AutoResolver = (entity: BaseEntity): any => {
+  return (baseResolverClass) => {
     const entityMeta = getMetadataArgsStorage();
     const relations = entityMeta.relations.filter(
-      (x) => x.target['name'] == entity.name,
+      (x) => x.target['name'] == entity['name'],
     );
 
     const extend = (base) => {
@@ -67,7 +67,7 @@ export const AutoResolver = (entity): any => {
                     ResolveField(() => entity, { name: methodName }),
                   ],
                   paramDecorators: [
-                    Loader([methodName, `${entity.name}_id`.toLowerCase()]),
+                    Loader([methodName, `${entity['name']}_id`.toLowerCase()]),
                     Parent(),
                     Filters(),
                     Having(),
@@ -83,7 +83,7 @@ export const AutoResolver = (entity): any => {
             }
           });
           {
-            const methodName = plularize(entity.name).toLowerCase();
+            const methodName = plularize(entity['name']).toLowerCase();
             if (!Extended.prototype[methodName]) {
               // loadMany for root queries
 
@@ -110,11 +110,11 @@ export const AutoResolver = (entity): any => {
       }
 
       Object.defineProperty(Extended, 'name', {
-        value: entity.name,
+        value: entity['name'],
       });
       return Extended;
     };
 
-    return extend(t as any);
+    return extend(baseResolverClass);
   };
 };
