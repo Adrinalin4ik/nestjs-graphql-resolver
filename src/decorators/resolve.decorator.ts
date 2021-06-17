@@ -33,73 +33,78 @@ export const AutoResolver = (entity): any => {
             if (r.relationType === 'many-to-one') {
               // Many to one. Example: competencies => seniority
               const methodName = r.propertyName;
-              addMethodToResolverClass({
-                resolverClass: Extended,
-                methodName,
-                methodDecorators: [
-                  ResolveField(() => entity, { name: methodName }),
-                ],
-                paramDecorators: [
-                  Loader(methodName),
-                  Parent(),
-                  Filters(),
-                  Having(),
-                  Sorting(entity),
-                  Joins(),
-                ],
-                entity,
-                callback: (loader: GraphQLExecutionContext, parent) => {
-                  return loader[methodName].load(parent[methodName + '_id']);
-                },
-              });
+              if (!Extended.prototype[methodName]) {
+                addMethodToResolverClass({
+                  resolverClass: Extended,
+                  methodName,
+                  methodDecorators: [
+                    ResolveField(() => entity, { name: methodName }),
+                  ],
+                  paramDecorators: [
+                    Loader(methodName),
+                    Parent(),
+                    Filters(),
+                    Having(),
+                    Sorting(entity),
+                    Joins(),
+                  ],
+                  entity,
+                  callback: (loader: GraphQLExecutionContext, parent) => {
+                    return loader[methodName].load(parent[methodName + '_id']);
+                  },
+                });
+              }
             }
 
             if (r.relationType === 'one-to-many') {
               // One to many. Example: seniority => competencies
               const methodName = r.propertyName;
+              if (!Extended.prototype[methodName]) {
+                addMethodToResolverClass({
+                  resolverClass: Extended,
+                  methodName,
+                  methodDecorators: [
+                    ResolveField(() => entity, { name: methodName }),
+                  ],
+                  paramDecorators: [
+                    Loader([methodName, `${entity.name}_id`.toLowerCase()]),
+                    Parent(),
+                    Filters(),
+                    Having(),
+                    Sorting(entity),
+                    Joins(),
+                  ],
+                  entity,
+                  callback: (loader: GraphQLExecutionContext, parent) => {
+                    return loader[methodName].load(parent['id']);
+                  },
+                });
+              }
+            }
+          });
+          {
+            const methodName = plularize(entity.name).toLowerCase();
+            if (!Extended.prototype[methodName]) {
+              // loadMany for root queries
+
               addMethodToResolverClass({
                 resolverClass: Extended,
                 methodName,
-                methodDecorators: [
-                  ResolveField(() => entity, { name: methodName }),
-                ],
+                methodDecorators: [Query(() => [entity], { name: methodName })],
                 paramDecorators: [
-                  Loader([methodName, `${entity.name}_id`.toLowerCase()]),
-                  Parent(),
+                  Loader(entity),
                   Filters(),
                   Having(),
                   Sorting(entity),
+                  Paginate(),
                   Joins(),
                 ],
                 entity,
-                callback: (loader: GraphQLExecutionContext, parent) => {
-                  return loader[methodName].load(parent['id']);
+                callback: (loader: GraphQLExecutionContext) => {
+                  return loader;
                 },
               });
             }
-          });
-
-          if (!Extended.prototype[plularize(entity.name).toLowerCase()]) {
-            // loadMany for root queries
-
-            const methodName = plularize(entity.name).toLowerCase();
-            addMethodToResolverClass({
-              resolverClass: Extended,
-              methodName,
-              methodDecorators: [Query(() => [entity], { name: methodName })],
-              paramDecorators: [
-                Loader(entity),
-                Filters(),
-                Having(),
-                Sorting(entity),
-                Paginate(),
-                Joins(),
-              ],
-              entity,
-              callback: (loader: GraphQLExecutionContext) => {
-                return loader;
-              },
-            });
           }
         }
       }

@@ -3,6 +3,50 @@
 This library provides functionality which allow to generate resolvers automatically.
 
 ----
+## Installation
+
+1. Install npm package
+```bash
+npm i nestjs-graphql-resolver
+```
+
+2. Decorate your graphql dtos with  `@EntityObjectType()` instead of default `@ObjectType()` from @nestjs/graphql library.
+
+```typescript
+import { Field, Int } from '@nestjs/graphql';
+import { EntityObjectType } from 'nestjs-graphql-resolver';
+
+...
+
+@EntityObjectType() // <--- Here
+@Entity('subcompetency')
+export class SubCompetency extends BaseEntity {
+  @Field(() => Int) // <--- Don't forget to decorate your dto with @Field or other compatible decorator from @nestjs/graphql library.
+  @PrimaryGeneratedColumn() // <--- You can combine your graphql type with typeorm dto. It works, but it's up to you. You can split as well.
+  id: number;
+
+...
+```
+
+3. Decorate your graphql resolvers with `@AutoResolver(EntityName)`
+
+```typescript
+import { Query, Resolver } from '@nestjs/graphql';
+import { SubCompetency } from './sub_competency.entity';
+import { AutoResolver } from 'nestjs-graphql-resolver';
+
+@AutoResolver(SubCompetency) // <--- Here, and provide entity as a parameter
+@Resolver(() => SubCompetency)
+export class SubCompetencyResolver {
+  @Query(() => [SubCompetency])
+  async test() {
+    return [];
+  }
+}
+
+```
+4. Done! Launch the project and test it.
+----
 ## Features
 The library automatically resolves One to Many, Many, Many to One relations.
 
@@ -11,9 +55,31 @@ All resolvers provide additional features:
 - Filtring
 - Grouping
 - Sorting
-- Aggregating
 - Paginating
 
+You can override any resolver, just define it in resolver's class just like that
+
+```typescript
+
+import { Query, Resolver } from '@nestjs/graphql';
+import { SubCompetency } from './sub_competency.entity';
+import { AutoResolver } from 'nestjs-graphql-resolver';
+
+@AutoResolver(SubCompetency)
+@Resolver(() => SubCompetency)
+export class SubCompetencyResolver {
+  
+  @Query(() => [SubCompetency]) 
+  async subcompetencies() { // <--- this method will redefine automatically created resolver
+    return [];
+  }
+}
+
+... // <--- Btw, you can make mutations here as well
+
+```
+
+----
 ### Joining
 Joining feature allows to join some tables and use them for filtering or grouping.
 
@@ -146,8 +212,7 @@ NOTNULL = 'IS NOT NULL',
             field: "title"
           }
         ]
-      },
-    ]
+      }]
   	}
   ) {
     title
@@ -302,4 +367,116 @@ You can combine it with having filter which allow to use aggregation functions a
     }
   }
 }
+```
+
+
+## Sorting
+Sorting feature allows to order results by some fields. You can combine it with `joining` feature.
+
+#### Examples
+
+##### Simple example
+
+```graphql
+{
+  subcompetencies(sort: {
+    field: "id"
+    type: ASC
+  }) {
+    id
+  }
+}
+```
+
+#### Ordering by nested fields.
+
+```graphql
+
+{
+  seniorities(
+    joins: {
+      table: Competency
+      joins: {
+        table: SubCompetency
+      }
+    }
+    sort: [{
+      table: SubCompetency
+      field: "id"
+      type: ASC
+    }, {
+      table: Competency
+      field: "id"
+      type: ASC
+    }]
+  ) {
+    id
+  }
+}
+```
+
+## Pagination
+Pagination allows paging the response data. Pagination will not work well with `groupAgg` statement.
+
+#### Examples
+
+##### Simple example
+
+```graphql
+
+{
+  subcompetencies(
+    paginate: {
+      page: 0, 
+      per_page: 2
+    }
+  ) {
+    title
+  }
+}
+```
+
+##### Complete example
+
+```graphql
+{
+  competencies(
+    joins: [{
+      table: SubCompetency
+      type: Inner
+    },
+    {
+      table: Seniority
+      type: Inner
+    }]
+    filters: {
+      filters: {
+        operation: ILIKE
+        field: "title"
+        table: SubCompetency
+        values: ["%5%"]
+      }
+    }
+    sort: [
+      {
+        field: "title"
+        type: ASC
+        table: Seniority
+        nulls: FIRST
+      }
+    ]
+    paginate: {
+      page: 0,
+      per_page: 1
+    }
+  ) {
+    id
+    title
+    subcompetencies {
+      id
+      title
+    }
+  }
+}
+
 ```
