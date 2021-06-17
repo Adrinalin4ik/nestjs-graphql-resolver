@@ -48,7 +48,7 @@ export class SubCompetencyResolver {
 4. Done! Launch the project and test it.
 ----
 ## Features
-The library automatically resolves One to Many, Many, Many to One relations.
+The library automatically resolves `One to Many`, `Many`, `Many to One` relations and solves n+1 problem.
 
 All resolvers provide additional features:
 - [Joining](#joining)
