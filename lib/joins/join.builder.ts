@@ -3,7 +3,8 @@ import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import * as pluralize from 'pluralize';
 import { getMetadataArgsStorage } from 'typeorm';
 import { JoinItemQuery } from './join.dto';
-import { toSnakeCase } from '../helpers/string.helper';
+import { snakeCase } from "snake-case";
+
 export class JoinBuilder<Entity> {
   private joinedEntities = new Set<string>();
 
@@ -18,8 +19,8 @@ export class JoinBuilder<Entity> {
 
   private buildJoinEntitiesRec(joins: JoinItemQuery[], currentTable: string) {
     joins.forEach((join) => {
-      const table = toSnakeCase(join.table);
-      const joinTable = toSnakeCase(currentTable);
+      const table = snakeCase(join.table);
+      const joinTable = snakeCase(currentTable);
       this.joinTable(table, joinTable);
       if (join.joins?.length) {
         this.buildJoinEntitiesRec(join.joins, join.table);
@@ -33,7 +34,7 @@ export class JoinBuilder<Entity> {
     if (!this.joinedEntities.has(table)) {
       const relation = entityMeta.relations.find(
         (x) =>
-          x.target['name'] == table &&
+          snakeCase(x.target['name']).toLowerCase() == table &&
           pluralize(x.propertyName) == pluralize(relationTable).toLowerCase(),
       );
 

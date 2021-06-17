@@ -1,11 +1,11 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { SubCompetency } from './sub_competency.entity';
+import { Subcompetency } from './sub_competency.entity';
 import { AutoResolver } from '../../../lib';
 
-@AutoResolver(SubCompetency)
-@Resolver(() => SubCompetency)
-export class SubCompetencyResolver {
-  @Query(() => [SubCompetency])
+@AutoResolver(Subcompetency)
+@Resolver(() => Subcompetency)
+export class SubcompetencyResolver {
+  @Query(() => [Subcompetency])
   async test() {
     return [];
   }

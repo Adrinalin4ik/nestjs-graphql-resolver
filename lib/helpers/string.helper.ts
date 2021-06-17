@@ -13,7 +13,3 @@ export const castValueType = (str: string) => {
     return str;
   }
 };
-
-export const toSnakeCase = (str: string) => {
-  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`).slice(1);
-} 

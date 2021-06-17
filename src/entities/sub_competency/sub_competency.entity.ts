@@ -9,14 +9,16 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Competency } from '../competency/competency.entity';
+import { UserSubcompetency } from '../user-subcompetency/user-subcompetency.entity';
 
 @EntityObjectType()
 @Entity('subcompetency')
-export class SubCompetency extends BaseEntity {
+export class Subcompetency extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
@@ -35,6 +37,12 @@ export class SubCompetency extends BaseEntity {
   @JoinColumn({ name: 'competency_id' })
   competency: Competency;
 
+  @Field(() => [UserSubcompetency], { nullable: true })
+  @OneToMany(() => UserSubcompetency, (userSubcompetency) => userSubcompetency.subcompetency, {
+    onDelete: 'CASCADE',
+  })
+  user_subcompetencies: UserSubcompetency[];
+  
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   date_time_with_timezone: Date;

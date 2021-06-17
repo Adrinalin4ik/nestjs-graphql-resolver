@@ -11,7 +11,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Seniority } from '../seniority/seniority.entity';
-import { SubCompetency } from '../sub_competency/sub_competency.entity';
+import { Subcompetency } from '../sub_competency/sub_competency.entity';
+import { UserCompetency } from '../user-competency/user-competency.entity';
 
 @EntityObjectType()
 @Entity('competency')
@@ -34,9 +35,15 @@ export class Competency extends BaseEntity {
   @JoinColumn({ name: 'seniority_id' })
   seniority: Seniority;
 
-  @Field(() => [SubCompetency], { nullable: true })
-  @OneToMany(() => SubCompetency, (subcompetency) => subcompetency.competency, {
+  @Field(() => [Subcompetency], { nullable: true })
+  @OneToMany(() => Subcompetency, (subcompetency) => subcompetency.competency, {
     onDelete: 'CASCADE',
   })
-  subcompetencies: SubCompetency[];
+  subcompetencies: Subcompetency[];
+
+  @Field(() => [UserCompetency], { nullable: true })
+  @OneToMany(() => UserCompetency, (userCompetency) => userCompetency.competency, {
+    onDelete: 'CASCADE',
+  })
+  user_competencies: UserCompetency[];
 }

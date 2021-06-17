@@ -12,7 +12,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { SubCompetency } from '../sub_competency/sub_competency.entity';
+import { Subcompetency } from '../sub_competency/sub_competency.entity';
 import { User } from '../user/user.entity';
 
 @EntityObjectType()
@@ -32,10 +32,10 @@ export class UserSubcompetency extends BaseEntity {
   @Index()
   public user_id: number;
 
-  @Field(() => SubCompetency, { nullable: true })
-  @ManyToOne(() => SubCompetency, { nullable: false })
+  @Field(() => Subcompetency, { nullable: true })
+  @ManyToOne(() => Subcompetency, { nullable: false })
   @JoinColumn({ name: 'subcompetency_id' })
-  subcompetency: SubCompetency;
+  subcompetency: Subcompetency;
 
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User, { nullable: false })
