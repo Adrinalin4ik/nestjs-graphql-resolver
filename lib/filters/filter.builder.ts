@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import { sanitizeSqlValue } from '../helpers/sanitizer';
-import { castValueType } from '../helpers/string.helper';
+import { castValueType, toSnakeCase } from '../helpers/string.helper';
 import {
   FilterItemInputType,
   FiltersExpressionGroupInputType,
@@ -50,7 +50,7 @@ export class FilterBuilder<Entity> {
   }
 
   private buildFilter(filter: FilterItemInputType, index: number): string {
-    const table = (filter.table || this.qb.alias).toLowerCase();
+    const table = toSnakeCase(filter.table || this.qb.alias);
     const field = `"${table}"."${sanitizeSqlValue(filter.field)}"`;
 
     const operator = index === 0 ? '' : filter.operator;

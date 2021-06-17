@@ -1,0 +1,344 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SubCompetencyPrimitiveFieldType {
+  id: Float
+  title: String
+  competency_id: Float
+  date_time_with_timezone: DateTime
+  created_at: DateTime
+  updated_at: DateTime
+  test_bool: Boolean
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SubCompetencyGroupType {
+  by: SubCompetencyPrimitiveFieldType
+  count: Float
+  fields: [SubCompetency!]
+  avg: SubCompetencyPrimitiveFieldType
+  sum: SubCompetencyPrimitiveFieldType
+  max: SubCompetencyPrimitiveFieldType
+  min: SubCompetencyPrimitiveFieldType
+}
+
+type SubCompetency {
+  id: Int!
+  title: String!
+  competency_id: Int!
+  competency(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [SubCompetencySortFieldType!], joins: [JoinItemQuery!]): Competency
+  date_time_with_timezone: String
+  created_at: String!
+  updated_at: String!
+  test_bool: Boolean!
+  groupAgg: [SubCompetencyGroupType!]
+}
+
+input FiltersExpressionQuery {
+  operator: Operator
+  filters: [FilterItemQuery!]
+  groups: [FiltersExpressionGroupQuery!]
+}
+
+enum Operator {
+  AND
+  OR
+}
+
+input FilterItemQuery {
+  operation: Operation
+  operator: Operator
+  values: [String!]
+  table: EntityName
+  field: String
+}
+
+enum Operation {
+  EQ
+  NEQ
+  GT
+  GTE
+  LT
+  LTE
+  IN
+  ILIKE
+  NOTILIKE
+  BETWEEN
+  NOTBETWEEN
+  NULL
+  NOTNULL
+}
+
+enum EntityName {
+  SubCompetency
+  Competency
+  UserCompetency
+  UserSubcompetency
+  User
+  Seniority
+}
+
+input FiltersExpressionGroupQuery {
+  operator: Operator
+  filters: [FilterItemQuery!]
+}
+
+input HavingInputTypeQuery {
+  operator: Operator
+  filters: [HavingFiltersInputTypeQuery!]
+  groups: [HavingGroupInputTypeQuery!]
+}
+
+input HavingFiltersInputTypeQuery {
+  operation: Operation
+  operator: Operator
+  values: [String!]
+  table: EntityName
+  field: String
+  aggregator: Aggregation
+}
+
+enum Aggregation {
+  AVG
+  SUM
+  COUNT
+  MAX
+  MIN
+}
+
+input HavingGroupInputTypeQuery {
+  operator: Operator
+  filters: [HavingFiltersInputTypeQuery!]
+}
+
+input SubCompetencySortFieldType {
+  field: String
+  type: SortTypeEnum = ASC
+  nulls: SortTypeNullEnum = LAST
+  table: EntityName
+}
+
+enum SortTypeEnum {
+  DESC
+  ASC
+}
+
+enum SortTypeNullEnum {
+  LAST
+  FIRST
+}
+
+input JoinItemQuery {
+  table: EntityName!
+  joins: [JoinItemQuery!]
+  type: JoinType = Inner
+}
+
+enum JoinType {
+  Inner
+}
+
+type CompetencyPrimitiveFieldType {
+  id: Float
+  title: String
+  seniority_id: Float
+}
+
+type CompetencyGroupType {
+  by: CompetencyPrimitiveFieldType
+  count: Float
+  fields: [Competency!]
+  avg: CompetencyPrimitiveFieldType
+  sum: CompetencyPrimitiveFieldType
+  max: CompetencyPrimitiveFieldType
+  min: CompetencyPrimitiveFieldType
+}
+
+type Competency {
+  id: Int!
+  title: String!
+  seniority_id: Int!
+  seniority(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): Seniority
+  subcompetencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [SubCompetency!]
+  groupAgg: [CompetencyGroupType!]
+}
+
+input CompetencySortFieldType {
+  field: String
+  type: SortTypeEnum = ASC
+  nulls: SortTypeNullEnum = LAST
+  table: EntityName
+}
+
+type UserCompetencyPrimitiveFieldType {
+  id: Float
+  competency_id: Float
+  user_id: Float
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type UserCompetencyGroupType {
+  by: UserCompetencyPrimitiveFieldType
+  count: Float
+  fields: [UserCompetency!]
+  avg: UserCompetencyPrimitiveFieldType
+  sum: UserCompetencyPrimitiveFieldType
+  max: UserCompetencyPrimitiveFieldType
+  min: UserCompetencyPrimitiveFieldType
+}
+
+type UserCompetency {
+  id: Int!
+  competency_id: Int!
+  user_id: Int!
+  competency(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], joins: [JoinItemQuery!]): Competency
+  user(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], joins: [JoinItemQuery!]): User
+  created_at: String!
+  updated_at: String!
+  groupAgg: [UserCompetencyGroupType!]
+}
+
+input UserCompetencySortFieldType {
+  field: String
+  type: SortTypeEnum = ASC
+  nulls: SortTypeNullEnum = LAST
+  table: EntityName
+}
+
+type UserSubcompetencyPrimitiveFieldType {
+  id: Float
+  subcompetency_id: Float
+  user_id: Float
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type UserSubcompetencyGroupType {
+  by: UserSubcompetencyPrimitiveFieldType
+  count: Float
+  fields: [UserSubcompetency!]
+  avg: UserSubcompetencyPrimitiveFieldType
+  sum: UserSubcompetencyPrimitiveFieldType
+  max: UserSubcompetencyPrimitiveFieldType
+  min: UserSubcompetencyPrimitiveFieldType
+}
+
+type UserSubcompetency {
+  id: Int!
+  subcompetency_id: Int!
+  user_id: Int!
+  subcompetency(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], joins: [JoinItemQuery!]): SubCompetency
+  user(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], joins: [JoinItemQuery!]): User
+  created_at: String!
+  updated_at: String!
+  groupAgg: [UserSubcompetencyGroupType!]
+}
+
+input UserSubcompetencySortFieldType {
+  field: String
+  type: SortTypeEnum = ASC
+  nulls: SortTypeNullEnum = LAST
+  table: EntityName
+}
+
+type UserPrimitiveFieldType {
+  id: Float
+  identification_number: Float
+  email: String
+  fname: String
+  lname: String
+  mname: String
+  age: Float
+  phone: String
+  is_active: Boolean
+  seniority_id: Float
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type UserGroupType {
+  by: UserPrimitiveFieldType
+  count: Float
+  fields: [User!]
+  avg: UserPrimitiveFieldType
+  sum: UserPrimitiveFieldType
+  max: UserPrimitiveFieldType
+  min: UserPrimitiveFieldType
+}
+
+type User {
+  id: Int!
+  identification_number: Int!
+  email: String!
+  fname: String!
+  lname: String!
+  mname: String!
+  age: Float!
+  phone: String!
+  is_active: Boolean!
+  seniority_id: Int!
+  seniority(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): Seniority
+  user_competencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): [UserCompetency!]
+  user_subcompetencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): [UserSubcompetency!]
+  created_at: String!
+  updated_at: String!
+  groupAgg: [UserGroupType!]
+}
+
+input UserSortFieldType {
+  field: String
+  type: SortTypeEnum = ASC
+  nulls: SortTypeNullEnum = LAST
+  table: EntityName
+}
+
+type SeniorityPrimitiveFieldType {
+  id: Float
+  title: String
+}
+
+type SeniorityGroupType {
+  by: SeniorityPrimitiveFieldType
+  count: Float
+  fields: [Seniority!]
+  avg: SeniorityPrimitiveFieldType
+  sum: SeniorityPrimitiveFieldType
+  max: SeniorityPrimitiveFieldType
+  min: SeniorityPrimitiveFieldType
+}
+
+type Seniority {
+  id: Int!
+  title: String!
+  competencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], joins: [JoinItemQuery!]): [Competency!]
+  users(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], joins: [JoinItemQuery!]): [User!]
+  groupAgg: [SeniorityGroupType!]
+}
+
+input SenioritySortFieldType {
+  field: String
+  type: SortTypeEnum = ASC
+  nulls: SortTypeNullEnum = LAST
+  table: EntityName
+}
+
+type Query {
+  seniorities(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [Seniority!]!
+  competencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [Competency!]!
+  test: [SubCompetency!]!
+  subcompetencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [SubCompetencySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [SubCompetency!]!
+  users(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [User!]!
+  usercompetencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [UserCompetency!]!
+  usersubcompetencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [UserSubcompetency!]!
+}
+
+input PaginationInputType {
+  page: Float!
+  per_page: Float!
+}

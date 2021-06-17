@@ -15,7 +15,7 @@ import { Paginate } from '../pagination/pagination.decorator';
 import { addMethodToResolverClass } from '../helpers/decorators';
 import { Having } from '../aggregations/having/having.decorator';
 
-export const AutoResolver = (entity: BaseEntity): any => {
+export const AutoResolver = (entity): any => {
   return (baseResolverClass) => {
     const entityMeta = getMetadataArgsStorage();
     const relations = entityMeta.relations.filter(

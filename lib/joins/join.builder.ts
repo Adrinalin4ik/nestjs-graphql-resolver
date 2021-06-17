@@ -3,6 +3,7 @@ import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 import * as pluralize from 'pluralize';
 import { getMetadataArgsStorage } from 'typeorm';
 import { JoinItemQuery } from './join.dto';
+import { toSnakeCase } from '../helpers/string.helper';
 export class JoinBuilder<Entity> {
   private joinedEntities = new Set<string>();
 
@@ -17,7 +18,9 @@ export class JoinBuilder<Entity> {
 
   private buildJoinEntitiesRec(joins: JoinItemQuery[], currentTable: string) {
     joins.forEach((join) => {
-      this.joinTable(join.table, currentTable);
+      const table = toSnakeCase(join.table);
+      const joinTable = toSnakeCase(currentTable);
+      this.joinTable(table, joinTable);
       if (join.joins?.length) {
         this.buildJoinEntitiesRec(join.joins, join.table);
       }
