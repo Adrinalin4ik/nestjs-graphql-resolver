@@ -1,6 +1,6 @@
 {
   "name": "nestjs-graphql-resolver",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "This library provides functionality which allow to generate resolvers automatically.",
   "author": "Alexey Panfilkin",
   "private": false,
@@ -19,7 +19,8 @@
     "dist-lib"
   ],
   "scripts": {
-    "build": "tsc -p lib.tsconfig.json",
+    "cleanup": "rm lib.tsconfig.tsbuildinfo || true && rm -rf dist-lib || true",
+    "build": "npm run cleanup && tsc -p lib.tsconfig.json",
     "version": "npm run build && npm publish",
     "start:dev": "nest start --watch"
   },
