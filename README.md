@@ -64,7 +64,7 @@ export class UserCompetency extends BaseEntity {
 6. Done! Launch the project and test it.
 ----
 ## Features
-The library automatically resolves `One to Many`, `Many`, `Many to One` relations and solves n+1 problem.
+The library automatically resolves `One to Many`, `Many`, `Many to One` relations and solves n+1 problem. Also you can make [subscribers automatically for you mutations](#subscribers).
 
 All resolvers provide additional features:
 - [Joining](#joining)
@@ -494,8 +494,39 @@ Pagination allows paging the response data. Pagination will not work well with `
 }
 
 ```
+## Subscribers
+To use subscribers you have to set `installSubscriptionHandlers: true` in your GraphqlModuleOptions. Also you have to me sure that appolo-server-express is installed. Then you'll be able to use `@AutoMutation` decorator instead of `@Mutation`.
+
+Decorator has all options from `@Mutation` and `@Subscriber` decorator
+
+#### Examples
+
+```typescript
+...
+
+@AutoResolver(Competency)
+@Resolver(() => Competency)
+export class CompetencyResolver {
+  
+  @AutoMutation(() => Competency) // <--- Add decorator here
+  async createCompetency(
+    @Args('competency') inputCompetency: CreateCompetency,
+  ) {
+    const competency = new Competency();
+    competency.seniority_id = inputCompetency.seniority_id;
+    competency.title = inputCompetency.title;
+
+    return competency.save();
+  }
+
+...
+```
+this example will generate mutation (`createCompetency`) and subscription (`createCompetencySubscriber`)
+
 
 ## Limitations
 - Date and scalars are not supported, use string instead
 - Works only with postgres adapter for typeorm
 - Works only with express server
+- Subscribers works with only appolo-server-express
+- You cannot provide options for pub-sub for subscriptions
