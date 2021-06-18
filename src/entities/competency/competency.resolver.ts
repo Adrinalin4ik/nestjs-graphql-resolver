@@ -1,12 +1,49 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, MutationOptions, Resolver, ReturnTypeFunc, Subscription, SubscriptionOptions } from '@nestjs/graphql';
 import { Competency } from './competency.entity';
-import { AutoResolver } from '../../../lib';
-
-// const type = generateGroupAggType(Competency);
+import { AutoMutation, AutoResolver } from '../../../lib';
+import { getRepository } from 'typeorm';
+import { CreateCompetency, DeleteCompetencyResult, UpdateCompetency } from './competency.dto';
 
 @AutoResolver(Competency)
 @Resolver(() => Competency)
 export class CompetencyResolver {
+
+  @AutoMutation(() => Competency)
+  async updateCompetency(
+    @Args('competency') inputCompetency: UpdateCompetency,
+  ) {
+    const competency = new Competency();
+    competency.id = inputCompetency.id;
+    competency.seniority_id = inputCompetency.seniority_id;
+    competency.title = inputCompetency.title;
+
+    const result = await competency.save();
+
+    return result;
+  }
+
+  @AutoMutation(() => Competency)
+  async createCompetency(
+    @Args('competency') inputCompetency: CreateCompetency,
+  ) {
+    console.log(inputCompetency);
+    const competency = new Competency();
+    competency.seniority_id = inputCompetency.seniority_id;
+    competency.title = inputCompetency.title;
+
+    return competency.save();
+  }
+
+  @AutoMutation(() => DeleteCompetencyResult)
+  async deleteCompetency(@Args('id') id: number) {
+    const result = await getRepository(Competency).delete(id);
+    return { id, affectedRows: result.affected };
+  }
+
+  // @Subscription(() => Competency)
+  // competencyUpdated() {
+  //   return pubsub.asyncIterator('COMPETENCY_UPDATED');
+  // }
   // @ResolveField(() => {
   //   const type = generateGroupAggType(Competency);
   //   return [type];

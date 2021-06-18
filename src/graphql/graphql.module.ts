@@ -13,6 +13,10 @@ export class GraphqlOptions implements GqlOptionsFactory {
       debug: true,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      installSubscriptionHandlers: true,
+      subscriptions: {
+        path: '/subscriptions',
+      },
     };
   }
 }

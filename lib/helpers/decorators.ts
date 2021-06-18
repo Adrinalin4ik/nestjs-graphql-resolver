@@ -1,5 +1,4 @@
 import { Field, FieldOptions } from '@nestjs/graphql';
-import { BaseEntity } from 'typeorm';
 
 export const decorateField = (
   clazz,
@@ -26,8 +25,7 @@ export const addMethodToResolverClass = ({
   resolverClass;
   methodName: string;
   methodDecorators: MethodDecorator[];
-  paramDecorators: ParameterDecorator[];
-  entity: BaseEntity;
+  paramDecorators?: ParameterDecorator[];
   callback: (...args) => any;
 }) => {
   const target = resolverClass.prototype;
@@ -39,7 +37,7 @@ export const addMethodToResolverClass = ({
   Reflect.metadata('design:returntype', Promise)(target, key);
   Reflect.metadata('design:paramtypes', [Object, Object])(target, key);
   Reflect.metadata('design:type', Function)(target, key);
-  paramDecorators.forEach((decorator, index) => {
+  paramDecorators?.forEach((decorator, index) => {
     decorator(target, key, index);
   });
 

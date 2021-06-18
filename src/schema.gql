@@ -287,7 +287,7 @@ type Competency {
   id: Int!
   title: String!
   seniority_id: Int!
-  seniority(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): Seniority
+  seniority(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): Seniority!
   subcompetencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [Subcompetency!]
   user_competencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [UserCompetency!]
   groupAgg: [CompetencyGroupType!]
@@ -330,6 +330,11 @@ input SenioritySortFieldType {
   table: EntityName
 }
 
+type DeleteCompetencyResult {
+  id: Float
+  affectedRows: Float
+}
+
 type Query {
   seniorities(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [Seniority!]!
   competencies(filters: FiltersExpressionQuery, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], paginate: PaginationInputType, joins: [JoinItemQuery!]): [Competency!]!
@@ -343,4 +348,27 @@ type Query {
 input PaginationInputType {
   page: Float!
   per_page: Float!
+}
+
+type Mutation {
+  updateCompetency(competency: UpdateCompetency!): Competency!
+  createCompetency(competency: CreateCompetency!): Competency!
+  deleteCompetency(id: Float!): DeleteCompetencyResult!
+}
+
+input UpdateCompetency {
+  seniority_id: Float
+  title: String!
+  id: Float!
+}
+
+input CreateCompetency {
+  seniority_id: Float!
+  title: String!
+}
+
+type Subscription {
+  updateCompetencySubscriber: Competency!
+  createCompetencySubscriber: Competency!
+  deleteCompetencySubscriber: DeleteCompetencyResult!
 }

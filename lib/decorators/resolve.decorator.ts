@@ -5,7 +5,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { BaseEntity, getMetadataArgsStorage } from 'typeorm';
+import { getMetadataArgsStorage } from 'typeorm';
 import * as plularize from 'pluralize';
 import { Filters } from '../filters/filtrable-field.decorator';
 import { Loader } from '../loaders/query-exctractor.decorator';
@@ -48,7 +48,6 @@ export const AutoResolver = (entity): any => {
                     Sorting(entity),
                     Joins(),
                   ],
-                  entity,
                   callback: (loader: GraphQLExecutionContext, parent) => {
                     return loader[methodName].load(parent[methodName + '_id']);
                   },
@@ -74,7 +73,6 @@ export const AutoResolver = (entity): any => {
                     Sorting(entity),
                     Joins(),
                   ],
-                  entity,
                   callback: (loader: GraphQLExecutionContext, parent) => {
                     return loader[methodName].load(parent['id']);
                   },
@@ -99,7 +97,6 @@ export const AutoResolver = (entity): any => {
                   Paginate(),
                   Joins(),
                 ],
-                entity,
                 callback: (loader: GraphQLExecutionContext) => {
                   return loader;
                 },

@@ -48,6 +48,8 @@ export class SubCompetencyResolver {
 4. Naming convention. Postgres table names should be snake_case. You can make it simply add first parameter to entity decorator
 
 ```typescript
+...
+
 @EntityObjectType()
 @Entity('user_competency') // <--- Here
 export class UserCompetency extends BaseEntity {
@@ -495,3 +497,5 @@ Pagination allows paging the response data. Pagination will not work well with `
 
 ## Limitations
 - Date and scalars are not supported, use string instead
+- Works only with postgres adapter for typeorm
+- Works only with express server

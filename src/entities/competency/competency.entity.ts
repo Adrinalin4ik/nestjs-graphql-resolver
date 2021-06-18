@@ -25,12 +25,12 @@ export class Competency extends BaseEntity {
   @Column()
   title: string;
 
-  @Field(() => Int)
-  @Column()
+  @Field(() => Int, { nullable: false })
+  @Column({ nullable: false })
   @Index()
   public seniority_id: number;
 
-  @Field(() => Seniority, { nullable: true })
+  @Field(() => Seniority, { nullable: false })
   @ManyToOne(() => Seniority, { nullable: false })
   @JoinColumn({ name: 'seniority_id' })
   seniority: Seniority;
