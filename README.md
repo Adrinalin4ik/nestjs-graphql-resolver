@@ -495,9 +495,9 @@ Pagination allows paging the response data. Pagination will not work well with `
 
 ```
 ## Subscribers
-To use subscribers you have to set `installSubscriptionHandlers: true` in your GraphqlModuleOptions. Also you have to me sure that appolo-server-express is installed. Then you'll be able to use `@AutoMutation` decorator instead of `@Mutation`.
+To use subscribers you have to set `installSubscriptionHandlers: true` in your GraphqlModuleOptions. Also you have to be sure that `appolo-server-express` is installed. Then you'll be able to use `@AutoMutation` decorator instead of `@Mutation`.
 
-Decorator has all options from `@Mutation` and `@Subscriber` decorator
+`@AutoMutation` decorator has all options from `@Mutation` and `@Subscriber` decorator
 
 #### Examples
 
