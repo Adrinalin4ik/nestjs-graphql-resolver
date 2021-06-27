@@ -290,7 +290,7 @@ You can combine it with filter which allow to use aggregation functions.
 ```
 
 
-## Sorting
+## Ordering
 Ordering feature allows to order results by some fields.
 
 #### Examples
