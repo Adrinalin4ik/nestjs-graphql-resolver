@@ -67,10 +67,9 @@ export class UserCompetency extends BaseEntity {
 The library automatically resolves `One to Many`, `Many`, `Many to One` relations and solves n+1 problem. Also you can make [subscribers automatically for you mutations](#subscribers).
 
 All resolvers provide additional features:
-- [Joining](#joining)
 - [Filtring](#filtring)
 - [Grouping](#grouping)
-- [Sorting](#sorting)
+- [Ordering](#ordering)
 - [Paginating](#pagination)
 
 You can override any resolver, just define it in resolver's class just like that
@@ -96,55 +95,6 @@ export class SubCompetencyResolver {
 ```
 
 ----
-## Joining
-Joining feature allows to join some tables and use them for filtering or grouping.
-
-Joining input type looks like this
-```graphql
-
-input JoinItemQuery {
-  table: EntityName!
-  joins: [JoinItemQuery!]
-  type: JoinType = Inner
-}
-
-```
-#### Examples
-##### Join two tables to one model
-```graphql
-{
-  competencies(
-    joins: [
-      {
-        table: SubCompetency
-      }
-    	{
-        table: Seniority
-      }
-    ]
-  ) {
-    title
-  }
-}
-
-```
-##### Join table Competency to Seniority and SubCompetency to Competency
-```graphql
-{
-  seniorities(
-    joins: [{
-      table: Competency
-      joins: [{
-        table: SubCompetency
-      }]
-    }]
-  ) {
-    title
-  }
-}
-
-```
-
 ## Filtring
 Filter feature generates SQL query for filtering. It could be combined with the joining feature if you'd like to filter by some nested model.
 
@@ -152,17 +102,11 @@ Filter input type looks like this
 
 ```graphql
 input FiltersExpressionQuery {
-  operator: Operator
-  filters: [
-    {
-      operation: Operation
-      operator: Operator
-      values: [String!]
-      table: EntityName
-      field: String
-    }
-  ]
-  groups: [FiltersExpressionGroupQuery!]
+  or: [FiltersExpressionQuery]
+  and: [FiltersExpressionQuery]
+  entity: {
+    field: {operator: value}
+  }
 }
 
 ```
@@ -187,15 +131,11 @@ NOTNULL = 'IS NOT NULL',
 ##### Simple filter
 ```graphql
 {
-  subcompetencies(filters: {
-    filters: [
-      {
-        operation: IN
-        field: "id"
-        values: ["1", "2"]
-      }
-    ]
-  }) {
+  subcompetencies(
+    where: {
+      id: {in: [1, 2]}
+    }
+  ) {
     id
   }
 }
@@ -210,29 +150,20 @@ NOTNULL = 'IS NOT NULL',
 
 {
   competencies(
-    filters: {
-    	groups: [{
-        filters: [
-          {
-            operation: ILIKE
-            operator: OR
-            values: "%1%"
-            field: "title"
-          }
-          {
-            operation: ILIKE
-            operator: OR
-            values: "%2%"
-            field: "title"
-          }
-        ]
-      }]
-  	}
+    where: {
+      or: [
+        {
+          title: {ilike: "%1%"}
+        },
+        {
+          title: {ilike: "%2%"}
+        }
+      ]
+    }
   ) {
     title
   }
 }
-
 ```
 
 ##### This example joins two nested tables and make a filtring by joined SubCompetency model.
@@ -240,30 +171,22 @@ NOTNULL = 'IS NOT NULL',
 
 {
   seniorities(
-    joins: [{
-      table: Competency
-      joins: [{
-        table: SubCompetency
-      }]
-    }]
-    filters: {
-      operator: OR
-      filters: [{
-        operation: GTE
-        values: "1"
-        field: "id"
-        table: SubCompetency
-      }]
+    where: {
+      competencies: {
+        subcompetencies: {
+          id: {gte: 1}
+        }
+      }
     }
   ) {
     title
     competencies {
       title
-      subcompetencies(sort: {
-        field: "id"
-        type: ASC
-        table: SubCompetency
-      }) {
+      subcompetencies(
+        order_by: {
+          id: asc
+        }
+      ) {
         id
         title
       }
@@ -312,35 +235,22 @@ Each generated resolver will have `groupAgg` field. This field cannot be combine
 
 ```
 
-You can combine it with having filter which allow to use aggregation functions and the input type looks exactly like in filtring feature, but with one additional attribute - `aggregator`. This feature can be combined with joining feature.
+You can combine it with filter which allow to use aggregation functions.
 
 #### Examples
 
 ##### This example returns an array of seniorities which includes more than one competency.
 ```graphql
 
-
 {
   seniorities (
-    joins: {
-      table: Competency
-    }
-    having: {
-      groups: [
-        {
-          filters: [
-            {
-              operator: OR
-              operation: GTE
-              field: "seniority_id"
-              table: Competency
-              values: "1"
-              aggregator: COUNT
-            }
-          ]
+    where: {
+      competencies: {
+        count: {
+          seniority_id: {gte: 1}
         }
-    	]
-  	}
+      }
+    }
   ) {
     id
   } 
@@ -352,30 +262,26 @@ You can combine it with having filter which allow to use aggregation functions a
 ```graphql
 {
   competencies(
-    joins: {
-      table: SubCompetency
-    }
-    having: {
-      groups: [
+    where: {
+      or: [
         {
-          filters: [
-            {
-              operator: OR
-              operation: GTE
-              field: "seniority_id"
-              values: "1"
-            }
-          ]
+          count: {
+            id: {gte: 1}
+          }
         }
-    	]
-  	}
+      ]
+    }
   ) {
     groupAgg {
-      by {
-        seniority_id
-      }
       count
+      sum {
+        id
+      }
+      avg {
+        id
+      }
       fields {
+        id
         seniority_id
       }
     }
@@ -385,7 +291,7 @@ You can combine it with having filter which allow to use aggregation functions a
 
 
 ## Sorting
-Sorting feature allows to order results by some fields. You can combine it with `joining` feature.
+Ordering feature allows to order results by some fields.
 
 #### Examples
 
@@ -393,10 +299,7 @@ Sorting feature allows to order results by some fields. You can combine it with 
 
 ```graphql
 {
-  subcompetencies(sort: {
-    field: "id"
-    type: ASC
-  }) {
+  subcompetencies(order_by: {id: asc}) {
     id
   }
 }
@@ -408,21 +311,14 @@ Sorting feature allows to order results by some fields. You can combine it with 
 
 {
   seniorities(
-    joins: {
-      table: Competency
-      joins: {
-        table: SubCompetency
+    order_by: {
+      competencies: {
+        id: asc
+        subcompetencies: {
+          id: asc
+        }
       }
     }
-    sort: [{
-      table: SubCompetency
-      field: "id"
-      type: ASC
-    }, {
-      table: Competency
-      field: "id"
-      type: ASC
-    }]
   ) {
     id
   }
@@ -455,30 +351,16 @@ Pagination allows paging the response data. Pagination will not work well with `
 ```graphql
 {
   competencies(
-    joins: [{
-      table: SubCompetency
-      type: Inner
-    },
-    {
-      table: Seniority
-      type: Inner
-    }]
-    filters: {
-      filters: {
-        operation: ILIKE
-        field: "title"
-        table: SubCompetency
-        values: ["%5%"]
+    where: {
+      subcompetencies: {
+        title: {ilike: "%5%"}
       }
     }
-    sort: [
-      {
-        field: "title"
-        type: ASC
-        table: Seniority
-        nulls: FIRST
+    order_by: {
+      seniority: {
+        title: asc_null_first
       }
-    ]
+    }
     paginate: {
       page: 0,
       per_page: 1
@@ -487,8 +369,16 @@ Pagination allows paging the response data. Pagination will not work well with `
     id
     title
     subcompetencies {
-      id
-      title
+      groupAgg {
+        by {
+          competency_id
+        }
+        count
+        fields {
+          id
+          title
+        }
+      }
     }
   }
 }

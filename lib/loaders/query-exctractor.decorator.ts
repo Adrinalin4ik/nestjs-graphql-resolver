@@ -7,11 +7,7 @@ import {
 } from 'graphql';
 import * as pluralize from 'pluralize';
 import { getMetadataArgsStorage } from 'typeorm';
-import { HavingInputType } from '../aggregations/having/having.dto';
-import { FiltersExpressionInputType } from '../filters/filter.dto';
-import { JoinItemQuery } from '../joins/join.dto';
 import { PaginationInputType } from '../pagination/pagination.dto';
-import { SortingType } from '../sorting/sort.dto';
 
 import { oneToManyLoader, manyToOneLoader, getMany } from './base.loader';
 
@@ -22,12 +18,9 @@ export const Loader = createParamDecorator(
     const gargs: any = args[1];
     const gctx: GraphQLExecutionContext = args[2];
     const info: GraphQLResolveInfo = args[3];
-    const filters: FiltersExpressionInputType = gargs.filters;
-    const filters1: FiltersExpressionInputType = gargs.filters1;
-    const sorting: SortingType[] = gargs.sort;
-    const joins: JoinItemQuery[] = gargs.joins;
+    const filters1: any = gargs.filters1;
     const pagination: PaginationInputType = gargs.paginate;
-    const having: HavingInputType = gargs.having;
+    const order_by: any = gargs.order_by;
 
     const is_entity =
       data.prototype &&
@@ -44,12 +37,9 @@ export const Loader = createParamDecorator(
       return getMany(
         fields,
         data.graphqlName,
-        filters,
         filters1,
-        sorting,
-        joins,
+        order_by,
         pagination,
-        having,
         info,
       );
     } else if (typeof data === 'string') {
@@ -60,10 +50,8 @@ export const Loader = createParamDecorator(
       gctx[data] = manyToOneLoader(
         fields,
         data,
-        filters,
         filters1,
-        sorting,
-        joins,
+        order_by,
         pagination,
         info,
       );
@@ -80,10 +68,8 @@ export const Loader = createParamDecorator(
           fields,
           entityName,
           entityKey,
-          filters,
           filters1,
-          sorting,
-          joins,
+          order_by,
           pagination,
           info,
         );

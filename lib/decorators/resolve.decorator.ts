@@ -7,16 +7,12 @@ import {
 } from '@nestjs/graphql';
 import { getMetadataArgsStorage } from 'typeorm';
 import * as plularize from 'pluralize';
-import { Filters } from '../filters/filtrable-field.decorator';
 import { Loader } from '../loaders/query-exctractor.decorator';
-import { Sorting } from '../sorting/sort.decorator';
-import { Joins } from '../joins/join.decorator';
 import { Paginate } from '../pagination/pagination.decorator';
 import { addMethodToResolverClass } from '../helpers/decorators';
-import { Having } from '../aggregations/having/having.decorator';
-import { Filters1 } from 'lib/filters1/filtrable-field.decorator';
+import { Filters } from '../filters/filtrable-field.decorator';
 import { GqlType } from '../helpers/classes';
-import { Having1 } from '../aggregations/having1/having.decorator';
+import { Order } from '../order/order.decorator';
 
 export const AutoResolver = (entity: GqlType): any => {
   return (baseResolverClass) => {
@@ -46,11 +42,8 @@ export const AutoResolver = (entity: GqlType): any => {
                   paramDecorators: [
                     Loader(methodName),
                     Parent(),
-                    Filters(),
-                    Filters1(r.propertyName),
-                    Having(),
-                    Sorting(entity),
-                    Joins(),
+                    Filters(r.propertyName),
+                    Order(r.propertyName),
                   ],
                   callback: (loader: GraphQLExecutionContext, parent) => {
                     return loader[methodName].load(parent[methodName + '_id']);
@@ -72,11 +65,8 @@ export const AutoResolver = (entity: GqlType): any => {
                   paramDecorators: [
                     Loader([methodName, `${entity.graphqlName}_id`.toLowerCase()]),
                     Parent(),
-                    Filters(),
-                    Filters1(r.propertyName),
-                    Having(),
-                    Sorting(entity),
-                    Joins(),
+                    Filters(r.propertyName),
+                    Order(r.propertyName),
                   ],
                   callback: (loader: GraphQLExecutionContext, parent) => {
                     return loader[methodName].load(parent['id']);
@@ -96,13 +86,9 @@ export const AutoResolver = (entity: GqlType): any => {
                 methodDecorators: [Query(() => [entity], { name: methodName })],
                 paramDecorators: [
                   Loader(entity),
-                  Filters(),
-                  Filters1(entity.graphqlName),
-                  Having(),
-                  // Having1(entity),
-                  Sorting(entity),
+                  Filters(entity.graphqlName),
+                  Order(entity.graphqlName),
                   Paginate(),
-                  Joins(),
                 ],
                 callback: (loader: GraphQLExecutionContext) => {
                   return loader;

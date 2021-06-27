@@ -5,27 +5,18 @@ import * as pluralize from 'pluralize';
 import { AggregationsBuilder } from '../aggregations/aggregation.builder';
 import { GraphQLResolveInfo } from 'graphql';
 
-import { SortBuilder } from '../sorting/sort.builder';
-import { JoinBuilder } from '../joins/join.builder';
-import { JoinItemQuery } from '../joins/join.dto';
-import { FilterBuilder } from '../filters/filter.builder';
-import { FiltersExpressionInputType } from '../filters/filter.dto';
-import { SortingType } from '../sorting/sort.dto';
 import { PaginationBuilder } from '../pagination/pagination.builder';
 import { PaginationInputType } from '../pagination/pagination.dto';
-import { HavingBuilder } from '../aggregations/having/having.builder';
-import { HavingInputType } from '../aggregations/having/having.dto';
-import { JoinBuilder1 } from '../joins/join.builder1';
-import { FilterBuilder1 } from '../filters1/filter.builder';
+import { JoinBuilder } from '../joins/join.builder';
+import { FilterBuilder } from '../filters/filter.builder';
+import { OrderBuilder } from '../order/order.builder';
 
 export const oneToManyLoader = (
   select: string[],
   tableName: string,
   foreignKey: string,
-  filters: FiltersExpressionInputType,
-  filters1: any,
-  sorting: SortingType[],
-  joins: JoinItemQuery[],
+  filters: any,
+  ordering: any,
   pagination: PaginationInputType,
   info: GraphQLResolveInfo,
 ) => {
@@ -39,18 +30,12 @@ export const oneToManyLoader = (
 
     qb.select(select);
 
-    // const fqb = new FilterBuilder(qb, filters);
-    // fqb.build();
+    const joinb = new JoinBuilder(qb);
 
-    // const joinb = new JoinBuilder(qb, joins);
-    // joinb.build();
+    const fqb = new FilterBuilder(qb, joinb, filters, select);
+    fqb.build();
 
-    const joinb1 = new JoinBuilder1(qb);
-
-    const fqb1 = new FilterBuilder1(qb, joinb1, filters1, select);
-    fqb1.build();
-
-    const aggb = new AggregationsBuilder(qb, info, sorting, select);
+    const aggb = new AggregationsBuilder(qb, info, null, select);
     aggb.build();
 
     const paginationb = new PaginationBuilder(qb, pagination);
@@ -70,10 +55,10 @@ export const oneToManyLoader = (
       });
       return keys.map((k) => [{ groupAgg: gs[k] || [] }]);
     } else {
-      const sortb = new SortBuilder(qb, sorting);
-      sortb.build();
-
-      if (fqb1.hasAggregations) {
+      const orderb = new OrderBuilder(qb, joinb, ordering);
+      orderb.build();
+      
+      if (fqb.hasAggregations) {
         res = await qb.getRawMany();
         res = res.flatMap(x => x.fields);
       } else {
@@ -88,12 +73,9 @@ export const oneToManyLoader = (
 export const getMany = async (
   select: string[],
   tableName: string,
-  filters: FiltersExpressionInputType,
-  filters1: any,
-  sorting: SortingType[],
-  joins: JoinItemQuery[],
+  filters: any,
+  ordering: any,
   pagination: PaginationInputType,
-  having: HavingInputType,
   info: GraphQLResolveInfo,
 ) => {
   const qb = getRepository(tableName).createQueryBuilder(
@@ -102,21 +84,12 @@ export const getMany = async (
 
   qb.select(select);
 
-  const havingb = new HavingBuilder(qb, having, select);
-  havingb.build();
+  const joinb = new JoinBuilder(qb);
 
-  // const fqb = new FilterBuilder(qb, filters);
-  // fqb.build();
+  const fqb = new FilterBuilder(qb, joinb, filters, select);
+  fqb.build();
 
-  // const joinb = new JoinBuilder(qb, joins);
-  // joinb.build();
-
-  const joinb1 = new JoinBuilder1(qb);
-
-  const fqb1 = new FilterBuilder1(qb, joinb1, filters1, select);
-  fqb1.build();
-
-  const aggb = new AggregationsBuilder(qb, info, sorting);
+  const aggb = new AggregationsBuilder(qb, info);
   aggb.build();
 
   const paginationb = new PaginationBuilder(qb, pagination);
@@ -128,13 +101,15 @@ export const getMany = async (
     res = await qb.getRawMany();
 
     res = aggb.responseObject(res);
-  } else if (!aggb.isGroupping && having) {
-    res = await qb.getRawMany();
-    res = res.map((x) => x.fields[0]);
-  } else {
-    const sortb = new SortBuilder(qb, sorting);
-    sortb.build();
-    if (fqb1.hasAggregations) {
+  } 
+  // else if (!aggb.isGroupping) {
+  //   res = await qb.getRawMany();
+  //   res = res.map((x) => x.fields[0]);
+  // } 
+  else {
+    const orderb = new OrderBuilder(qb, joinb, ordering);
+    orderb.build();
+    if (fqb.hasAggregations) {
       res = await qb.getRawMany();
       res = res.flatMap(x => x.fields);
     } else {
@@ -147,10 +122,8 @@ export const getMany = async (
 export const manyToOneLoader = (
   select: string[],
   tableName: string,
-  filters: FiltersExpressionInputType,
-  filters1: any,
-  sorting: SortingType[],
-  joins: JoinItemQuery[],
+  filters: any,
+  ordering: any,
   pagination: PaginationInputType,
   info: GraphQLResolveInfo,
 ) =>
@@ -160,18 +133,12 @@ export const manyToOneLoader = (
       tableName.toLowerCase(),
     );
 
-    // const fqb = new FilterBuilder(qb, filters);
-    // fqb.build();
+    const joinb = new JoinBuilder(qb);
 
-    // const joinb = new JoinBuilder(qb, joins);
-    // joinb.build();
+    const fqb = new FilterBuilder(qb, joinb, filters, select);
+    fqb.build();
 
-    const joinb1 = new JoinBuilder1(qb);
-
-    const fqb1 = new FilterBuilder1(qb, joinb1, filters1, select);
-    fqb1.build();
-
-    const aggb = new AggregationsBuilder(qb, info, sorting, select);
+    const aggb = new AggregationsBuilder(qb, info, null, select);
     aggb.build();
 
     const paginationb = new PaginationBuilder(qb, pagination);
@@ -192,12 +159,12 @@ export const manyToOneLoader = (
       }));
       return test;
     } else {
-      const sortb = new SortBuilder(qb, sorting);
-      sortb.build();
+      const orderb = new OrderBuilder(qb, joinb, ordering);
+      orderb.build();
 
       qb.addSelect(select);
 
-      if (fqb1.hasAggregations) {
+      if (fqb.hasAggregations) {
         res = await qb.getRawMany();
         res = res.flatMap(x => x.fields);
       } else {

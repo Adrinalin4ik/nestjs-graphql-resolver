@@ -7,7 +7,6 @@ import { SubCompetencyModule } from './entities/sub_competency/sub_competency.mo
 import { UserModule } from './entities/user/user.module';
 import { UserCompetencyModule } from './entities/user-competency/user-competency.module';
 import { UserSubcompetencyModule } from './entities/user-subcompetency/user-subcompetency.module';
-import { NestJSGraphqlResolver } from '../lib';
 import GraphqlModule from './graphql/graphql.module'
 
 @Module({
@@ -19,8 +18,7 @@ import GraphqlModule from './graphql/graphql.module'
     UserModule,
     UserCompetencyModule,
     UserSubcompetencyModule,
-    GraphqlModule,
-    // NestJSGraphqlResolver
+    GraphqlModule
   ],
 })
 export class AppModule {}

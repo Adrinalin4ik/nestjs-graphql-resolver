@@ -1,113 +1,114 @@
-import { registerEnumType, InputType } from '@nestjs/graphql';
-import { getEntityNameEnum } from '../dto/entity-helper.dto';
+import { InputType, GraphQLISODateTime } from '@nestjs/graphql';
+import { getMetadataArgsStorage } from 'typeorm';
+import { builtInPremitiveGQLType } from '../dto/entity-helper.dto';
 import { decorateField } from '../helpers/decorators';
+import { camelCase } from 'change-case';
+import { capitalize } from '../helpers/string.helper';
+import * as pluralize from 'pluralize';
+import { AggregationEnum } from '../aggregations/aggregations.dto';
+
 
 export enum OperatorQuery {
-  AND = 'AND',
-  OR = 'OR',
+  and = 'and',
+  or = 'or',
 }
-
-registerEnumType(OperatorQuery, {
-  name: 'Operator',
-});
 
 export enum OperationQuery {
-  EQ = '=',
-  NEQ = '!=',
-  GT = '>',
-  GTE = '>=',
-  LT = '<',
-  LTE = '<=',
-  IN = 'IN',
-  ILIKE = 'ILIKE',
-  NOTILIKE = 'not ILIKE',
-  BETWEEN = 'BETWEEN',
-  NOTBETWEEN = 'NOT BETWEEN',
-  NULL = 'IS NULL',
-  NOTNULL = 'IS NOT NULL',
+  eq = '=',
+  neq = '!=',
+  gt = '>',
+  gte = '>=',
+  lt = '<',
+  lte = '<=',
+  in = 'IN',
+  ilike = 'ILIKE',
+  notilike = 'not ILIKE',
+  between = 'BETWEEN',
+  notbetween = 'NOT BETWEEN',
+  null = 'IS NULL',
+  notnull = 'IS NOT NULL',
 }
 
-registerEnumType(OperationQuery, {
-  name: 'Operation',
-});
+const arrayLikeOperations = new Set([OperationQuery.between, OperationQuery.notbetween, OperationQuery.in]);
 
-export enum JoinTypeQuery {
-  Left,
-  Inner,
+const inputTypes = new Map();
+const propertyTypes = new Map()
+
+const generatePropertyType = (type) => {
+  const key = `${type.name}_property_filter_type`;
+
+  const propType = propertyTypes.get(key);
+  if (propType) return propType;
+
+  function PropertyFilter() {}
+
+  Object.keys(OperationQuery).forEach(operationName => {
+    decorateField(PropertyFilter, operationName, () => {
+      if (arrayLikeOperations.has(OperationQuery[operationName])) {
+        return [type];
+      } else {
+        return type;
+      }
+    }, {
+      nullable: true
+    });
+  })
+
+  InputType(key)(PropertyFilter);
+  propertyTypes.set(key, PropertyFilter)
+  return PropertyFilter;
 }
 
-registerEnumType(JoinTypeQuery, {
-  name: 'JoinType',
-});
-
-export class FilterItemInputType {
-  operation: OperationQuery;
-  operator: OperatorQuery;
-  values: string[];
-  field: string;
-  table: string;
-}
-
-export class FiltersExpressionGroupInputType {
-  operator: OperatorQuery;
-  filters: FilterItemInputType[];
-}
-
-export class FiltersExpressionInputType {
-  operator: OperatorQuery;
-  filters: FilterItemInputType[];
-  groups: FiltersExpressionGroupInputType[];
-}
-
-let filterInputType;
-
-export const generateFilterInputType = () => {
-  if (!filterInputType) {
-    const entityNameEnum = getEntityNameEnum();
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    function FilterItemQuery() {}
-    {
-      decorateField(FilterItemQuery, 'operation', () => OperationQuery, {
-        nullable: false,
-      });
-      decorateField(FilterItemQuery, 'operator', () => OperatorQuery, {
-        nullable: false,
-      });
-      decorateField(FilterItemQuery, 'values', () => [String]);
-      decorateField(FilterItemQuery, 'table', () => entityNameEnum);
-      decorateField(FilterItemQuery, 'field', () => String, {
-        nullable: false,
-      });
-
-      InputType()(FilterItemQuery);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    function FiltersExpressionGroupQuery() {}
-    {
-      decorateField(FiltersExpressionGroupQuery, 'operator', () => OperatorQuery, {
-        nullable: false,
-      });
-      decorateField(FiltersExpressionGroupQuery, 'filters', () => [FilterItemQuery]);
-
-      InputType()(FiltersExpressionGroupQuery);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    function FiltersExpressionQuery() {}
-    {
-      decorateField(FiltersExpressionQuery, 'operator', () => OperatorQuery, {
-        nullable: false,
-      });
-      decorateField(FiltersExpressionQuery, 'filters', () => [FilterItemQuery]);
-      decorateField(FiltersExpressionQuery, 'groups', () => [
-        FiltersExpressionGroupQuery,
-      ]);
-
-      InputType()(FiltersExpressionQuery);
-    }
-    filterInputType = FiltersExpressionQuery;
+export const generateFilterInputType = (propName: string) => {
+  const entityName = capitalize(camelCase(pluralize.singular(propName)));
+  const existType = inputTypes.get(entityName);
+  if (existType) {
+    return existType;
   }
-  return filterInputType;
-};
+
+  const entityMeta = getMetadataArgsStorage();
+  function EntityFilterInputType() {}
+
+  const relations = entityMeta.relations.filter(
+    (x) => x.target['name'].toLowerCase() == entityName.toLowerCase(),
+  );
+
+  relations.forEach(rel => {
+    const propName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
+    decorateField(EntityFilterInputType, rel.propertyName, () => inputTypes.get(propName));
+  });
+
+  const colums = entityMeta.columns.filter(
+    (x) => x.target['name'].toLowerCase() == entityName.toLowerCase(),
+  );
+
+  colums.forEach(col => {
+    const objType = builtInPremitiveGQLType.has(
+      col.options?.type?.['prototype']?.constructor?.name?.toLowerCase(),
+    )
+      ? col.options?.type
+      : GraphQLISODateTime;
+
+      const propType = generatePropertyType(objType)
+      decorateField(EntityFilterInputType, col.propertyName, () => propType);
+  })
+  
+
+  Object.values(OperatorQuery).forEach(op => {
+    decorateField(EntityFilterInputType, op, () => [EntityFilterInputType])
+  })
+
+  Object.values(AggregationEnum).forEach(op => {
+    decorateField(EntityFilterInputType, op, () => EntityFilterInputType)
+  })
+
+  Object.defineProperty(EntityFilterInputType, 'name', {
+    value: `${entityName}EntityFilterInputType`,
+  });
+
+  InputType()(EntityFilterInputType);
+  
+
+  inputTypes.set(entityName, EntityFilterInputType)
+  return EntityFilterInputType;
+}
