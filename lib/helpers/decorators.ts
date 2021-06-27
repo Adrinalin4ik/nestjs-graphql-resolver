@@ -1,12 +1,12 @@
-import { Field, FieldOptions } from '@nestjs/graphql';
+import { Field, FieldOptions, ReturnTypeFunc } from '@nestjs/graphql';
 
 export const decorateField = (
   clazz,
   fieldName: string,
-  fieldType,
+  fieldType: ReturnTypeFunc,
   options?: FieldOptions,
 ) => {
-  clazz.prototype[fieldName] = Field(() => fieldType, {
+  clazz.prototype[fieldName] = Field(fieldType, {
     ...options,
     nullable: true,
   })(clazz.prototype, fieldName);

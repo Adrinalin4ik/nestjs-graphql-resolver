@@ -15,38 +15,38 @@ import {
 import { Subcompetency } from '../sub_competency/sub_competency.entity';
 import { User } from '../user/user.entity';
 
-@EntityObjectType()
+// @EntityObjectType()
 @Entity('user_subcompetency')
 export class UserSubcompetency extends BaseEntity {
-  @Field(() => Int)
+  // @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Int)
+  // @Field(() => Int)
   @Column()
   @Index()
   public subcompetency_id: number;
 
-  @Field(() => Int)
+  // @Field(() => Int)
   @Column()
   @Index()
   public user_id: number;
 
-  @Field(() => Subcompetency, { nullable: true })
+  // @Field(() => Subcompetency, { nullable: true })
   @ManyToOne(() => Subcompetency, { nullable: false })
   @JoinColumn({ name: 'subcompetency_id' })
   subcompetency: Subcompetency;
 
-  @Field(() => User, { nullable: true })
+  // @Field(() => User, { nullable: true })
   @ManyToOne(() => User, { nullable: false })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Field(() => String)
+  // @Field(() => String)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  // @Field(() => String)
   @UpdateDateColumn()
   updated_at: Date;
 }

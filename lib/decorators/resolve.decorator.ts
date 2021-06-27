@@ -14,12 +14,15 @@ import { Joins } from '../joins/join.decorator';
 import { Paginate } from '../pagination/pagination.decorator';
 import { addMethodToResolverClass } from '../helpers/decorators';
 import { Having } from '../aggregations/having/having.decorator';
+import { Filters1 } from 'lib/filters1/filtrable-field.decorator';
+import { GqlType } from '../helpers/classes';
+import { Having1 } from '../aggregations/having1/having.decorator';
 
-export const AutoResolver = (entity): any => {
+export const AutoResolver = (entity: GqlType): any => {
   return (baseResolverClass) => {
     const entityMeta = getMetadataArgsStorage();
     const relations = entityMeta.relations.filter(
-      (x) => x.target['name'] == entity['name'],
+      (x) => x.target['name'] == entity.graphqlName,
     );
 
     const extend = (base) => {
@@ -44,6 +47,7 @@ export const AutoResolver = (entity): any => {
                     Loader(methodName),
                     Parent(),
                     Filters(),
+                    Filters1(entity),
                     Having(),
                     Sorting(entity),
                     Joins(),
@@ -66,9 +70,10 @@ export const AutoResolver = (entity): any => {
                     ResolveField(() => entity, { name: methodName }),
                   ],
                   paramDecorators: [
-                    Loader([methodName, `${entity['name']}_id`.toLowerCase()]),
+                    Loader([methodName, `${entity.graphqlName}_id`.toLowerCase()]),
                     Parent(),
                     Filters(),
+                    Filters1(entity),
                     Having(),
                     Sorting(entity),
                     Joins(),
@@ -81,7 +86,7 @@ export const AutoResolver = (entity): any => {
             }
           });
           {
-            const methodName = plularize(entity['name']).toLowerCase();
+            const methodName = plularize(entity.graphqlName).toLowerCase();
             if (!Extended.prototype[methodName]) {
               // loadMany for root queries
 
@@ -92,7 +97,9 @@ export const AutoResolver = (entity): any => {
                 paramDecorators: [
                   Loader(entity),
                   Filters(),
+                  Filters1(entity),
                   Having(),
+                  // Having1(entity),
                   Sorting(entity),
                   Paginate(),
                   Joins(),
@@ -107,7 +114,7 @@ export const AutoResolver = (entity): any => {
       }
 
       Object.defineProperty(Extended, 'name', {
-        value: entity['name'],
+        value: entity.graphqlName,
       });
       return Extended;
     };

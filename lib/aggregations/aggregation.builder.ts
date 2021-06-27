@@ -119,7 +119,7 @@ export class AggregationsBuilder<Entity> {
               const agg_v = k.split('_')[1];
               if (
                 AggregationValueArray.indexOf(agg_k) !== -1 &&
-                agg_k !== AggregationEnum.COUNT
+                agg_k !== AggregationEnum.count
               ) {
                 acc[agg_k] = { [agg_v]: v };
               }

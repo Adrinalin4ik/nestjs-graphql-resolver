@@ -2,13 +2,14 @@ import { Args, Mutation, MutationOptions, Resolver, ReturnTypeFunc, Subscription
 import { Competency } from './competency.entity';
 import { AutoMutation, AutoResolver } from '../../../lib';
 import { getRepository } from 'typeorm';
-import { CreateCompetency, DeleteCompetencyResult, UpdateCompetency } from './competency.dto';
+import { CompetencyObjectType, CreateCompetency, DeleteCompetencyResult, UpdateCompetency } from './competency.dto';
 
-@AutoResolver(Competency)
-@Resolver(() => Competency)
+console.log(typeof CompetencyObjectType)
+@AutoResolver(CompetencyObjectType)
+@Resolver(() => CompetencyObjectType)
 export class CompetencyResolver {
 
-  @AutoMutation(() => Competency)
+  @AutoMutation(() => CompetencyObjectType)
   async updateCompetency(
     @Args('competency') inputCompetency: UpdateCompetency,
   ) {
@@ -22,7 +23,7 @@ export class CompetencyResolver {
     return result;
   }
 
-  @AutoMutation(() => Competency)
+  @AutoMutation(() => CompetencyObjectType)
   async createCompetency(
     @Args('competency') inputCompetency: CreateCompetency,
   ) {

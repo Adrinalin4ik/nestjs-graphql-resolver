@@ -1,19 +1,21 @@
 import {
   GraphQLISODateTime,
+  InputType,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
+import { GqlType } from '../helpers/classes';
 import { BaseEntity, getMetadataArgsStorage } from 'typeorm';
 import { decorateField } from '../helpers/decorators';
 
-const builtInPremitiveGQLType = new Set(['string', 'number', 'boolean']);
+export const builtInPremitiveGQLType = new Set(['string', 'number', 'boolean']);
 
 export let EntityNameEnum;
 export const EntityAggregationParametersEnum = new Map();
 export const EntityAggregationParametersType = new Map();
 
-const generateEntityAggregationParametersType = (entity: BaseEntity) => {
-  const entityName = entity['constructor']['name'];
+const generateEntityAggregationParametersType = (entity: GqlType) => {
+  const entityName = entity.graphqlName;
   const entityMeta = getMetadataArgsStorage();
 
   if (!EntityAggregationParametersEnum.has(entityName)) {
@@ -43,11 +45,11 @@ const generateEntityAggregationParametersType = (entity: BaseEntity) => {
       decorateField(
         EntityPrimitiveFieldType,
         col.propertyName.toLowerCase(),
-        builtInPremitiveGQLType.has(
-          col.options?.type?.['prototype']?.constructor?.name?.toLowerCase(),
-        )
-          ? col.options?.type
-          : GraphQLISODateTime,
+        () => (builtInPremitiveGQLType.has(
+            col.options?.type?.['prototype']?.constructor?.name?.toLowerCase(),
+            )
+              ? col.options?.type
+              : GraphQLISODateTime) as any
       );
     }
 
@@ -67,19 +69,19 @@ const generateEntityAggregationParametersType = (entity: BaseEntity) => {
   }
 };
 
-export const getEntityPrimitiveEnum = (entity: BaseEntity) => {
-  if (!EntityAggregationParametersEnum.has(entity['name'])) {
-    generateEntityAggregationParametersType(entity['prototype']);
+export const getEntityPrimitiveEnum = (entity: GqlType) => {
+  if (!EntityAggregationParametersEnum.has(entity.graphqlName)) {
+    generateEntityAggregationParametersType(entity);
   }
-  return EntityAggregationParametersEnum.get(entity['name']);
+  return EntityAggregationParametersEnum.get(entity.graphqlName);
 };
 
-export const getEntityPrimitiveType = (entity: BaseEntity) => {
-  if (!EntityAggregationParametersType.has(entity['name'])) {
-    generateEntityAggregationParametersType(entity['prototype']);
+export const getEntityPrimitiveType = (entity: GqlType) => {
+  if (!EntityAggregationParametersType.has(entity.graphqlName)) {
+    generateEntityAggregationParametersType(entity);
   }
 
-  return EntityAggregationParametersType.get(entity['name']);
+  return EntityAggregationParametersType.get(entity.graphqlName);
 };
 
 export const getEntityNameEnum = () => {

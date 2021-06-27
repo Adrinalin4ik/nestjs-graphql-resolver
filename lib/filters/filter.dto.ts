@@ -68,15 +68,15 @@ export const generateFilterInputType = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function FilterItemQuery() {}
     {
-      decorateField(FilterItemQuery, 'operation', OperationQuery, {
+      decorateField(FilterItemQuery, 'operation', () => OperationQuery, {
         nullable: false,
       });
-      decorateField(FilterItemQuery, 'operator', OperatorQuery, {
+      decorateField(FilterItemQuery, 'operator', () => OperatorQuery, {
         nullable: false,
       });
-      decorateField(FilterItemQuery, 'values', [String]);
-      decorateField(FilterItemQuery, 'table', entityNameEnum);
-      decorateField(FilterItemQuery, 'field', String, {
+      decorateField(FilterItemQuery, 'values', () => [String]);
+      decorateField(FilterItemQuery, 'table', () => entityNameEnum);
+      decorateField(FilterItemQuery, 'field', () => String, {
         nullable: false,
       });
 
@@ -86,10 +86,10 @@ export const generateFilterInputType = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function FiltersExpressionGroupQuery() {}
     {
-      decorateField(FiltersExpressionGroupQuery, 'operator', OperatorQuery, {
+      decorateField(FiltersExpressionGroupQuery, 'operator', () => OperatorQuery, {
         nullable: false,
       });
-      decorateField(FiltersExpressionGroupQuery, 'filters', [FilterItemQuery]);
+      decorateField(FiltersExpressionGroupQuery, 'filters', () => [FilterItemQuery]);
 
       InputType()(FiltersExpressionGroupQuery);
     }
@@ -97,11 +97,11 @@ export const generateFilterInputType = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function FiltersExpressionQuery() {}
     {
-      decorateField(FiltersExpressionQuery, 'operator', OperatorQuery, {
+      decorateField(FiltersExpressionQuery, 'operator', () => OperatorQuery, {
         nullable: false,
       });
-      decorateField(FiltersExpressionQuery, 'filters', [FilterItemQuery]);
-      decorateField(FiltersExpressionQuery, 'groups', [
+      decorateField(FiltersExpressionQuery, 'filters', () => [FilterItemQuery]);
+      decorateField(FiltersExpressionQuery, 'groups', () => [
         FiltersExpressionGroupQuery,
       ]);
 

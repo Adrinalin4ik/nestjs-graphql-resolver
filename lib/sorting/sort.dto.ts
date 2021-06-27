@@ -1,4 +1,5 @@
 import { InputType, registerEnumType } from '@nestjs/graphql';
+import { GqlType } from '../helpers/classes';
 import { BaseEntity } from 'typeorm';
 import { getEntityNameEnum } from '../dto/entity-helper.dto';
 import { decorateField } from '../helpers/decorators';
@@ -30,25 +31,25 @@ export interface SortingType {
   field: string;
 }
 
-export const generateSortInputType = (entity: BaseEntity) => {
-  const generatedTypeName = `${entity['name']}SortInputType`;
-  const generatedFieldTypeName = `${entity['name']}SortFieldType`;
+export const generateSortInputType = (entity: GqlType) => {
+  const generatedTypeName = `${entity.graphqlName}SortInputType`;
+  const generatedFieldTypeName = `${entity.graphqlName}SortFieldType`;
 
   if (!sortInputTypeMap.has(generatedTypeName)) {
     const entityNameEnum = getEntityNameEnum();
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function SortInputFieldType() {}
     {
-      decorateField(SortInputFieldType, 'field', String, {
+      decorateField(SortInputFieldType, 'field', () => String, {
         nullable: false,
       });
-      decorateField(SortInputFieldType, 'type', SortTypeEnum, {
+      decorateField(SortInputFieldType, 'type', () => SortTypeEnum, {
         defaultValue: SortTypeEnum.ASC,
       });
-      decorateField(SortInputFieldType, 'nulls', SortTypeNullEnum, {
+      decorateField(SortInputFieldType, 'nulls', () => SortTypeNullEnum, {
         defaultValue: SortTypeNullEnum.LAST,
       });
-      decorateField(SortInputFieldType, 'table', entityNameEnum);
+      decorateField(SortInputFieldType, 'table', () => entityNameEnum);
 
       Object.defineProperty(SortInputFieldType, 'name', {
         value: generatedFieldTypeName,

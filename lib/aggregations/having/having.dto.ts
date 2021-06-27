@@ -33,21 +33,21 @@ export const generateHavingItemInputType = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function HavingFiltersInputTypeQuery() {}
     {
-      decorateField(HavingFiltersInputTypeQuery, 'operation', OperationQuery, {
+      decorateField(HavingFiltersInputTypeQuery, 'operation', () => OperationQuery, {
         nullable: false,
       });
-      decorateField(HavingFiltersInputTypeQuery, 'operator', OperatorQuery, {
+      decorateField(HavingFiltersInputTypeQuery, 'operator', () => OperatorQuery, {
         nullable: false,
       });
-      decorateField(HavingFiltersInputTypeQuery, 'values', [String]);
-      decorateField(HavingFiltersInputTypeQuery, 'table', entityNameEnum);
-      decorateField(HavingFiltersInputTypeQuery, 'field', String, {
+      decorateField(HavingFiltersInputTypeQuery, 'values', () => [String]);
+      decorateField(HavingFiltersInputTypeQuery, 'table', () => entityNameEnum);
+      decorateField(HavingFiltersInputTypeQuery, 'field', () => String, {
         nullable: false,
       });
       decorateField(
         HavingFiltersInputTypeQuery,
         'aggregator',
-        AggregationEnum,
+        () => AggregationEnum,
         {
           nullable: false,
         },
@@ -59,10 +59,10 @@ export const generateHavingItemInputType = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function HavingGroupInputTypeQuery() {}
     {
-      decorateField(HavingGroupInputTypeQuery, 'operator', OperatorQuery, {
+      decorateField(HavingGroupInputTypeQuery, 'operator', () => OperatorQuery, {
         nullable: false,
       });
-      decorateField(HavingGroupInputTypeQuery, 'filters', [
+      decorateField(HavingGroupInputTypeQuery, 'filters', () => [
         HavingFiltersInputTypeQuery,
       ]);
 
@@ -72,13 +72,13 @@ export const generateHavingItemInputType = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     function HavingInputTypeQuery() {}
     {
-      decorateField(HavingInputTypeQuery, 'operator', OperatorQuery, {
+      decorateField(HavingInputTypeQuery, 'operator', () => OperatorQuery, {
         nullable: false,
       });
-      decorateField(HavingInputTypeQuery, 'filters', [
+      decorateField(HavingInputTypeQuery, 'filters', () => [
         HavingFiltersInputTypeQuery,
       ]);
-      decorateField(HavingInputTypeQuery, 'groups', [
+      decorateField(HavingInputTypeQuery, 'groups', () => [
         HavingGroupInputTypeQuery,
       ]);
 

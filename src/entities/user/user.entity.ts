@@ -17,64 +17,64 @@ import { Seniority } from '../seniority/seniority.entity';
 import { UserCompetency } from '../user-competency/user-competency.entity';
 import { UserSubcompetency } from '../user-subcompetency/user-subcompetency.entity';
 
-@EntityObjectType()
+// @EntityObjectType()
 @Entity('user')
 export class User extends BaseEntity {
-  @Field(() => Int)
+  // @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Int)
+  // @Field(() => Int)
   @Index()
   @Column({ nullable: true })
   identification_number: number;
 
-  @Field()
+  // @Field()
   @Index()
   @Column()
   email: string;
 
-  @Field()
+  // @Field()
   @Column()
   fname: string;
 
-  @Field()
+  // @Field()
   @Column()
   lname: string;
 
-  @Field()
+  // @Field()
   @Column({ nullable: true })
   mname: string;
 
-  @Field()
+  // @Field()
   @Column({ nullable: true })
   age: number;
 
-  @Field()
+  // @Field()
   @Column({ nullable: true })
   phone: string;
 
-  @Field()
+  // @Field()
   @Column({ default: true })
   is_active: boolean;
 
-  @Field(() => Int)
+  // @Field(() => Int)
   @Column({ nullable: true })
   @Index()
   public seniority_id: number;
 
-  @Field(() => Seniority, { nullable: true })
+  // @Field(() => Seniority, { nullable: true })
   @ManyToOne(() => Seniority, { nullable: true })
   @JoinColumn({ name: 'seniority_id' })
   seniority: Seniority;
 
-  @Field(() => [UserCompetency], { nullable: true })
+  // @Field(() => [UserCompetency], { nullable: true })
   @OneToMany(() => UserCompetency, (userCompetency) => userCompetency.user, {
     onDelete: 'CASCADE',
   })
   user_competencies: UserCompetency[];
 
-  @Field(() => [UserSubcompetency], { nullable: true })
+  // @Field(() => [UserSubcompetency], { nullable: true })
   @OneToMany(
     () => UserSubcompetency,
     (userSubcompetency) => userSubcompetency.user,
@@ -85,11 +85,11 @@ export class User extends BaseEntity {
   user_subcompetencies: UserSubcompetency[];
 
   // Timestamps
-  @Field(() => String)
+  // @Field(() => String)
   @CreateDateColumn()
   created_at: Date;
 
-  @Field(() => String)
+  // @Field(() => String)
   @UpdateDateColumn()
   updated_at: Date;
 }

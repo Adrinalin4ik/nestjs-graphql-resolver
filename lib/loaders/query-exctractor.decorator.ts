@@ -23,6 +23,7 @@ export const Loader = createParamDecorator(
     const gctx: GraphQLExecutionContext = args[2];
     const info: GraphQLResolveInfo = args[3];
     const filters: FiltersExpressionInputType = gargs.filters;
+    const filters1: FiltersExpressionInputType = gargs.filters1;
     const sorting: SortingType[] = gargs.sort;
     const joins: JoinItemQuery[] = gargs.joins;
     const pagination: PaginationInputType = gargs.paginate;
@@ -30,11 +31,11 @@ export const Loader = createParamDecorator(
 
     const is_entity =
       data.prototype &&
-      getMetadataArgsStorage().tables.some((table) => table.target === data);
+      getMetadataArgsStorage().tables.some((table) => table.target['name'] === data.graphqlName);
 
     if (is_entity) {
       // Если лоудер не нужен
-      const entityName: string = pluralize(data.name).toLowerCase();
+      const entityName: string = pluralize(data.graphqlName).toLowerCase();
 
       const fields = Array.from(
         resolverRecursive(info.fieldNodes, entityName, info.fragments),
@@ -42,8 +43,9 @@ export const Loader = createParamDecorator(
 
       return getMany(
         fields,
-        data.name,
+        data.graphqlName,
         filters,
+        filters1,
         sorting,
         joins,
         pagination,
@@ -59,6 +61,7 @@ export const Loader = createParamDecorator(
         fields,
         data,
         filters,
+        filters1,
         sorting,
         joins,
         pagination,
@@ -78,6 +81,7 @@ export const Loader = createParamDecorator(
           entityName,
           entityKey,
           filters,
+          filters1,
           sorting,
           joins,
           pagination,

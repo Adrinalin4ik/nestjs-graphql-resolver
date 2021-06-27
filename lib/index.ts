@@ -7,3 +7,4 @@ export { Filters } from './filters/filtrable-field.decorator';
 export { Paginate } from './pagination/pagination.decorator';
 export { Sorting } from './sorting/sort.decorator';
 export { Having } from './aggregations/having/having.decorator';
+export { NestJSGraphqlResolver } from './main.module';

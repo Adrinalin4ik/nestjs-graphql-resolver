@@ -15,12 +15,15 @@ import { PaginationBuilder } from '../pagination/pagination.builder';
 import { PaginationInputType } from '../pagination/pagination.dto';
 import { HavingBuilder } from '../aggregations/having/having.builder';
 import { HavingInputType } from '../aggregations/having/having.dto';
+import { JoinBuilder1 } from '../joins/join.builder1';
+import { FilterBuilder1 } from '../filters1/filter.builder';
 
 export const oneToManyLoader = (
   select: string[],
   tableName: string,
   foreignKey: string,
   filters: FiltersExpressionInputType,
+  filters1: any,
   sorting: SortingType[],
   joins: JoinItemQuery[],
   pagination: PaginationInputType,
@@ -46,6 +49,11 @@ export const oneToManyLoader = (
 
     const paginationb = new PaginationBuilder(qb, pagination);
     paginationb.build();
+    
+    const joinb1 = new JoinBuilder1(qb);
+
+    const fqb1 = new FilterBuilder1(qb, joinb1, filters1);
+    fqb1.build();
 
     qb.andWhere(foreignKey + ' IN (:...keys)', { keys });
 
@@ -75,6 +83,7 @@ export const getMany = async (
   select: string[],
   tableName: string,
   filters: FiltersExpressionInputType,
+  filters1: any,
   sorting: SortingType[],
   joins: JoinItemQuery[],
   pagination: PaginationInputType,
@@ -101,7 +110,12 @@ export const getMany = async (
 
   const paginationb = new PaginationBuilder(qb, pagination);
   paginationb.build();
+  
+  const joinb1 = new JoinBuilder1(qb);
 
+  const fqb1 = new FilterBuilder1(qb, joinb1, filters1);
+  fqb1.build();
+  
   let res;
 
   if (aggb.isGroupping) {
@@ -123,6 +137,7 @@ export const manyToOneLoader = (
   select: string[],
   tableName: string,
   filters: FiltersExpressionInputType,
+  filters1: any,
   sorting: SortingType[],
   joins: JoinItemQuery[],
   pagination: PaginationInputType,
@@ -145,6 +160,11 @@ export const manyToOneLoader = (
 
     const paginationb = new PaginationBuilder(qb, pagination);
     paginationb.build();
+    
+    const joinb1 = new JoinBuilder1(qb);
+
+    const fqb1 = new FilterBuilder1(qb, joinb1, filters1);
+    fqb1.build();
 
     qb.andWhere('id IN (:...keys)', { keys });
     let res;

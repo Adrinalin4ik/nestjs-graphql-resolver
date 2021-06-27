@@ -9,24 +9,24 @@ import {
 } from 'typeorm';
 import { Competency } from '../competency/competency.entity';
 import { User } from '../user/user.entity';
-@EntityObjectType()
+// @EntityObjectType()
 @Entity('seniority')
 export class Seniority extends BaseEntity {
-  @Field(() => Int)
+  // @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()
+  // @Field()
   @Column()
   title: string;
 
-  @Field(() => [Competency], { nullable: true })
+  // @Field(() => [Competency], { nullable: true })
   @OneToMany(() => Competency, (competency) => competency.seniority, {
     onDelete: 'CASCADE',
   })
   competencies: Competency[];
 
-  @Field(() => [User], { nullable: true })
+  // @Field(() => [User], { nullable: true })
   @OneToMany(() => User, (user) => user.seniority)
   users: User[];
 }
