@@ -1,4 +1,6 @@
+import { getMetadataArgsStorage } from 'typeorm';
 import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
+import { JoinTypeQuery } from './join.dto';
 
 
 export class JoinBuilder1<Entity> {
@@ -8,10 +10,15 @@ export class JoinBuilder1<Entity> {
     private readonly qb: SelectQueryBuilder<Entity>,
   ) {}
 
-  addJoin(fromTable, toTable) {
+  addJoin(fromTable, toTable, joinType?: JoinTypeQuery) {
+      const t = getMetadataArgsStorage();
       const relationField = `${fromTable}.${toTable}`;
       if (!this.joinedEntities.has(relationField)) {
-        this.qb.innerJoin(relationField, toTable).distinct();
+        if (joinType === JoinTypeQuery.Inner) {
+          this.qb.innerJoin(relationField, toTable).distinct();
+        } else {
+          this.qb.leftJoin(relationField, toTable).distinct();
+        }
         this.joinedEntities.add(relationField);
       }
     }

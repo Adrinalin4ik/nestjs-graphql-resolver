@@ -31,8 +31,8 @@ type Subcompetency {
   id: Int!
   title: String!
   competency_id: Int!
-  competency(filters: FiltersExpressionQuery, filters1: SubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [SubcompetencySortFieldType!], joins: [JoinItemQuery!]): Competency
-  user_subcompetencies(filters: FiltersExpressionQuery, filters1: SubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [SubcompetencySortFieldType!], joins: [JoinItemQuery!]): [Competency!]
+  competency(filters: FiltersExpressionQuery, filters1: CompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [SubcompetencySortFieldType!], joins: [JoinItemQuery!]): Competency
+  user_subcompetencies(filters: FiltersExpressionQuery, filters1: UserSubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [SubcompetencySortFieldType!], joins: [JoinItemQuery!]): [Competency!]
   date_time_with_timezone: DateTime
   created_at: DateTime!
   updated_at: DateTime!
@@ -89,20 +89,6 @@ input FiltersExpressionGroupQuery {
   filters: [FilterItemQuery!]
 }
 
-input SubcompetencyEntityFilterInputType {
-  competency: CompetencyEntityFilterInputType
-  user_subcompetencies: UserSubcompetencyEntityFilterInputType
-  id: Number_property_filter_type
-  title: String_property_filter_type
-  competency_id: Number_property_filter_type
-  date_time_with_timezone: DateTime_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
-  test_bool: Boolean_property_filter_type
-  and: [SubcompetencyEntityFilterInputType!]
-  or: [SubcompetencyEntityFilterInputType!]
-}
-
 input CompetencyEntityFilterInputType {
   seniority: SeniorityEntityFilterInputType
   subcompetencies: SubcompetencyEntityFilterInputType
@@ -112,6 +98,11 @@ input CompetencyEntityFilterInputType {
   seniority_id: Number_property_filter_type
   and: [CompetencyEntityFilterInputType!]
   or: [CompetencyEntityFilterInputType!]
+  avg: CompetencyEntityFilterInputType
+  sum: CompetencyEntityFilterInputType
+  count: CompetencyEntityFilterInputType
+  max: CompetencyEntityFilterInputType
+  min: CompetencyEntityFilterInputType
 }
 
 input SeniorityEntityFilterInputType {
@@ -121,6 +112,11 @@ input SeniorityEntityFilterInputType {
   title: String_property_filter_type
   and: [SeniorityEntityFilterInputType!]
   or: [SeniorityEntityFilterInputType!]
+  avg: SeniorityEntityFilterInputType
+  sum: SeniorityEntityFilterInputType
+  count: SeniorityEntityFilterInputType
+  max: SeniorityEntityFilterInputType
+  min: SeniorityEntityFilterInputType
 }
 
 input UserEntityFilterInputType {
@@ -141,6 +137,11 @@ input UserEntityFilterInputType {
   updated_at: DateTime_property_filter_type
   and: [UserEntityFilterInputType!]
   or: [UserEntityFilterInputType!]
+  avg: UserEntityFilterInputType
+  sum: UserEntityFilterInputType
+  count: UserEntityFilterInputType
+  max: UserEntityFilterInputType
+  min: UserEntityFilterInputType
 }
 
 input UserCompetencyEntityFilterInputType {
@@ -153,6 +154,11 @@ input UserCompetencyEntityFilterInputType {
   updated_at: DateTime_property_filter_type
   and: [UserCompetencyEntityFilterInputType!]
   or: [UserCompetencyEntityFilterInputType!]
+  avg: UserCompetencyEntityFilterInputType
+  sum: UserCompetencyEntityFilterInputType
+  count: UserCompetencyEntityFilterInputType
+  max: UserCompetencyEntityFilterInputType
+  min: UserCompetencyEntityFilterInputType
 }
 
 input Number_property_filter_type {
@@ -197,6 +203,30 @@ input UserSubcompetencyEntityFilterInputType {
   updated_at: DateTime_property_filter_type
   and: [UserSubcompetencyEntityFilterInputType!]
   or: [UserSubcompetencyEntityFilterInputType!]
+  avg: UserSubcompetencyEntityFilterInputType
+  sum: UserSubcompetencyEntityFilterInputType
+  count: UserSubcompetencyEntityFilterInputType
+  max: UserSubcompetencyEntityFilterInputType
+  min: UserSubcompetencyEntityFilterInputType
+}
+
+input SubcompetencyEntityFilterInputType {
+  competency: CompetencyEntityFilterInputType
+  user_subcompetencies: UserSubcompetencyEntityFilterInputType
+  id: Number_property_filter_type
+  title: String_property_filter_type
+  competency_id: Number_property_filter_type
+  date_time_with_timezone: DateTime_property_filter_type
+  created_at: DateTime_property_filter_type
+  updated_at: DateTime_property_filter_type
+  test_bool: Boolean_property_filter_type
+  and: [SubcompetencyEntityFilterInputType!]
+  or: [SubcompetencyEntityFilterInputType!]
+  avg: SubcompetencyEntityFilterInputType
+  sum: SubcompetencyEntityFilterInputType
+  count: SubcompetencyEntityFilterInputType
+  max: SubcompetencyEntityFilterInputType
+  min: SubcompetencyEntityFilterInputType
 }
 
 input String_property_filter_type {
@@ -284,6 +314,7 @@ input JoinItemQuery {
 
 enum JoinType {
   Inner
+  Left
 }
 
 type UserSubcompetencyPrimitiveFieldType {
@@ -308,8 +339,8 @@ type UserSubcompetency {
   id: Int!
   subcompetency_id: Int!
   user_id: Int!
-  subcompetency(filters: FiltersExpressionQuery, filters1: UserSubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], joins: [JoinItemQuery!]): Subcompetency
-  user(filters: FiltersExpressionQuery, filters1: UserSubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], joins: [JoinItemQuery!]): User
+  subcompetency(filters: FiltersExpressionQuery, filters1: SubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], joins: [JoinItemQuery!]): Subcompetency
+  user(filters: FiltersExpressionQuery, filters1: UserEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSubcompetencySortFieldType!], joins: [JoinItemQuery!]): User
   created_at: String!
   updated_at: String!
   groupAgg: [UserSubcompetencyGroupType!]
@@ -358,9 +389,9 @@ type User {
   phone: String!
   is_active: Boolean!
   seniority_id: Int!
-  seniority(filters: FiltersExpressionQuery, filters1: UserEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): Seniority
-  user_competencies(filters: FiltersExpressionQuery, filters1: UserEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): [UserCompetency!]
-  user_subcompetencies(filters: FiltersExpressionQuery, filters1: UserEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): [UserSubcompetency!]
+  seniority(filters: FiltersExpressionQuery, filters1: SeniorityEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): Seniority
+  user_competencies(filters: FiltersExpressionQuery, filters1: UserCompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): [UserCompetency!]
+  user_subcompetencies(filters: FiltersExpressionQuery, filters1: UserSubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserSortFieldType!], joins: [JoinItemQuery!]): [UserSubcompetency!]
   created_at: String!
   updated_at: String!
   groupAgg: [UserGroupType!]
@@ -395,8 +426,8 @@ type UserCompetency {
   id: Int!
   competency_id: Int!
   user_id: Int!
-  competency(filters: FiltersExpressionQuery, filters1: UserCompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], joins: [JoinItemQuery!]): Competency
-  user(filters: FiltersExpressionQuery, filters1: UserCompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], joins: [JoinItemQuery!]): User
+  competency(filters: FiltersExpressionQuery, filters1: CompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], joins: [JoinItemQuery!]): Competency
+  user(filters: FiltersExpressionQuery, filters1: UserEntityFilterInputType, having: HavingInputTypeQuery, sort: [UserCompetencySortFieldType!], joins: [JoinItemQuery!]): User
   created_at: String!
   updated_at: String!
   groupAgg: [UserCompetencyGroupType!]
@@ -434,9 +465,9 @@ type Competency {
   id: Int!
   title: String!
   seniority_id: Int!
-  seniority(filters: FiltersExpressionQuery, filters1: CompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): Seniority!
-  subcompetencies(filters: FiltersExpressionQuery, filters1: CompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [Subcompetency!]
-  user_competencies(filters: FiltersExpressionQuery, filters1: CompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [UserCompetency!]
+  seniority(filters: FiltersExpressionQuery, filters1: SeniorityEntityFilterInputType, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): Seniority!
+  subcompetencies(filters: FiltersExpressionQuery, filters1: SubcompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [Subcompetency!]
+  user_competencies(filters: FiltersExpressionQuery, filters1: UserCompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [CompetencySortFieldType!], joins: [JoinItemQuery!]): [UserCompetency!]
   groupAgg: [CompetencyGroupType!]
 }
 
@@ -465,8 +496,8 @@ type SeniorityGroupType {
 type Seniority {
   id: Int!
   title: String!
-  competencies(filters: FiltersExpressionQuery, filters1: SeniorityEntityFilterInputType, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], joins: [JoinItemQuery!]): [Competency!]
-  users(filters: FiltersExpressionQuery, filters1: SeniorityEntityFilterInputType, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], joins: [JoinItemQuery!]): [User!]
+  competencies(filters: FiltersExpressionQuery, filters1: CompetencyEntityFilterInputType, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], joins: [JoinItemQuery!]): [Competency!]
+  users(filters: FiltersExpressionQuery, filters1: UserEntityFilterInputType, having: HavingInputTypeQuery, sort: [SenioritySortFieldType!], joins: [JoinItemQuery!]): [User!]
   groupAgg: [SeniorityGroupType!]
 }
 

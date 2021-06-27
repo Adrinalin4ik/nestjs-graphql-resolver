@@ -47,7 +47,7 @@ export const AutoResolver = (entity: GqlType): any => {
                     Loader(methodName),
                     Parent(),
                     Filters(),
-                    Filters1(entity),
+                    Filters1(r.propertyName),
                     Having(),
                     Sorting(entity),
                     Joins(),
@@ -73,7 +73,7 @@ export const AutoResolver = (entity: GqlType): any => {
                     Loader([methodName, `${entity.graphqlName}_id`.toLowerCase()]),
                     Parent(),
                     Filters(),
-                    Filters1(entity),
+                    Filters1(r.propertyName),
                     Having(),
                     Sorting(entity),
                     Joins(),
@@ -89,7 +89,7 @@ export const AutoResolver = (entity: GqlType): any => {
             const methodName = plularize(entity.graphqlName).toLowerCase();
             if (!Extended.prototype[methodName]) {
               // loadMany for root queries
-
+              console.log(methodName)
               addMethodToResolverClass({
                 resolverClass: Extended,
                 methodName,
@@ -97,7 +97,7 @@ export const AutoResolver = (entity: GqlType): any => {
                 paramDecorators: [
                   Loader(entity),
                   Filters(),
-                  Filters1(entity),
+                  Filters1(entity.graphqlName),
                   Having(),
                   // Having1(entity),
                   Sorting(entity),

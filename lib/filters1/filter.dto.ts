@@ -65,7 +65,8 @@ const generatePropertyType = (type) => {
   return PropertyFilter;
 }
 
-export const generateFilterInputType = (entityName: string) => {
+export const generateFilterInputType = (propName: string) => {
+  const entityName = capitalize(camelCase(pluralize.singular(propName)));
   const existType = inputTypes.get(entityName);
   if (existType) {
     return existType;
@@ -103,9 +104,9 @@ export const generateFilterInputType = (entityName: string) => {
     decorateField(EntityFilterInputType, op, () => [EntityFilterInputType])
   })
 
-  // Object.values(AggregationEnum).forEach(op => {
-  //   decorateField(EntityFilterInputType, op, () => [EntityFilterInputType])
-  // })
+  Object.values(AggregationEnum).forEach(op => {
+    decorateField(EntityFilterInputType, op, () => EntityFilterInputType)
+  })
 
   Object.defineProperty(EntityFilterInputType, 'name', {
     value: `${entityName}EntityFilterInputType`,

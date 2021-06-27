@@ -36,24 +36,25 @@ export const oneToManyLoader = (
     const qb = getRepository(tableName).createQueryBuilder(
       tableName.toLowerCase(),
     );
-    qb.select(select);
-    // const entity = repo.target;
-    const fqb = new FilterBuilder(qb, filters);
-    fqb.build();
 
-    const joinb = new JoinBuilder(qb, joins);
-    joinb.build();
+    qb.select(select);
+
+    // const fqb = new FilterBuilder(qb, filters);
+    // fqb.build();
+
+    // const joinb = new JoinBuilder(qb, joins);
+    // joinb.build();
+
+    const joinb1 = new JoinBuilder1(qb);
+
+    const fqb1 = new FilterBuilder1(qb, joinb1, filters1, select);
+    fqb1.build();
 
     const aggb = new AggregationsBuilder(qb, info, sorting, select);
     aggb.build();
 
     const paginationb = new PaginationBuilder(qb, pagination);
     paginationb.build();
-    
-    const joinb1 = new JoinBuilder1(qb);
-
-    const fqb1 = new FilterBuilder1(qb, joinb1, filters1);
-    fqb1.build();
 
     qb.andWhere(foreignKey + ' IN (:...keys)', { keys });
 
@@ -72,7 +73,12 @@ export const oneToManyLoader = (
       const sortb = new SortBuilder(qb, sorting);
       sortb.build();
 
-      res = await qb.getMany();
+      if (fqb1.hasAggregations) {
+        res = await qb.getRawMany();
+        res = res.flatMap(x => x.fields);
+      } else {
+        res = await qb.getMany();
+      }
       const gs = groupBy(res, foreignKey);
       return keys.map((k) => gs[k] || []);
     }
@@ -99,22 +105,22 @@ export const getMany = async (
   const havingb = new HavingBuilder(qb, having, select);
   havingb.build();
 
-  const fqb = new FilterBuilder(qb, filters);
-  fqb.build();
+  // const fqb = new FilterBuilder(qb, filters);
+  // fqb.build();
 
-  const joinb = new JoinBuilder(qb, joins);
-  joinb.build();
+  // const joinb = new JoinBuilder(qb, joins);
+  // joinb.build();
+
+  const joinb1 = new JoinBuilder1(qb);
+
+  const fqb1 = new FilterBuilder1(qb, joinb1, filters1, select);
+  fqb1.build();
 
   const aggb = new AggregationsBuilder(qb, info, sorting);
   aggb.build();
 
   const paginationb = new PaginationBuilder(qb, pagination);
   paginationb.build();
-  
-  const joinb1 = new JoinBuilder1(qb);
-
-  const fqb1 = new FilterBuilder1(qb, joinb1, filters1);
-  fqb1.build();
   
   let res;
 
@@ -128,7 +134,12 @@ export const getMany = async (
   } else {
     const sortb = new SortBuilder(qb, sorting);
     sortb.build();
-    res = qb.getMany();
+    if (fqb1.hasAggregations) {
+      res = await qb.getRawMany();
+      res = res.flatMap(x => x.fields);
+    } else {
+      res = await qb.getMany();
+    }
   }
   return res;
 };
@@ -149,22 +160,22 @@ export const manyToOneLoader = (
       tableName.toLowerCase(),
     );
 
-    const fqb = new FilterBuilder(qb, filters);
-    fqb.build();
+    // const fqb = new FilterBuilder(qb, filters);
+    // fqb.build();
 
-    const joinb = new JoinBuilder(qb, joins);
-    joinb.build();
+    // const joinb = new JoinBuilder(qb, joins);
+    // joinb.build();
+
+    const joinb1 = new JoinBuilder1(qb);
+
+    const fqb1 = new FilterBuilder1(qb, joinb1, filters1, select);
+    fqb1.build();
 
     const aggb = new AggregationsBuilder(qb, info, sorting, select);
     aggb.build();
 
     const paginationb = new PaginationBuilder(qb, pagination);
     paginationb.build();
-    
-    const joinb1 = new JoinBuilder1(qb);
-
-    const fqb1 = new FilterBuilder1(qb, joinb1, filters1);
-    fqb1.build();
 
     qb.andWhere('id IN (:...keys)', { keys });
     let res;
@@ -184,7 +195,15 @@ export const manyToOneLoader = (
       const sortb = new SortBuilder(qb, sorting);
       sortb.build();
 
-      res = await qb.addSelect(select).getMany();
+      qb.addSelect(select);
+
+      if (fqb1.hasAggregations) {
+        res = await qb.getRawMany();
+        res = res.flatMap(x => x.fields);
+      } else {
+        res = await qb.getMany();
+      }
+
       return keys.map((k) => res.find((obj) => obj['id'] === k));
     }
   });

@@ -3,6 +3,7 @@ import { getEntityNameEnum } from '../dto/entity-helper.dto';
 
 export enum JoinTypeQuery {
   Inner,
+  Left
 }
 
 registerEnumType(JoinTypeQuery, {
