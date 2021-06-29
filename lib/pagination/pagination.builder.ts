@@ -12,7 +12,7 @@ export class PaginationBuilder<Entity> {
   build() {
     if (this.paginate) {
       if (this.paginate.page) {
-        this.qb.offset(this.paginate.page);
+        this.qb.offset(this.paginate.page * this.paginate.per_page);
       }
       if (this.paginate.per_page) {
         this.qb.limit(this.paginate.per_page);

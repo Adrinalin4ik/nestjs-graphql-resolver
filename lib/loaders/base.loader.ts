@@ -35,7 +35,7 @@ export const oneToManyLoader = (
     const fqb = new FilterBuilder(qb, joinb, filters, select);
     fqb.build();
 
-    const aggb = new AggregationsBuilder(qb, info, null, select);
+    const aggb = new AggregationsBuilder(qb, info, select);
     aggb.build();
 
     const paginationb = new PaginationBuilder(qb, pagination);
@@ -138,7 +138,7 @@ export const manyToOneLoader = (
     const fqb = new FilterBuilder(qb, joinb, filters, select);
     fqb.build();
 
-    const aggb = new AggregationsBuilder(qb, info, null, select);
+    const aggb = new AggregationsBuilder(qb, info, select);
     aggb.build();
 
     const paginationb = new PaginationBuilder(qb, pagination);

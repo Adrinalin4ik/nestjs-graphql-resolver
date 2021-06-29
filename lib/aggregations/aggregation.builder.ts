@@ -2,7 +2,6 @@ import { SelectQueryBuilder } from 'typeorm/query-builder/SelectQueryBuilder';
 
 import { FieldNode, GraphQLResolveInfo } from 'graphql';
 import { AggregationEnum, AggregationValueArray } from './aggregations.dto';
-import { SortingType } from '../sorting/sort.dto';
 import { sanitizeSqlValue } from '../helpers/sanitizer';
 export class AggregationsBuilder<Entity> {
   public groupByEntityAttribute: string;
@@ -10,7 +9,6 @@ export class AggregationsBuilder<Entity> {
   constructor(
     private readonly qb: SelectQueryBuilder<Entity>,
     private readonly info: GraphQLResolveInfo,
-    private readonly sorting?: SortingType[],
     private readonly additionalSelection?: string[],
   ) {}
 
@@ -86,18 +84,21 @@ export class AggregationsBuilder<Entity> {
         })
         .join(', ');
 
-      const order_query =
-        this.sorting
-          ?.map(
-            (s) =>
-              `ORDER BY ${s.table || this.qb.alias}.${s.field} ${s.type} ${
-                s.nulls
-              }`,
-          )
-          .join(' ') || '';
+      // const order_query =
+      //   this.sorting
+      //     ?.map(
+      //       (s) =>
+      //         `ORDER BY ${s.table || this.qb.alias}.${s.field} ${s.type} ${
+      //           s.nulls
+      //         }`,
+      //     )
+      //     .join(' ') || '';
 
+      // this.qb.select(
+      //   `${select_query}, jsonb_agg(jsonb_build_object(${json_agg_query}) ${order_query}) as fields`,
+      // );
       this.qb.select(
-        `${select_query}, jsonb_agg(jsonb_build_object(${json_agg_query}) ${order_query}) as fields`,
+        `${select_query}, jsonb_agg(jsonb_build_object(${json_agg_query})) as fields`,
       );
     }
 
