@@ -1,5 +1,5 @@
 import { Mutation, MutationOptions, ReturnTypeFunc, Subscription, SubscriptionOptions } from "@nestjs/graphql";
-import { addMethodToResolverClass } from "../helpers/decorators";
+import { addDecoratedMethodToClass } from "../helpers/decorators";
 import { PubSub } from 'apollo-server-express';
 
 const pubsub = new PubSub();
@@ -12,7 +12,7 @@ export const AutoMutation = (typeFunc: ReturnTypeFunc, options?: AutoMutationCon
   return (target: Object, propertyKey: string, descriptor: PropertyDescriptor) => {
     const subscriberName = `${options?.subscription.name || propertyKey}Subscriber`;
 
-    addMethodToResolverClass({
+    addDecoratedMethodToClass({
       methodDecorators: [
         Subscription(typeFunc, options?.subscription)
       ],

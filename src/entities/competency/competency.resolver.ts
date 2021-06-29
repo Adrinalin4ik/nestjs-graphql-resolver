@@ -9,7 +9,8 @@ console.log(typeof CompetencyObjectType)
 @Resolver(() => CompetencyObjectType)
 export class CompetencyResolver {
 
-  @AutoMutation(() => CompetencyObjectType)
+  // @AutoMutation(() => CompetencyObjectType)
+  @Mutation(() => CompetencyObjectType)
   async updateCompetency(
     @Args('competency') inputCompetency: UpdateCompetency,
   ) {
@@ -23,7 +24,8 @@ export class CompetencyResolver {
     return result;
   }
 
-  @AutoMutation(() => CompetencyObjectType)
+  // @AutoMutation(() => CompetencyObjectType)
+  @Mutation(() => CompetencyObjectType)
   async createCompetency(
     @Args('competency') inputCompetency: CreateCompetency,
   ) {
@@ -35,7 +37,8 @@ export class CompetencyResolver {
     return competency.save();
   }
 
-  @AutoMutation(() => DeleteCompetencyResult)
+  // @AutoMutation(() => DeleteCompetencyResult)
+  @Mutation(() => DeleteCompetencyResult)
   async deleteCompetency(@Args('id') id: number) {
     const result = await getRepository(Competency).delete(id);
     return { id, affectedRows: result.affected };

@@ -15,7 +15,7 @@ export const decorateField = (
 /*
   This method adds new resolver to the resolver class, decorates it and adds decoratable parameters
 */
-export const addMethodToResolverClass = ({
+export const addDecoratedMethodToClass = ({
   resolverClass,
   methodName,
   methodDecorators,

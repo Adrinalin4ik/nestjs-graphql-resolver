@@ -1,6 +1,7 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { EntityObjectType } from '../../../lib';
 import {
+  AfterUpdate,
   BaseEntity,
   Column,
   Entity,
@@ -15,6 +16,12 @@ import { Subcompetency } from '../sub_competency/sub_competency.entity';
 import { UserCompetency } from '../user-competency/user-competency.entity';
 @Entity('competency')
 export class Competency extends BaseEntity {
+
+  // @AfterUpdate()
+  // test(entity) {
+  //   console.log('test', entity, this)
+  // }
+
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;

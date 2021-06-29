@@ -506,7 +506,22 @@ input CreateCompetency {
 }
 
 type Subscription {
-  updateCompetencySubscriber: Competency!
-  createCompetencySubscriber: Competency!
-  deleteCompetencySubscriber: DeleteCompetencyResult!
+  SeniorityCreateSubscriber: Seniority!
+  SeniorityUpdateSubscriber: Seniority!
+  SeniorityDeleteSubscriber: Seniority!
+  CompetencyCreateSubscriber: Competency!
+  CompetencyUpdateSubscriber: Competency!
+  CompetencyDeleteSubscriber: Competency!
+  SubcompetencyCreateSubscriber: Subcompetency!
+  SubcompetencyUpdateSubscriber: Subcompetency!
+  SubcompetencyDeleteSubscriber: Subcompetency!
+  UserCreateSubscriber: User!
+  UserUpdateSubscriber: User!
+  UserDeleteSubscriber: User!
+  UserCompetencyCreateSubscriber: UserCompetency!
+  UserCompetencyUpdateSubscriber: UserCompetency!
+  UserCompetencyDeleteSubscriber: UserCompetency!
+  UserSubcompetencyCreateSubscriber: UserSubcompetency!
+  UserSubcompetencyUpdateSubscriber: UserSubcompetency!
+  UserSubcompetencyDeleteSubscriber: UserSubcompetency!
 }
