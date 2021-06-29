@@ -18,11 +18,11 @@ import { EntityObjectType } from 'nestjs-graphql-resolver';
 
 ...
 
-@EntityObjectType() // <--- Here
-@Entity('subcompetency')
-export class SubCompetency extends BaseEntity {
+@EntityObjectType({
+  name: 'Subcompetency' // <--- Name must be like a typeorm entity name
+}) 
+export class SubCompetencyObjectType {
   @Field(() => Int) // <--- Don't forget to decorate your dto with @Field or other compatible decorator from @nestjs/graphql library.
-  @PrimaryGeneratedColumn() // <--- You can combine your graphql type with typeorm dto. It works, but it's up to you. You can split as well.
   id: number;
 
 ...
@@ -35,10 +35,10 @@ import { Query, Resolver } from '@nestjs/graphql';
 import { SubCompetency } from './sub_competency.entity';
 import { AutoResolver } from 'nestjs-graphql-resolver';
 
-@AutoResolver(SubCompetency) // <--- Here, and provide entity as a parameter
-@Resolver(() => SubCompetency)
+@AutoResolver(SubCompetencyObjectType) // <--- Here, and provide graphql dto as a parameter
+@Resolver(() => SubCompetencyObjectType)
 export class SubCompetencyResolver {
-  @Query(() => [SubCompetency])
+  @Query(() => [SubCompetencyObjectType])
   async test() {
     return [];
   }
@@ -49,6 +49,7 @@ export class SubCompetencyResolver {
 
 ```typescript
 ...
+// user-competency.entity.ts
 
 @EntityObjectType()
 @Entity('user_competency') // <--- Here
