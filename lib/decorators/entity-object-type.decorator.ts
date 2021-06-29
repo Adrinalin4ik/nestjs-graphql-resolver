@@ -3,7 +3,7 @@ import { generateGroupAggType } from '../aggregations/aggregations.dto';
 import { GqlType } from '../helpers/classes';
 import { getMetadataArgsStorage } from 'typeorm';
 import { addDecoratedMethodToClass } from '../helpers/decorators';
-import { ESubscriberType, generateSubscriberName, getDecoratorByOperationType } from 'lib/helpers/subscribers';
+import { ESubscriberType, generateSubscriberName, getDecoratorByOperationType } from '../helpers/subscribers';
 import { pubsub } from '../pubsub';
 interface ObjectTypeOptionsExtended extends ObjectTypeOptions {
   name?: string;
