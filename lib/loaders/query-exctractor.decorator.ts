@@ -18,7 +18,7 @@ export const Loader = createParamDecorator(
     const gargs: any = args[1];
     const gctx: GraphQLExecutionContext = args[2];
     const info: GraphQLResolveInfo = args[3];
-    const filters1: any = gargs.filters1;
+    const filters: any = gargs.where;
     const pagination: PaginationInputType = gargs.paginate;
     const order_by: any = gargs.order_by;
 
@@ -37,7 +37,7 @@ export const Loader = createParamDecorator(
       return getMany(
         fields,
         data.graphqlName,
-        filters1,
+        filters,
         order_by,
         pagination,
         info,
@@ -50,7 +50,7 @@ export const Loader = createParamDecorator(
       gctx[data] = manyToOneLoader(
         fields,
         data,
-        filters1,
+        filters,
         order_by,
         pagination,
         info,
@@ -68,7 +68,7 @@ export const Loader = createParamDecorator(
           fields,
           entityName,
           entityKey,
-          filters1,
+          filters,
           order_by,
           pagination,
           info,

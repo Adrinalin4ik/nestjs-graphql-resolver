@@ -1,6 +1,6 @@
 import { Mutation, MutationOptions, ReturnTypeFunc, Subscription, SubscriptionOptions } from "@nestjs/graphql";
 import { addDecoratedMethodToClass } from "../helpers/decorators";
-import { PubSub } from 'apollo-server-express';
+import { PubSub } from 'graphql-subscriptions';
 
 const pubsub = new PubSub();
 

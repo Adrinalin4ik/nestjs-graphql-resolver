@@ -11,12 +11,11 @@ export class GraphqlOptions implements GqlOptionsFactory {
   public createGqlOptions(): Promise<GqlModuleOptions> | GqlModuleOptions {
     return {
       debug: true,
-      playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       installSubscriptionHandlers: true,
-      subscriptions: {
-        path: '/subscriptions',
-      },
+      // subscriptions: {
+      //   path: '/subscriptions',
+      // },
     };
   }
 }
