@@ -12,7 +12,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Subcompetency } from '../sub_competency/sub_competency.entity';
+import { Subcompetency } from '../sub-competency/sub-competency.entity';
 import { User } from '../user/user.entity';
 
 @Entity('user_subcompetency')

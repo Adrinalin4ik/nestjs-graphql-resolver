@@ -16,7 +16,8 @@
   "main": "dist-lib/index.js",
   "types": "dist-lib/index.d.ts",
   "files": [
-    "dist-lib"
+    "dist-lib",
+    "lib"
   ],
   "scripts": {
     "cleanup": "rm lib.tsconfig.tsbuildinfo || true && rm -rf dist-lib || true",

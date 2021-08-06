@@ -12,7 +12,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Seniority } from '../seniority/seniority.entity';
-import { Subcompetency } from '../sub_competency/sub_competency.entity';
+import { Subcompetency } from '../sub-competency/sub-competency.entity';
 import { UserCompetency } from '../user-competency/user-competency.entity';
 @Entity('competency')
 export class Competency extends BaseEntity {

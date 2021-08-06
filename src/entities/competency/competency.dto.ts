@@ -2,7 +2,7 @@ import { Field, InputType, Int, ObjectType, PartialType, PickType } from '@nestj
 import { EntityObjectType } from '../../../lib';
 import { SeniorityObjectType } from '../seniority/seniority.dto';
 import { Seniority } from '../seniority/seniority.entity';
-import { SubcompetencyObjectType } from '../sub_competency/sub_competency.dto';
+import { SubcompetencyObjectType } from '../sub-competency/sub-competency.dto';
 import { UserCompetencyObjectType } from '../user-competency/user-competency.dto';
 
 @InputType()

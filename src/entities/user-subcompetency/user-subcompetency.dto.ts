@@ -1,7 +1,7 @@
 import { Field, Int } from "@nestjs/graphql";
 import { EntityObjectType } from "../../../lib";
 import { CompetencyObjectType } from "../competency/competency.dto";
-import { SubcompetencyObjectType } from "../sub_competency/sub_competency.dto";
+import { SubcompetencyObjectType } from "../sub-competency/sub-competency.dto";
 import { UserObjectType } from "../user/user.dto";
 
 @EntityObjectType({
