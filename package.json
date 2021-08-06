@@ -1,6 +1,6 @@
 {
   "name": "nestjs-graphql-resolver",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "This library provides functionality which allow to generate resolvers automatically.",
   "author": "Alexey Panfilkin",
   "private": false,
