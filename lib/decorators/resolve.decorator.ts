@@ -82,6 +82,8 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
               }
             }
           });
+
+          // many
           {
             const methodName = plularize(entity.graphqlName).toLowerCase();
             if (!Extended.prototype[methodName]) {

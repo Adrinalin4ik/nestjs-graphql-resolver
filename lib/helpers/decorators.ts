@@ -30,20 +30,22 @@ export const addDecoratedMethodToClass = ({
 }) => {
   const target = resolverClass.prototype;
   const key = methodName;
-  let desc: any = {
-    value: callback,
-  };
+  if (!target.hasOwnProperty(key)) {
+    let desc: any = {
+      value: callback,
+    };
 
-  Reflect.metadata('design:returntype', Promise)(target, key);
-  Reflect.metadata('design:paramtypes', [Object, Object])(target, key);
-  Reflect.metadata('design:type', Function)(target, key);
-  paramDecorators?.forEach((decorator, index) => {
-    decorator(target, key, index);
-  });
+    Reflect.metadata('design:returntype', Promise)(target, key);
+    Reflect.metadata('design:paramtypes', [Object, Object])(target, key);
+    Reflect.metadata('design:type', Function)(target, key);
+    paramDecorators?.forEach((decorator, index) => {
+      decorator(target, key, index);
+    });
 
-  methodDecorators.forEach((decorator) => {
-    desc = decorator(target, key, desc) || desc;
-  });
+    methodDecorators.forEach((decorator) => {
+      desc = decorator(target, key, desc) || desc;
+    });
 
-  Object.defineProperty(target, key, desc);
+    Object.defineProperty(target, key, desc);
+  }
 };
