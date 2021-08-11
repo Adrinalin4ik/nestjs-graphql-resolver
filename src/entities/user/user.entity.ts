@@ -16,6 +16,7 @@ import {
 import { Seniority } from '../seniority/seniority.entity';
 import { UserCompetency } from '../user-competency/user-competency.entity';
 import { UserSubcompetency } from '../user-subcompetency/user-subcompetency.entity';
+import { Task } from '../task/task.entity';
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -69,7 +70,10 @@ export class User extends BaseEntity {
     },
   )
   user_subcompetencies: UserSubcompetency[];
-
+  
+  @OneToMany(() => Task, (task) => task.assignee)
+  tasks: Task[];
+  
   // Timestamps
   @CreateDateColumn()
   created_at: Date;

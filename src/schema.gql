@@ -74,6 +74,7 @@ input UserEntityFilterInputType {
   seniority: SeniorityEntityFilterInputType
   user_competencies: UserCompetencyEntityFilterInputType
   user_subcompetencies: UserSubcompetencyEntityFilterInputType
+  tasks: TaskEntityFilterInputType
   id: Number_property_filter_type
   identification_number: Number_property_filter_type
   email: String_property_filter_type
@@ -212,6 +213,37 @@ input Boolean_property_filter_type {
   notnull: Boolean
 }
 
+input TaskEntityFilterInputType {
+  assignee: AssigneeEntityFilterInputType
+  id: Number_property_filter_type
+  title: String_property_filter_type
+  description: String_property_filter_type
+  type_id: Number_property_filter_type
+  priority: Number_property_filter_type
+  story_points: Number_property_filter_type
+  status: Number_property_filter_type
+  assignee_id: Number_property_filter_type
+  created_at: DateTime_property_filter_type
+  updated_at: DateTime_property_filter_type
+  and: [TaskEntityFilterInputType!]
+  or: [TaskEntityFilterInputType!]
+  avg: TaskEntityFilterInputType
+  sum: TaskEntityFilterInputType
+  count: TaskEntityFilterInputType
+  max: TaskEntityFilterInputType
+  min: TaskEntityFilterInputType
+}
+
+input AssigneeEntityFilterInputType {
+  and: [AssigneeEntityFilterInputType!]
+  or: [AssigneeEntityFilterInputType!]
+  avg: AssigneeEntityFilterInputType
+  sum: AssigneeEntityFilterInputType
+  count: AssigneeEntityFilterInputType
+  max: AssigneeEntityFilterInputType
+  min: AssigneeEntityFilterInputType
+}
+
 input CompetencyEntityOrderInputType {
   seniority: SeniorityEntityOrderInputType
   subcompetencies: SubcompetencyEntityOrderInputType
@@ -242,6 +274,7 @@ input UserEntityOrderInputType {
   seniority: SeniorityEntityOrderInputType
   user_competencies: UserCompetencyEntityOrderInputType
   user_subcompetencies: UserSubcompetencyEntityOrderInputType
+  tasks: TaskEntityOrderInputType
   id: OrderTypeEnum
   identification_number: OrderTypeEnum
   email: OrderTypeEnum
@@ -317,6 +350,70 @@ input SubcompetencyEntityOrderInputType {
   min: SubcompetencyEntityOrderInputType
 }
 
+input TaskEntityOrderInputType {
+  assignee: AssigneeEntityOrderInputType
+  id: OrderTypeEnum
+  title: OrderTypeEnum
+  description: OrderTypeEnum
+  type_id: OrderTypeEnum
+  priority: OrderTypeEnum
+  story_points: OrderTypeEnum
+  status: OrderTypeEnum
+  assignee_id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  avg: TaskEntityOrderInputType
+  sum: TaskEntityOrderInputType
+  count: TaskEntityOrderInputType
+  max: TaskEntityOrderInputType
+  min: TaskEntityOrderInputType
+}
+
+input AssigneeEntityOrderInputType {
+  avg: AssigneeEntityOrderInputType
+  sum: AssigneeEntityOrderInputType
+  count: AssigneeEntityOrderInputType
+  max: AssigneeEntityOrderInputType
+  min: AssigneeEntityOrderInputType
+}
+
+type TaskPrimitiveFieldType {
+  id: Float
+  title: String
+  description: String
+  type_id: Float
+  priority: Float
+  story_points: Float
+  status: Float
+  assignee_id: Float
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+type TaskGroupType {
+  by: TaskPrimitiveFieldType
+  count: Float
+  fields: [Task!]
+  avg: TaskPrimitiveFieldType
+  sum: TaskPrimitiveFieldType
+  max: TaskPrimitiveFieldType
+  min: TaskPrimitiveFieldType
+}
+
+type Task {
+  id: Int!
+  title: String!
+  type_id: Int!
+  priority: Int!
+  story_points: Int!
+  status: Int!
+  assignee_id: Int
+  assignee(where: AssigneeEntityFilterInputType, order_by: AssigneeEntityOrderInputType): User!
+  created_at: String!
+  updated_at: String!
+  groupAgg: [TaskGroupType!]
+}
+
 type UserSubcompetencyPrimitiveFieldType {
   id: Float
   subcompetency_id: Float
@@ -385,6 +482,7 @@ type User {
   seniority(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType): Seniority
   user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType): [UserCompetency!]
   user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [UserSubcompetency!]
+  tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
   created_at: String!
   updated_at: String!
   groupAgg: [UserGroupType!]
@@ -481,6 +579,7 @@ type Query {
   users(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType, paginate: PaginationInputType): [User!]!
   usercompetencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType, paginate: PaginationInputType): [UserCompetency!]!
   usersubcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType, paginate: PaginationInputType): [UserSubcompetency!]!
+  tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]!
 }
 
 input PaginationInputType {
@@ -524,4 +623,7 @@ type Subscription {
   UserSubcompetencyCreateSubscriber: UserSubcompetency!
   UserSubcompetencyUpdateSubscriber: UserSubcompetency!
   UserSubcompetencyDeleteSubscriber: UserSubcompetency!
+  TaskCreateSubscriber: Task!
+  TaskUpdateSubscriber: Task!
+  TaskDeleteSubscriber: Task!
 }

@@ -50,8 +50,6 @@ export class SubCompetencyResolver {
 ```typescript
 ...
 // user-competency.entity.ts
-
-@EntityObjectType()
 @Entity('user_competency') // <--- Here
 export class UserCompetency extends BaseEntity {
   @Field(() => Int)
@@ -414,6 +412,31 @@ export class CompetencyResolver {
 ```
 this example will generate mutation (`createCompetency`) and subscription (`createCompetencySubscriber`)
 
+## Special cases
+- Joining by specific relation key in case of `@JoinColumn()`, you should add `@JoinColumnField(fromTable, ToTable, propertyName)` decorator to the graphql dto.
+
+```typescript
+
+@EntityObjectType({
+  name: 'Task',
+})
+export class TaskObjectType {
+  @Field(() => Int)
+  id: number;
+
+  @Field(() => String)
+  title: string;
+  
+  @Field(() => Int, { nullable: true })
+  assignee_id: number;
+
+  @JoinColumnField(Task, User, 'assignee_id')
+  @Field(() => UserObjectType)
+  assignee: UserObjectType;
+}
+
+
+```
 
 ## Limitations
 - Date and scalars are not supported, use string instead

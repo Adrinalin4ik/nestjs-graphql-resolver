@@ -1,9 +1,11 @@
 import { Field, Int } from "@nestjs/graphql";
-import { EntityObjectType } from "../../../lib";
-import { CompetencyObjectType } from "../competency/competency.dto";
+import { EntityObjectType, JoinColumnField } from "../../../lib";
 import { SeniorityObjectType } from "../seniority/seniority.dto";
+import { TaskObjectType } from "../task/task.dto";
+import { Task } from "../task/task.entity";
 import { UserCompetencyObjectType } from "../user-competency/user-competency.dto";
 import { UserSubcompetencyObjectType } from "../user-subcompetency/user-subcompetency.dto";
+import { User } from "./user.entity";
 
 @EntityObjectType({
   name: 'User'
@@ -48,6 +50,10 @@ export class UserObjectType {
   @Field(() => [UserSubcompetencyObjectType], { nullable: true })
   user_subcompetencies: UserSubcompetencyObjectType[];
 
+  @JoinColumnField(User, Task, 'assignee_id')
+  @Field(() => [TaskObjectType], { nullable: true })
+  tasks: TaskObjectType[];
+  
   // Timestamps
   @Field(() => String)
   created_at: Date;

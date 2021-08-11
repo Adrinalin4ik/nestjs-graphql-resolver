@@ -5,4 +5,5 @@ export { Loader } from './loaders/query-exctractor.decorator';
 export { Paginate } from './pagination/pagination.decorator';
 export { Filters } from './filters/filtrable-field.decorator';
 export { Order } from './order/order.decorator';
+export { JoinColumnField } from './decorators/join-column-decorator';
 export { ESubscriberType } from './helpers/subscribers';
