@@ -444,3 +444,11 @@ export class TaskObjectType {
 - Works only with express server
 - Subscribers works with only appolo-server-express
 - You cannot provide options for pub-sub for subscriptions
+
+
+## How to maintain
+1. Clone the repo
+2. Install packages `npm install`
+3. Apply database mocks from development.sql
+4. Start the project `npm run start:dev`
+5. Go to `localhost:3000/graphql` in your browser
