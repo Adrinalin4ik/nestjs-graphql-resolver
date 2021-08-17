@@ -22,7 +22,7 @@ import { EntityObjectType } from 'nestjs-graphql-resolver';
   name: 'Subcompetency' // <--- Name must be like a typeorm entity name
 }) 
 export class SubCompetencyObjectType {
-  @Field(() => Int) // <--- Don't forget to decorate your dto with @Field or other compatible decorator from @nestjs/graphql library.
+  @Field(() => Int) // <--- Don't forget to decorate your dto with @Field or another compatible decorator from @nestjs/graphql library.
   id: number;
 
 ...
