@@ -1,8 +1,12 @@
 import { Resolver } from '@nestjs/graphql';
-import { Seniority } from './seniority.entity';
 import { AutoResolver } from '../../../lib';
 import { SeniorityObjectType } from './seniority.dto';
+import { SeniorityService } from './seniority.service';
 
 @AutoResolver(SeniorityObjectType)
 @Resolver(() => SeniorityObjectType)
-export class SeniorityResolver {}
+export class SeniorityResolver {
+  constructor(private readonly srv: SeniorityService) {
+    console.log('service', srv)
+  }
+}
