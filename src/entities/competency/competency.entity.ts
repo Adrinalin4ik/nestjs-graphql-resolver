@@ -22,7 +22,6 @@ export class Competency extends BaseEntity {
   //   console.log('test', entity, this)
   // }
 
-  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -1,27 +1,31 @@
 import { Args, Mutation, MutationOptions, Resolver, ReturnTypeFunc, Subscription, SubscriptionOptions } from '@nestjs/graphql';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Competency } from './competency.entity';
 import { AutoMutation, AutoResolver } from '../../../lib';
-import { getRepository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { CompetencyObjectType, CreateCompetency, DeleteCompetencyResult, UpdateCompetency } from './competency.dto';
 
 console.log(typeof CompetencyObjectType)
 @AutoResolver(CompetencyObjectType)
 @Resolver(() => CompetencyObjectType)
 export class CompetencyResolver {
-
+  constructor(
+    @InjectRepository(Competency) private readonly competencyRepository: Repository<Competency>,
+    ) {}
   // @AutoMutation(() => CompetencyObjectType)
   @Mutation(() => CompetencyObjectType)
   async updateCompetency(
     @Args('competency') inputCompetency: UpdateCompetency,
   ) {
-    const competency = new Competency();
-    competency.id = inputCompetency.id;
-    competency.seniority_id = inputCompetency.seniority_id;
-    competency.title = inputCompetency.title;
+    // const competency = new Competency();
+    // competency.id = inputCompetency.id;
+    // competency.seniority_id = inputCompetency.seniority_id;
+    // competency.title = inputCompetency.title;
 
-    const result = await competency.save();
+    // const result = await competency.save();
 
-    return result;
+    // return result;
+    return this.competencyRepository.save(inputCompetency);
   }
 
   // @AutoMutation(() => CompetencyObjectType)

@@ -9,6 +9,7 @@ interface ObjectTypeOptionsExtended extends ObjectTypeOptions {
   name?: string;
   tableName?: string;
   subscribers?: ESubscriberType[]
+  autoSubscriptionEnabled: boolean;
 }
 
 
@@ -26,7 +27,9 @@ export const EntityObjectType = (options?: ObjectTypeOptionsExtended) => {
       value: typeName,
     });
     
-    addSubscribers(typeName, options?.subscribers);
+    if (options?.autoSubscriptionEnabled) {
+      addSubscribers(typeName, options?.subscribers);
+    }
     // To avoid n+1 I have to create a field inside a model
     addGroupAggField(dto);
 
@@ -51,16 +54,16 @@ const addSubscribers = (typeName: string, options?: any) => {
       const entityMeta = getMetadataArgsStorage();
       const entity = entityMeta.tables.find(x => x.target['name'] === typeName);
 
-      addDecoratedMethodToClass({
-        methodName: subscriberName,
-        methodDecorators: [getDecoratorByOperationType(subType)()],
-        resolverClass: entity.target,
-        callback: function() {
-          pubsub.publish(subscriberName, {
-            [subscriberName]: this,
-          });
-        }
-      });
+      // addDecoratedMethodToClass({
+      //   methodName: subscriberName,
+      //   methodDecorators: [getDecoratorByOperationType(subType)()],
+      //   resolverClass: entity.target,
+      //   callback: function() {
+      //     pubsub.publish(subscriberName, {
+      //       [subscriberName]: this,
+      //     });
+      //   }
+      // });
     }
   }
 }

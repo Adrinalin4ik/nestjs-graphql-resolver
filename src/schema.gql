@@ -571,6 +571,31 @@ type Seniority {
   groupAgg: [SeniorityGroupType!]
 }
 
+type CustomerPrimitiveFieldType {
+  id: Float
+  created_at: DateTime
+  updated_at: DateTime
+  name: String
+}
+
+type CustomerGroupType {
+  by: CustomerPrimitiveFieldType
+  count: Float
+  fields: [Customer!]
+  avg: CustomerPrimitiveFieldType
+  sum: CustomerPrimitiveFieldType
+  max: CustomerPrimitiveFieldType
+  min: CustomerPrimitiveFieldType
+}
+
+type Customer {
+  id: Int!
+  created_at: String!
+  updated_at: String!
+  name: String!
+  groupAgg: [CustomerGroupType!]
+}
+
 type Query {
   seniorities(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType, paginate: PaginationInputType): [Seniority!]!
   competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType, paginate: PaginationInputType): [Competency!]!
@@ -580,6 +605,7 @@ type Query {
   usercompetencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType, paginate: PaginationInputType): [UserCompetency!]!
   usersubcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType, paginate: PaginationInputType): [UserSubcompetency!]!
   tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]!
+  customers(where: CustomerEntityFilterInputType, order_by: CustomerEntityOrderInputType, paginate: PaginationInputType): [Customer!]!
 }
 
 input PaginationInputType {
@@ -587,10 +613,39 @@ input PaginationInputType {
   per_page: Float!
 }
 
+input CustomerEntityFilterInputType {
+  id: Number_property_filter_type
+  created_at: DateTime_property_filter_type
+  updated_at: DateTime_property_filter_type
+  name: String_property_filter_type
+  and: [CustomerEntityFilterInputType!]
+  or: [CustomerEntityFilterInputType!]
+  avg: CustomerEntityFilterInputType
+  sum: CustomerEntityFilterInputType
+  count: CustomerEntityFilterInputType
+  max: CustomerEntityFilterInputType
+  min: CustomerEntityFilterInputType
+}
+
+input CustomerEntityOrderInputType {
+  id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  name: OrderTypeEnum
+  avg: CustomerEntityOrderInputType
+  sum: CustomerEntityOrderInputType
+  count: CustomerEntityOrderInputType
+  max: CustomerEntityOrderInputType
+  min: CustomerEntityOrderInputType
+}
+
 type Mutation {
   updateCompetency(competency: UpdateCompetency!): Competency!
   createCompetency(competency: CreateCompetency!): Competency!
   deleteCompetency(id: Float!): DeleteCompetencyResult!
+  createCustomer(customer: CreateCustomerDTO!): Customer!
+  updateCustomer(customer: UpdateCustomerDTO!): Customer!
+  deleteCustomer(customer: DeleteDTO!): Customer!
 }
 
 input UpdateCompetency {
@@ -602,6 +657,19 @@ input UpdateCompetency {
 input CreateCompetency {
   seniority_id: Float!
   title: String!
+}
+
+input CreateCustomerDTO {
+  name: String!
+}
+
+input UpdateCustomerDTO {
+  id: Float!
+  name: String!
+}
+
+input DeleteDTO {
+  id: Float!
 }
 
 type Subscription {
@@ -626,4 +694,7 @@ type Subscription {
   TaskCreateSubscriber: Task!
   TaskUpdateSubscriber: Task!
   TaskDeleteSubscriber: Task!
+  CustomerCreateSubscriber: Customer!
+  CustomerUpdateSubscriber: Customer!
+  CustomerDeleteSubscriber: Customer!
 }
