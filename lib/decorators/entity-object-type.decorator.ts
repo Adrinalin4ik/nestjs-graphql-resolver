@@ -9,7 +9,7 @@ interface ObjectTypeOptionsExtended extends ObjectTypeOptions {
   name?: string;
   tableName?: string;
   subscribers?: ESubscriberType[]
-  autoSubscriptionEnabled: boolean;
+  autoSubscriptionEnabled?: boolean;
 }
 
 
