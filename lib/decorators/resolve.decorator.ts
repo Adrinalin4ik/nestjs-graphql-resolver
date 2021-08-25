@@ -93,7 +93,7 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
         const methodName = plularize(entity.graphqlName).toLowerCase();
         if (!BaseResolverClass.prototype[methodName]) {
           // loadMany for root queries
-          console.log(methodName)
+          // console.log(methodName)
           addDecoratedMethodToClass({
             resolverClass: BaseResolverClass,
             methodName,

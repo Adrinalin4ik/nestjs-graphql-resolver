@@ -1,28 +1,20 @@
-import { Field, Int } from '@nestjs/graphql';
-import { EntityObjectType } from '../../../lib';
 
 import {
-  BaseEntity,
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Seniority } from '../seniority/seniority.entity';
 import { UserCompetency } from '../user-competency/user-competency.entity';
 import { UserSubcompetency } from '../user-subcompetency/user-subcompetency.entity';
 import { Task } from '../task/task.entity';
+import { Base } from '../utils/base.entity';
 
 @Entity('user')
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends Base {
   @Index()
   @Column({ nullable: true })
   identification_number: number;
@@ -73,11 +65,4 @@ export class User extends BaseEntity {
   
   @OneToMany(() => Task, (task) => task.assignee)
   tasks: Task[];
-  
-  // Timestamps
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
 }

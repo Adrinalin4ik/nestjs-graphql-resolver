@@ -1,4 +1,3 @@
-import { Field, Int } from '@nestjs/graphql';
 import {
   BaseEntity,
   CreateDateColumn,
@@ -7,7 +6,6 @@ import {
 } from 'typeorm';
 
 export class Base extends BaseEntity {
-  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 

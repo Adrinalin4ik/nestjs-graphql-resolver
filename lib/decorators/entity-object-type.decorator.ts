@@ -8,7 +8,7 @@ import { pubsub } from '../pubsub';
 interface ObjectTypeOptionsExtended extends ObjectTypeOptions {
   name?: string;
   tableName?: string;
-  subscribers?: ESubscriberType[]
+  subscribers?: ESubscriberType[];
   autoSubscriptionEnabled?: boolean;
 }
 
@@ -54,16 +54,16 @@ const addSubscribers = (typeName: string, options?: any) => {
       const entityMeta = getMetadataArgsStorage();
       const entity = entityMeta.tables.find(x => x.target['name'] === typeName);
 
-      // addDecoratedMethodToClass({
-      //   methodName: subscriberName,
-      //   methodDecorators: [getDecoratorByOperationType(subType)()],
-      //   resolverClass: entity.target,
-      //   callback: function() {
-      //     pubsub.publish(subscriberName, {
-      //       [subscriberName]: this,
-      //     });
-      //   }
-      // });
+      addDecoratedMethodToClass({
+        methodName: subscriberName,
+        methodDecorators: [getDecoratorByOperationType(subType)()],
+        resolverClass: entity.target,
+        callback: function() {
+          pubsub.publish(subscriberName, {
+            [subscriberName]: this,
+          });
+        }
+      });
     }
   }
 }

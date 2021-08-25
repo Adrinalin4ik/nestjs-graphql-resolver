@@ -5,15 +5,13 @@ import { TaskObjectType } from "../task/task.dto";
 import { Task } from "../task/task.entity";
 import { UserCompetencyObjectType } from "../user-competency/user-competency.dto";
 import { UserSubcompetencyObjectType } from "../user-subcompetency/user-subcompetency.dto";
+import { BaseDTO } from "../utils/base.dto";
 import { User } from "./user.entity";
 
 @EntityObjectType({
   name: 'User'
 })
-export class UserObjectType {
-  @Field(() => Int)
-  id: number;
-
+export class UserObjectType extends BaseDTO {
   @Field(() => Int)
   identification_number: number;
 
@@ -53,11 +51,4 @@ export class UserObjectType {
   @JoinColumnField(User, Task, 'assignee_id')
   @Field(() => [TaskObjectType], { nullable: true })
   tasks: TaskObjectType[];
-  
-  // Timestamps
-  @Field(() => String)
-  created_at: Date;
-
-  @Field(() => String)
-  updated_at: Date;
 }

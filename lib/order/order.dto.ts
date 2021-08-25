@@ -32,8 +32,11 @@ export const generateOrderInputType = (propName: string) => {
   const entityMeta = getMetadataArgsStorage();
   function EntityOrderInputType() {}
 
+  const table = entityMeta.tables.find(x => x.target['name'].toLowerCase() === entityName.toLowerCase())
+  const extendedTableName = table?.target['__proto__'].name;
+
   const relations = entityMeta.relations.filter(
-    (x) => x.target['name'].toLowerCase() == entityName.toLowerCase(),
+    (x) => [extendedTableName?.toLowerCase(), entityName.toLowerCase()].includes(x.target['name'].toLowerCase()),
   );
 
   relations.forEach(rel => {
@@ -42,7 +45,7 @@ export const generateOrderInputType = (propName: string) => {
   });
 
   const colums = entityMeta.columns.filter(
-    (x) => x.target['name'].toLowerCase() == entityName.toLowerCase(),
+    (x) => [extendedTableName?.toLowerCase(), entityName.toLowerCase()].includes(x.target['name'].toLowerCase()),
   );
 
   colums.forEach(col => {

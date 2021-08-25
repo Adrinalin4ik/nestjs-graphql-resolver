@@ -76,6 +76,8 @@ input UserEntityFilterInputType {
   user_subcompetencies: UserSubcompetencyEntityFilterInputType
   tasks: TaskEntityFilterInputType
   id: Number_property_filter_type
+  created_at: DateTime_property_filter_type
+  updated_at: DateTime_property_filter_type
   identification_number: Number_property_filter_type
   email: String_property_filter_type
   fname: String_property_filter_type
@@ -85,8 +87,6 @@ input UserEntityFilterInputType {
   phone: String_property_filter_type
   is_active: Boolean_property_filter_type
   seniority_id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
   and: [UserEntityFilterInputType!]
   or: [UserEntityFilterInputType!]
   avg: UserEntityFilterInputType
@@ -276,6 +276,8 @@ input UserEntityOrderInputType {
   user_subcompetencies: UserSubcompetencyEntityOrderInputType
   tasks: TaskEntityOrderInputType
   id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
   identification_number: OrderTypeEnum
   email: OrderTypeEnum
   fname: OrderTypeEnum
@@ -285,8 +287,6 @@ input UserEntityOrderInputType {
   phone: OrderTypeEnum
   is_active: OrderTypeEnum
   seniority_id: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
   avg: UserEntityOrderInputType
   sum: UserEntityOrderInputType
   count: UserEntityOrderInputType
@@ -444,7 +444,6 @@ type UserSubcompetency {
 }
 
 type UserPrimitiveFieldType {
-  id: Float
   identification_number: Float
   email: String
   fname: String
@@ -454,8 +453,6 @@ type UserPrimitiveFieldType {
   phone: String
   is_active: Boolean
   seniority_id: Float
-  created_at: DateTime
-  updated_at: DateTime
 }
 
 type UserGroupType {
@@ -470,6 +467,8 @@ type UserGroupType {
 
 type User {
   id: Int!
+  created_at: String!
+  updated_at: String!
   identification_number: Int!
   email: String!
   fname: String!
@@ -483,8 +482,6 @@ type User {
   user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType): [UserCompetency!]
   user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [UserSubcompetency!]
   tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
-  created_at: String!
-  updated_at: String!
   groupAgg: [UserGroupType!]
 }
 
