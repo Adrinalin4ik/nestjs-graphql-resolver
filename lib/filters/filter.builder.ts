@@ -98,7 +98,7 @@ export class FilterBuilder<Entity> {
     const operation = OperationQuery[operationObjArr[0][0]];
     const value = operationObjArr[0][1];
 
-    const operator = index === 0 ? '' : op;
+    const operator = index === 0 ? '' : op || OperatorQuery.and;
 
     let fieldName = `"${table}"."${field}"`;
     if (aggOp) {
