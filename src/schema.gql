@@ -125,8 +125,8 @@ input Number_property_filter_type {
   notilike: Float
   between: [Float!]
   notbetween: [Float!]
-  null: Float
-  notnull: Float
+  null: Boolean
+  notnull: Boolean
 }
 
 input DateTime_property_filter_type {
@@ -141,8 +141,8 @@ input DateTime_property_filter_type {
   notilike: DateTime
   between: [DateTime!]
   notbetween: [DateTime!]
-  null: DateTime
-  notnull: DateTime
+  null: Boolean
+  notnull: Boolean
 }
 
 input UserSubcompetencyEntityFilterInputType {
@@ -193,8 +193,8 @@ input String_property_filter_type {
   notilike: String
   between: [String!]
   notbetween: [String!]
-  null: String
-  notnull: String
+  null: Boolean
+  notnull: Boolean
 }
 
 input Boolean_property_filter_type {

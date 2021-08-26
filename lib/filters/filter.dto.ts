@@ -46,6 +46,8 @@ const generatePropertyType = (type) => {
     decorateField(PropertyFilter, operationName, () => {
       if (arrayLikeOperations.has(OperationQuery[operationName])) {
         return [type];
+      } if ([OperationQuery.null, OperationQuery.notnull].includes(OperationQuery[operationName])) {
+        return Boolean;
       } else {
         return type;
       }
