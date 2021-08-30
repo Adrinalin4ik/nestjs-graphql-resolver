@@ -33,9 +33,19 @@ export class TaskObjectType {
   @Field(() => UserObjectType)
   assignee: UserObjectType;
 
+  @Field(() => Int, { nullable: true })
+  task_id: number;
+
   @Field(() => String)
   created_at: Date;
 
   @Field(() => String)
   updated_at: Date;
+
+  @Field(() => TaskObjectType, { nullable: true })
+  task: TaskObjectType;
+
+  @JoinColumnField(Task, Task, 'task_id')
+  @Field(() => [TaskObjectType], { nullable: true })
+  subtasks: TaskObjectType[];
 }

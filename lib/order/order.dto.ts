@@ -5,6 +5,7 @@ import { camelCase } from 'change-case';
 import { capitalize } from '../helpers/string.helper';
 import * as pluralize from 'pluralize';
 import { AggregationEnum } from '../aggregations/aggregations.dto';
+import storage from '../storage';
 
 export enum OrderTypeEnum {
   desc = 'desc',
@@ -40,8 +41,11 @@ export const generateOrderInputType = (propName: string) => {
   );
 
   relations.forEach(rel => {
-    const propName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
-    decorateField(EntityOrderInputType, rel.propertyName, () => inputTypes.get(propName));
+    const propertyName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
+    const relationMeta = storage.relations.find(x => x.fromTable === rel.target && x.toTable === (rel.type as any)());
+    const relationTable =  capitalize(camelCase(pluralize.singular((relationMeta?.toTable.name.toLowerCase() || propertyName))));
+    
+    decorateField(EntityOrderInputType, rel.propertyName, () => inputTypes.get(relationTable));
   });
 
   const colums = entityMeta.columns.filter(

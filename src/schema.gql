@@ -214,8 +214,12 @@ input Boolean_property_filter_type {
 }
 
 input TaskEntityFilterInputType {
-  assignee: AssigneeEntityFilterInputType
+  assignee: UserEntityFilterInputType
+  task: TaskEntityFilterInputType
+  subtasks: TaskEntityFilterInputType
   id: Number_property_filter_type
+  created_at: DateTime_property_filter_type
+  updated_at: DateTime_property_filter_type
   title: String_property_filter_type
   description: String_property_filter_type
   type_id: Number_property_filter_type
@@ -223,8 +227,7 @@ input TaskEntityFilterInputType {
   story_points: Number_property_filter_type
   status: Number_property_filter_type
   assignee_id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  task_id: Number_property_filter_type
   and: [TaskEntityFilterInputType!]
   or: [TaskEntityFilterInputType!]
   avg: TaskEntityFilterInputType
@@ -232,16 +235,6 @@ input TaskEntityFilterInputType {
   count: TaskEntityFilterInputType
   max: TaskEntityFilterInputType
   min: TaskEntityFilterInputType
-}
-
-input AssigneeEntityFilterInputType {
-  and: [AssigneeEntityFilterInputType!]
-  or: [AssigneeEntityFilterInputType!]
-  avg: AssigneeEntityFilterInputType
-  sum: AssigneeEntityFilterInputType
-  count: AssigneeEntityFilterInputType
-  max: AssigneeEntityFilterInputType
-  min: AssigneeEntityFilterInputType
 }
 
 input CompetencyEntityOrderInputType {
@@ -351,8 +344,12 @@ input SubcompetencyEntityOrderInputType {
 }
 
 input TaskEntityOrderInputType {
-  assignee: AssigneeEntityOrderInputType
+  assignee: UserEntityOrderInputType
+  task: TaskEntityOrderInputType
+  subtasks: TaskEntityOrderInputType
   id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
   title: OrderTypeEnum
   description: OrderTypeEnum
   type_id: OrderTypeEnum
@@ -360,8 +357,7 @@ input TaskEntityOrderInputType {
   story_points: OrderTypeEnum
   status: OrderTypeEnum
   assignee_id: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
+  task_id: OrderTypeEnum
   avg: TaskEntityOrderInputType
   sum: TaskEntityOrderInputType
   count: TaskEntityOrderInputType
@@ -369,16 +365,7 @@ input TaskEntityOrderInputType {
   min: TaskEntityOrderInputType
 }
 
-input AssigneeEntityOrderInputType {
-  avg: AssigneeEntityOrderInputType
-  sum: AssigneeEntityOrderInputType
-  count: AssigneeEntityOrderInputType
-  max: AssigneeEntityOrderInputType
-  min: AssigneeEntityOrderInputType
-}
-
 type TaskPrimitiveFieldType {
-  id: Float
   title: String
   description: String
   type_id: Float
@@ -386,8 +373,7 @@ type TaskPrimitiveFieldType {
   story_points: Float
   status: Float
   assignee_id: Float
-  created_at: DateTime
-  updated_at: DateTime
+  task_id: Float
 }
 
 type TaskGroupType {
@@ -409,9 +395,30 @@ type Task {
   status: Int!
   assignee_id: Int
   assignee(where: AssigneeEntityFilterInputType, order_by: AssigneeEntityOrderInputType): User!
+  task_id: Int
   created_at: String!
   updated_at: String!
+  task(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): Task
+  subtasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
   groupAgg: [TaskGroupType!]
+}
+
+input AssigneeEntityFilterInputType {
+  and: [AssigneeEntityFilterInputType!]
+  or: [AssigneeEntityFilterInputType!]
+  avg: AssigneeEntityFilterInputType
+  sum: AssigneeEntityFilterInputType
+  count: AssigneeEntityFilterInputType
+  max: AssigneeEntityFilterInputType
+  min: AssigneeEntityFilterInputType
+}
+
+input AssigneeEntityOrderInputType {
+  avg: AssigneeEntityOrderInputType
+  sum: AssigneeEntityOrderInputType
+  count: AssigneeEntityOrderInputType
+  max: AssigneeEntityOrderInputType
+  min: AssigneeEntityOrderInputType
 }
 
 type UserSubcompetencyPrimitiveFieldType {

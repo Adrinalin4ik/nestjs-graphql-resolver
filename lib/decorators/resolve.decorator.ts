@@ -17,7 +17,7 @@ import { Order } from '../order/order.decorator';
 import { ESubscriberType, generateSubscriberName } from '../helpers/subscribers';
 import { pubsub } from '../pubsub';
 import storage from '../storage';
-
+import * as pluralize from 'pluralize';
 export interface IAutoResolverOptions {
   subscribers?: ESubscriberType[]
 }
@@ -64,9 +64,12 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
 
         if (r.relationType === 'one-to-many') {
           // One to many. Example: seniority => competencies
+          const methodName = r.propertyName;
           const relationField = 
             relationMeta?.joinPropertyName || `${entity.graphqlName}_id`;
-          const methodName = r.propertyName;
+          const relationTable =  pluralize(relationMeta?.toTable.name.toLowerCase() || 
+          methodName);
+
           if (!BaseResolverClass.prototype[methodName]) {
             addDecoratedMethodToClass({
               resolverClass: BaseResolverClass,
@@ -75,13 +78,13 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
                 ResolveField(() => entity, { name: methodName }),
               ],
               paramDecorators: [
-                Loader([methodName, relationField.toLowerCase()]),
+                Loader([relationTable, relationField.toLowerCase()]),
                 Parent(),
-                Filters(r.propertyName),
-                Order(r.propertyName),
+                Filters(relationTable),
+                Order(relationTable),
               ],
               callback: (loader: GraphQLExecutionContext, parent) => {
-                return loader[methodName].load(parent['id']);
+                return loader[relationTable].load(parent['id']);
               },
             });
           }

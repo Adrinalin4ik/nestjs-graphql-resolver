@@ -6,7 +6,7 @@ import { camelCase } from 'change-case';
 import { capitalize } from '../helpers/string.helper';
 import * as pluralize from 'pluralize';
 import { AggregationEnum } from '../aggregations/aggregations.dto';
-
+import storage from '../storage';
 
 export enum OperatorQuery {
   and = 'and',
@@ -77,10 +77,13 @@ export const generateFilterInputType = (propName: string) => {
   const relations = entityMeta.relations.filter(
     (x) => [extendedTableName?.toLowerCase(), entityName.toLowerCase()].includes(x.target['name'].toLowerCase()),
   );
-  
+
   relations.forEach(rel => {
-    const propName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
-    decorateField(EntityFilterInputType, rel.propertyName, () => inputTypes.get(propName));
+    const propertyName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
+    const relationMeta = storage.relations.find(x => x.fromTable === rel.target && x.toTable === (rel.type as any)());
+    const relationTable =  capitalize(camelCase(pluralize.singular((relationMeta?.toTable.name.toLowerCase() || propertyName))));
+    
+    decorateField(EntityFilterInputType, rel.propertyName, () => inputTypes.get(relationTable));
   });
 
   const colums = entityMeta.columns.filter(

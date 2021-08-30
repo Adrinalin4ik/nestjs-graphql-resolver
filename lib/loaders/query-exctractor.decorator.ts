@@ -56,12 +56,12 @@ export const Loader = createParamDecorator(
         info,
       );
     } else {
+      // One to many
       const entityName: string = data[0];
       const entityKey: string = data[1];
-
       if (!gctx[entityName]) {
         const fields = Array.from(
-          resolverRecursive(info.fieldNodes, entityName, info.fragments),
+          resolverRecursive(info.fieldNodes, info.fieldName, info.fragments),
         ).map((field) => pluralize.singular(entityName) + '.' + field);
 
         gctx[entityName] = oneToManyLoader(
