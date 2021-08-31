@@ -4,7 +4,7 @@
     "port": 5432,
     "username": "postgres",
     "password": "postgres",
-    "database": "sup3_development",
+    "database": "sup3_test",
     "logging": "all",
     "synchronize": true
   },

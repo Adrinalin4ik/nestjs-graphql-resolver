@@ -68,6 +68,7 @@ export class FilterBuilder<Entity> {
     const result = [];
     Object.entries(obj).forEach(([k,v], i) => {
       const isEntity = this.entityMeta.tables.some(x => x.name === pluralize.singular(k))
+      const relation = this.entityMeta.relations.find(x => x.propertyName === k);
       const operator = Object.values(OperatorQuery).find(x => x === k);
       const aggOperation = Object.values(AggregationEnum).find(x => x === k);
       if (operator || aggOperation) {
@@ -80,7 +81,7 @@ export class FilterBuilder<Entity> {
           return acc;
         }, []).join(` ${k} `)
         result.push(`(${res})`)
-      } else if (!isEntity) {
+      } else if (!isEntity && !relation) {
         // operation
         result.push(this.buildFilter(currEntity, k,v, outerOperator, outerAggOperator, i))
       } else {

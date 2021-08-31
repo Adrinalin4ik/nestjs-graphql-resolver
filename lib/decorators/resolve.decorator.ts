@@ -56,7 +56,9 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
                 Order(r.propertyName),
               ],
               callback: (loader: GraphQLExecutionContext, parent) => {
-                return loader[relationTable].load(parent[relationField]);
+                if (parent[relationField]) {
+                  return loader[relationTable].load(parent[relationField]);
+                }
               },
             });
           }

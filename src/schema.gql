@@ -394,7 +394,7 @@ type Task {
   story_points: Int!
   status: Int!
   assignee_id: Int
-  assignee(where: AssigneeEntityFilterInputType, order_by: AssigneeEntityOrderInputType): User!
+  assignee(where: AssigneeEntityFilterInputType, order_by: AssigneeEntityOrderInputType): User
   task_id: Int
   created_at: String!
   updated_at: String!

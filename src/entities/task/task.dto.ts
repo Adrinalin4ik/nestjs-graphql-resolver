@@ -30,7 +30,7 @@ export class TaskObjectType {
   assignee_id: number;
 
   @JoinColumnField(Task, User, 'assignee_id')
-  @Field(() => UserObjectType)
+  @Field(() => UserObjectType, { nullable: true })
   assignee: UserObjectType;
 
   @Field(() => Int, { nullable: true })
