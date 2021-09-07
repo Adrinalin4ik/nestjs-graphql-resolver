@@ -91,11 +91,18 @@ export const generateFilterInputType = (propName: string) => {
   );
 
   colums.forEach(col => {
-    const objType = builtInPremitiveGQLType.has(
-      col.options?.type?.['prototype']?.constructor?.name?.toLowerCase(),
-    )
-      ? col.options?.type
-      : GraphQLISODateTime;
+    let objType;
+    if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {
+      objType = col.options?.type;
+    } else {
+      switch(col.options?.type) {
+        case 'uuid':
+          objType = String;
+          break;
+        default: objType = String;
+      }
+    }
+
 
       const propType = generatePropertyType(objType)
       decorateField(EntityFilterInputType, col.propertyName, () => propType);

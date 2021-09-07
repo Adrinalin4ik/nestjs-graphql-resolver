@@ -17,8 +17,8 @@ import { User } from '../user/user.entity';
 
 @Entity('user_subcompetency')
 export class UserSubcompetency extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   @Index()

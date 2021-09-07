@@ -76,8 +76,8 @@ input UserEntityFilterInputType {
   user_subcompetencies: UserSubcompetencyEntityFilterInputType
   tasks: TaskEntityFilterInputType
   id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
   identification_number: Number_property_filter_type
   email: String_property_filter_type
   fname: String_property_filter_type
@@ -102,8 +102,8 @@ input UserCompetencyEntityFilterInputType {
   id: Number_property_filter_type
   competency_id: Number_property_filter_type
   user_id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
   and: [UserCompetencyEntityFilterInputType!]
   or: [UserCompetencyEntityFilterInputType!]
   avg: UserCompetencyEntityFilterInputType
@@ -129,18 +129,18 @@ input Number_property_filter_type {
   notnull: Boolean
 }
 
-input DateTime_property_filter_type {
-  eq: DateTime
-  neq: DateTime
-  gt: DateTime
-  gte: DateTime
-  lt: DateTime
-  lte: DateTime
-  in: [DateTime!]
-  ilike: DateTime
-  notilike: DateTime
-  between: [DateTime!]
-  notbetween: [DateTime!]
+input String_property_filter_type {
+  eq: String
+  neq: String
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  in: [String!]
+  ilike: String
+  notilike: String
+  between: [String!]
+  notbetween: [String!]
   null: Boolean
   notnull: Boolean
 }
@@ -148,11 +148,11 @@ input DateTime_property_filter_type {
 input UserSubcompetencyEntityFilterInputType {
   subcompetency: SubcompetencyEntityFilterInputType
   user: UserEntityFilterInputType
-  id: Number_property_filter_type
+  id: String_property_filter_type
   subcompetency_id: Number_property_filter_type
   user_id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
   and: [UserSubcompetencyEntityFilterInputType!]
   or: [UserSubcompetencyEntityFilterInputType!]
   avg: UserSubcompetencyEntityFilterInputType
@@ -168,9 +168,9 @@ input SubcompetencyEntityFilterInputType {
   id: Number_property_filter_type
   title: String_property_filter_type
   competency_id: Number_property_filter_type
-  date_time_with_timezone: DateTime_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  date_time_with_timezone: String_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
   test_bool: Boolean_property_filter_type
   and: [SubcompetencyEntityFilterInputType!]
   or: [SubcompetencyEntityFilterInputType!]
@@ -179,22 +179,6 @@ input SubcompetencyEntityFilterInputType {
   count: SubcompetencyEntityFilterInputType
   max: SubcompetencyEntityFilterInputType
   min: SubcompetencyEntityFilterInputType
-}
-
-input String_property_filter_type {
-  eq: String
-  neq: String
-  gt: String
-  gte: String
-  lt: String
-  lte: String
-  in: [String!]
-  ilike: String
-  notilike: String
-  between: [String!]
-  notbetween: [String!]
-  null: Boolean
-  notnull: Boolean
 }
 
 input Boolean_property_filter_type {
@@ -218,8 +202,8 @@ input TaskEntityFilterInputType {
   task: TaskEntityFilterInputType
   subtasks: TaskEntityFilterInputType
   id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
   title: String_property_filter_type
   description: String_property_filter_type
   type_id: Number_property_filter_type
@@ -422,7 +406,7 @@ input AssigneeEntityOrderInputType {
 }
 
 type UserSubcompetencyPrimitiveFieldType {
-  id: Float
+  id: DateTime
   subcompetency_id: Float
   user_id: Float
   created_at: DateTime
@@ -440,7 +424,7 @@ type UserSubcompetencyGroupType {
 }
 
 type UserSubcompetency {
-  id: Int!
+  id: String!
   subcompetency_id: Int!
   user_id: Int!
   subcompetency(where: SubcompetencyEntityFilterInputType, order_by: SubcompetencyEntityOrderInputType): Subcompetency
@@ -619,8 +603,8 @@ input PaginationInputType {
 
 input CustomerEntityFilterInputType {
   id: Number_property_filter_type
-  created_at: DateTime_property_filter_type
-  updated_at: DateTime_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
   name: String_property_filter_type
   and: [CustomerEntityFilterInputType!]
   or: [CustomerEntityFilterInputType!]

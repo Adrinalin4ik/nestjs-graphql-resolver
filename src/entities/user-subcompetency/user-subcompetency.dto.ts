@@ -8,8 +8,8 @@ import { UserObjectType } from "../user/user.dto";
   name: 'UserSubcompetency'
 })
 export class UserSubcompetencyObjectType {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String)
+  id: string;
 
   @Field(() => Int)
   public subcompetency_id: number;
