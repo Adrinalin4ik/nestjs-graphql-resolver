@@ -117,7 +117,7 @@ export class AggregationsBuilder<Entity> {
             count: x.count,
             ...Object.entries(x).reduce((acc, [k, v]) => {
               const agg_k = k.split('_')[0];
-              const agg_v = k.split('_')[1];
+              const agg_v = k.split(`${agg_k}_`)[1];
               if (
                 AggregationValueArray.indexOf(agg_k) !== -1 &&
                 agg_k !== AggregationEnum.count
