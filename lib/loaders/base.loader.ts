@@ -51,7 +51,7 @@ export const oneToManyLoader = (
       res = aggb.responseObject(res);
 
       const gs = groupBy(res[0].groupAgg, (item) => {
-        return item.fields[0][foreignKey];
+        return item.fields?.[0][foreignKey];
       });
       return keys.map((k) => [{ groupAgg: gs[k] || [] }]);
     } else {
