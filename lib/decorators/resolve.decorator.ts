@@ -1,4 +1,5 @@
 import {
+  Context,
   GraphQLExecutionContext,
   Parent,
   Query,
@@ -84,9 +85,10 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
                 Parent(),
                 Filters(relationTable),
                 Order(relationTable),
+                Context()
               ],
-              callback: (loader: GraphQLExecutionContext, parent) => {
-                return loader[relationTable].load(parent['id']);
+              callback: (loader: GraphQLExecutionContext, parent, a, b, ctx) => {
+                return loader[loader['alias'] || relationTable].load(parent['id']);
               },
             });
           }

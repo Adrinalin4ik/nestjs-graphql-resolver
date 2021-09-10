@@ -26,6 +26,8 @@ export const Loader = createParamDecorator(
       data.prototype &&
       getMetadataArgsStorage().tables.some((table) => table.target['name'] === data.graphqlName);
 
+    const alias = info.fieldNodes[0]?.alias?.value;
+    
     if (is_entity) {
       // Если лоудер не нужен
       const entityName: string = pluralize(data.graphqlName).toLowerCase();
@@ -59,12 +61,12 @@ export const Loader = createParamDecorator(
       // One to many
       const entityName: string = data[0];
       const entityKey: string = data[1];
-      if (!gctx[entityName]) {
+      if (!gctx[alias || entityName]) {
         const fields = Array.from(
           resolverRecursive(info.fieldNodes, info.fieldName, info.fragments),
         ).map((field) => pluralize.singular(entityName) + '.' + field);
 
-        gctx[entityName] = oneToManyLoader(
+        gctx[alias || entityName] = oneToManyLoader(
           fields,
           entityName,
           entityKey,
@@ -76,7 +78,7 @@ export const Loader = createParamDecorator(
       }
     }
 
-    return gctx;
+    return {...gctx, alias};
   },
 );
 
