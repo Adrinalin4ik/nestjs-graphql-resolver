@@ -438,6 +438,9 @@ export class TaskObjectType {
 
 ```
 
+## Polymorphic relations
+Look at examples with @PolymorphicRelation relation decorator
+
 ## Limitations
 - Date and scalars are not supported, use string instead
 - Works only with postgres adapter for typeorm

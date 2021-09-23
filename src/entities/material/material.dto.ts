@@ -36,16 +36,8 @@ export class MaterialObjectType {
 
   @PolymorphicRelation({
     idPropertyName: 'materialable_id', 
-    typePropertyName: 'material_type', 
-    resolveType: (type) => {
-      switch (type) {
-        case 'User':
-          return User
-        case 'Task':
-          return Task
-      }
-    }
+    typePropertyName: 'material_type'
   })
   @Field(() => ResultUnion, {nullable: true})
-  public materialable: User | Task;
+  public materialabl: User | Task;
 }

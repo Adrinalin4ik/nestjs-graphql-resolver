@@ -4,13 +4,11 @@ import storage from '../storage';
 export interface IPolymorphicRelationParams {
   typePropertyName: string;
   idPropertyName: string;
-  resolveType: (type: string) => typeof BaseEntity;
 }
 
 export const PolymorphicRelation = ({
   typePropertyName,
   idPropertyName,
-  resolveType
 }: IPolymorphicRelationParams) => {
   return (obj, propertyName) => {
     storage.polymorphicRelations.push({
@@ -18,7 +16,6 @@ export const PolymorphicRelation = ({
       propertyName,
       typePropertyName,
       idPropertyName,
-      resolveType
     })
   };
 };

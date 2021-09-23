@@ -9,6 +9,7 @@ import * as pluralize from 'pluralize';
 import { PaginationInputType } from '../pagination/pagination.dto';
 
 import { oneToManyLoader, manyToOneLoader, getMany } from './base.loader';
+import storage from '../storage';
 
 export enum ELoaderType {
   Polymorphic = 'Polymorphic',
@@ -171,7 +172,7 @@ function resolverRecursive(
             item.selectionSet &&
             item.name.value !== 'groupAgg'
           ) {
-            if (pluralize.isSingular(item.name.value)) {
+            if (pluralize.isSingular(item.name.value) && !storage.polymorphicRelations.find(x => x.propertyName === item.name.value)) {
               results.add(item.name.value + '_id');
             }
           } else if (item.kind === 'FragmentSpread') {

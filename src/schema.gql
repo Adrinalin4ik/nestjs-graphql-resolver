@@ -606,7 +606,7 @@ type Material {
   title: String!
   materialable_id: Int!
   material_type: String!
-  materialable: ResultUnion
+  materialabl: ResultUnion
   groupAgg: [MaterialGroupType!]
 }
 
