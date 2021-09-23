@@ -18,6 +18,7 @@ import { ESubscriberType, generateSubscriberName } from '../helpers/subscribers'
 import { pubsub } from '../pubsub';
 import storage from '../storage';
 import * as pluralize from 'pluralize';
+import { unifyEntityName } from 'lib/helpers/string.helper';
 export interface IAutoResolverOptions {
   subscribers?: ESubscriberType[]
 }
@@ -131,10 +132,10 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
 
     // many
     {
-      const methodName = plularize(entity.graphqlName).toLowerCase();
+      const methodName = plularize(unifyEntityName(entity.graphqlName));
       if (!BaseResolverClass.prototype[methodName]) {
         // loadMany for root queries
-        // console.log(methodName)
+        console.log(unifyEntityName(entity.graphqlName))
         addDecoratedMethodToClass({
           resolverClass: BaseResolverClass,
           methodName,
