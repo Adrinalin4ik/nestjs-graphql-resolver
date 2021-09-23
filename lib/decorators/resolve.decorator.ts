@@ -49,7 +49,7 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
           // Paginate(),
         ],
         callback: (loader: GraphQLExecutionContext, parent) => {
-          return loader[parent[r.typePropertyName]].load(parent[r.idPropertyName]);
+          return loader[parent[r.typePropertyName].toLowerCase()].load(parent[r.idPropertyName]);
         },
       });
 
