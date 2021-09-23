@@ -4,12 +4,11 @@ import {
   Parent,
   Query,
   ResolveField,
-  Resolver,
   Subscription,
 } from '@nestjs/graphql';
 import { getMetadataArgsStorage } from 'typeorm';
 import * as plularize from 'pluralize';
-import { Loader } from '../loaders/query-exctractor.decorator';
+import { ELoaderType, Loader } from '../loaders/query-exctractor.decorator';
 import { Paginate } from '../pagination/pagination.decorator';
 import { addDecoratedMethodToClass } from '../helpers/decorators';
 import { Filters } from '../filters/filtrable-field.decorator';
@@ -30,115 +29,152 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
       (x) => x.target['name'] == entity.graphqlName,
     );
 
-      relations.forEach((r) => {
-        if (BaseResolverClass.prototype[r.propertyName]) return;
+    storage.polymorphicRelations.forEach(r => {
+      if (BaseResolverClass.prototype[r.propertyName]) return;
 
-        const relationMeta = storage.relations.find(x => x.fromTable === r.target && x.toTable === (r.type as any)());
+      const methodName = r.propertyName;
 
-        if (r.relationType === 'many-to-one') {
-          // Many to one. Example: competencies => seniority
-          const methodName = r.propertyName;
-          const relationTable = relationMeta?.toTable.name.toLowerCase() || 
-            methodName;
-          const relationField = relationMeta?.joinPropertyName || `${relationTable + '_id'}`
-            methodName;
-
-          if (!BaseResolverClass.prototype[methodName]) {
-            addDecoratedMethodToClass({
-              resolverClass: BaseResolverClass,
-              methodName,
-              methodDecorators: [
-                ResolveField(() => entity, { name: methodName }),
-              ],
-              paramDecorators: [
-                Loader(relationTable),
-                Parent(),
-                Filters(r.propertyName),
-                Order(r.propertyName),
-              ],
-              callback: (loader: GraphQLExecutionContext, parent) => {
-                if (parent[relationField]) {
-                  return loader[relationTable].load(parent[relationField]);
-                }
-              },
-            });
-          }
-        }
-
-        if (r.relationType === 'one-to-many') {
-          // One to many. Example: seniority => competencies
-          const methodName = r.propertyName;
-          const relationField = 
-            relationMeta?.joinPropertyName || `${entity.graphqlName}_id`;
-          const relationTable =  pluralize(relationMeta?.toTable.name.toLowerCase() || 
-          methodName);
-
-          if (!BaseResolverClass.prototype[methodName]) {
-            addDecoratedMethodToClass({
-              resolverClass: BaseResolverClass,
-              methodName,
-              methodDecorators: [
-                ResolveField(() => entity, { name: methodName }),
-              ],
-              paramDecorators: [
-                Loader([relationTable, relationField.toLowerCase()]),
-                Parent(),
-                Filters(relationTable),
-                Order(relationTable),
-                Context()
-              ],
-              callback: (loader: GraphQLExecutionContext, parent, a, b, ctx) => {
-                return loader[loader['alias'] || relationTable].load(parent['id']);
-              },
-            });
-          }
-        }
+      addDecoratedMethodToClass({
+        resolverClass: BaseResolverClass,
+        methodName,
+        methodDecorators: [ResolveField(() => entity, { name: methodName })],
+        paramDecorators: [
+          Loader({
+            type: ELoaderType.Polymorphic,
+            data: r
+          }),
+          Parent(),
+          // Filters(entity.graphqlName),
+          // Order(entity.graphqlName),
+          // Paginate(),
+        ],
+        callback: (loader: GraphQLExecutionContext, parent) => {
+          return loader[parent[r.typePropertyName]].load(parent[r.idPropertyName]);
+        },
       });
 
-      // many
-      {
-        const methodName = plularize(entity.graphqlName).toLowerCase();
+    });
+
+    relations.forEach((r) => {
+      if (BaseResolverClass.prototype[r.propertyName]) return;
+
+      const relationMeta = storage.relations.find(x => x.fromTable === r.target && x.toTable === (r.type as any)());
+
+      if (r.relationType === 'many-to-one') {
+        // Many to one. Example: competencies => seniority
+        const methodName = r.propertyName;
+        const relationTable = relationMeta?.toTable.name.toLowerCase() || 
+          methodName;
+        const relationField = relationMeta?.joinPropertyName || `${relationTable + '_id'}`
+          methodName;
+
         if (!BaseResolverClass.prototype[methodName]) {
-          // loadMany for root queries
-          // console.log(methodName)
           addDecoratedMethodToClass({
             resolverClass: BaseResolverClass,
             methodName,
-            methodDecorators: [Query(() => [entity], { name: methodName })],
-            paramDecorators: [
-              Loader(entity),
-              Filters(entity.graphqlName),
-              Order(entity.graphqlName),
-              Paginate(),
+            methodDecorators: [
+              ResolveField(() => entity, { name: methodName }),
             ],
-            callback: (loader: GraphQLExecutionContext) => {
-              return loader;
+            paramDecorators: [
+              Loader({
+                type: ELoaderType.ManyToOne,
+                data: relationTable
+              }),
+              Parent(),
+              Filters(r.propertyName),
+              Order(r.propertyName),
+            ],
+            callback: (loader: GraphQLExecutionContext, parent) => {
+              if (parent[relationField]) {
+                return loader[relationTable].load(parent[relationField]);
+              }
             },
           });
         }
       }
 
-      // subscriptions
-      for (const subType of Object.values(ESubscriberType)) {
-        if (!options?.subscribers || options?.subscribers?.includes(subType)) {
-          const subscriberName = generateSubscriberName(entity.graphqlName, subType);
+      if (r.relationType === 'one-to-many') {
+        // One to many. Example: seniority => competencies
+        const methodName = r.propertyName;
+        const relationField = 
+          relationMeta?.joinPropertyName || `${entity.graphqlName}_id`;
+        const relationTable =  pluralize(relationMeta?.toTable.name.toLowerCase() || 
+        methodName);
+
+        if (!BaseResolverClass.prototype[methodName]) {
           addDecoratedMethodToClass({
             resolverClass: BaseResolverClass,
+            methodName,
             methodDecorators: [
-              Subscription(() => entity)
+              ResolveField(() => entity, { name: methodName }),
             ],
-            paramDecorators: [],
-            methodName: subscriberName,
-            callback: () => {
-              return pubsub.asyncIterator(subscriberName);
-            }
-          })
+            paramDecorators: [
+              Loader({
+                type: ELoaderType.OneToMany,
+                data: [
+                  relationTable, relationField.toLowerCase()
+                ]
+              }),
+              Parent(),
+              Filters(relationTable),
+              Order(relationTable),
+              Context()
+            ],
+            callback: (loader: GraphQLExecutionContext, parent, a, b, ctx) => {
+              return loader[loader['alias'] || relationTable].load(parent['id']);
+            },
+          });
         }
       }
+    });
 
-      Object.defineProperty(BaseResolverClass, 'name', {
-        value: entity.graphqlName,
-      });
+    // many
+    {
+      const methodName = plularize(entity.graphqlName).toLowerCase();
+      if (!BaseResolverClass.prototype[methodName]) {
+        // loadMany for root queries
+        // console.log(methodName)
+        addDecoratedMethodToClass({
+          resolverClass: BaseResolverClass,
+          methodName,
+          methodDecorators: [Query(() => [entity], { name: methodName })],
+          paramDecorators: [
+            Loader({
+              type: ELoaderType.Many,
+              data: entity
+            }),
+            Filters(entity.graphqlName),
+            Order(entity.graphqlName),
+            Paginate(),
+          ],
+          callback: (loader: GraphQLExecutionContext) => {
+            return loader;
+          },
+        });
+      }
+    }
+
+    // subscriptions
+    for (const subType of Object.values(ESubscriberType)) {
+      if (!options?.subscribers || options?.subscribers?.includes(subType)) {
+        const subscriberName = generateSubscriberName(entity.graphqlName, subType);
+        addDecoratedMethodToClass({
+          resolverClass: BaseResolverClass,
+          methodDecorators: [
+            Subscription(() => entity)
+          ],
+          paramDecorators: [],
+          methodName: subscriberName,
+          callback: () => {
+            return pubsub.asyncIterator(subscriberName);
+          }
+        })
+      }
+    }
+
+    Object.defineProperty(BaseResolverClass, 'name', {
+      value: entity.graphqlName,
+    });
 
     return BaseResolverClass;
   };

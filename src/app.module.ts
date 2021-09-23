@@ -9,6 +9,7 @@ import { UserSubcompetencyModule } from './entities/user-subcompetency/user-subc
 import GraphqlModule from './graphql/graphql.module'
 import { TaskModule } from './entities/task/task.module';
 import { CustomerModule } from './entities/customer/customer.module';
+import { MaterialModule } from './entities/material/material.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CustomerModule } from './entities/customer/customer.module';
     UserSubcompetencyModule,
     TaskModule,
     CustomerModule,
+    MaterialModule,
     GraphqlModule
   ],
 })

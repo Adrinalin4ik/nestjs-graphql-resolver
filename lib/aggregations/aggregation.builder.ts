@@ -20,7 +20,7 @@ export class AggregationsBuilder<Entity> {
 
     const groupByField = (
       this.info.fieldNodes[0].selectionSet.selections as FieldNode[]
-    ).find((x) => x.name.value === 'groupAgg');
+    ).find((x) => x.name?.value === 'groupAgg');
 
     if (groupByField) {
       this.isGroupping = true;

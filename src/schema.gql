@@ -584,6 +584,34 @@ type Customer {
   groupAgg: [CustomerGroupType!]
 }
 
+type MaterialPrimitiveFieldType {
+  id: Float
+  title: String
+  material_type: String
+  materialable_id: Float
+}
+
+type MaterialGroupType {
+  by: MaterialPrimitiveFieldType
+  count: Float
+  fields: [Material!]
+  avg: MaterialPrimitiveFieldType
+  sum: MaterialPrimitiveFieldType
+  max: MaterialPrimitiveFieldType
+  min: MaterialPrimitiveFieldType
+}
+
+type Material {
+  id: Int!
+  title: String!
+  materialable_id: Int!
+  material_type: String!
+  materialable: ResultUnion
+  groupAgg: [MaterialGroupType!]
+}
+
+union ResultUnion = User | Task
+
 type Query {
   seniorities(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType, paginate: PaginationInputType): [Seniority!]!
   competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType, paginate: PaginationInputType): [Competency!]!
@@ -594,6 +622,7 @@ type Query {
   usersubcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType, paginate: PaginationInputType): [UserSubcompetency!]!
   tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]!
   customers(where: CustomerEntityFilterInputType, order_by: CustomerEntityOrderInputType, paginate: PaginationInputType): [Customer!]!
+  materials(where: MaterialEntityFilterInputType, order_by: MaterialEntityOrderInputType, paginate: PaginationInputType): [Material!]!
 }
 
 input PaginationInputType {
@@ -625,6 +654,32 @@ input CustomerEntityOrderInputType {
   count: CustomerEntityOrderInputType
   max: CustomerEntityOrderInputType
   min: CustomerEntityOrderInputType
+}
+
+input MaterialEntityFilterInputType {
+  id: Number_property_filter_type
+  title: String_property_filter_type
+  material_type: String_property_filter_type
+  materialable_id: Number_property_filter_type
+  and: [MaterialEntityFilterInputType!]
+  or: [MaterialEntityFilterInputType!]
+  avg: MaterialEntityFilterInputType
+  sum: MaterialEntityFilterInputType
+  count: MaterialEntityFilterInputType
+  max: MaterialEntityFilterInputType
+  min: MaterialEntityFilterInputType
+}
+
+input MaterialEntityOrderInputType {
+  id: OrderTypeEnum
+  title: OrderTypeEnum
+  material_type: OrderTypeEnum
+  materialable_id: OrderTypeEnum
+  avg: MaterialEntityOrderInputType
+  sum: MaterialEntityOrderInputType
+  count: MaterialEntityOrderInputType
+  max: MaterialEntityOrderInputType
+  min: MaterialEntityOrderInputType
 }
 
 type Mutation {
@@ -685,4 +740,7 @@ type Subscription {
   CustomerCreateSubscriber: Customer!
   CustomerUpdateSubscriber: Customer!
   CustomerDeleteSubscriber: Customer!
+  MaterialCreateSubscriber: Material!
+  MaterialUpdateSubscriber: Material!
+  MaterialDeleteSubscriber: Material!
 }

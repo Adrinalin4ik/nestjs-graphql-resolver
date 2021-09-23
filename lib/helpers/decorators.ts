@@ -24,7 +24,7 @@ export const addDecoratedMethodToClass = ({
 }: {
   resolverClass;
   methodName: string;
-  methodDecorators: MethodDecorator[];
+  methodDecorators?: MethodDecorator[];
   paramDecorators?: ParameterDecorator[];
   callback: (...args) => any;
 }) => {

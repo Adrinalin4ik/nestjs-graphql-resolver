@@ -5,6 +5,7 @@ import { getMetadataArgsStorage } from 'typeorm';
 import { addDecoratedMethodToClass } from '../helpers/decorators';
 import { ESubscriberType, generateSubscriberName, getDecoratorByOperationType } from '../helpers/subscribers';
 import { pubsub } from '../pubsub';
+import storage from '../storage';
 interface ObjectTypeOptionsExtended extends ObjectTypeOptions {
   name?: string;
   tableName?: string;
@@ -26,6 +27,12 @@ export const EntityObjectType = (options?: ObjectTypeOptionsExtended) => {
     Object.defineProperty(dto, 'tableName', {
       value: typeName,
     });
+
+    storage.objectTypes.push({
+      graphqlName: typeName,
+      tableName: typeName,
+      objectName: dto.name,
+    })
     
     if (options?.autoSubscriptionEnabled) {
       addSubscribers(typeName, options?.subscribers);

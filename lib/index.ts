@@ -7,3 +7,4 @@ export { Filters } from './filters/filtrable-field.decorator';
 export { Order } from './order/order.decorator';
 export { JoinColumnField } from './decorators/join-column-decorator';
 export { ESubscriberType } from './helpers/subscribers';
+export { PolymorphicRelation } from './decorators/polymorphic.decorator';

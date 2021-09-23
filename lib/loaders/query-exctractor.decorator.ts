@@ -6,15 +6,27 @@ import {
   SelectionNode,
 } from 'graphql';
 import * as pluralize from 'pluralize';
-import { getMetadataArgsStorage } from 'typeorm';
 import { PaginationInputType } from '../pagination/pagination.dto';
 
 import { oneToManyLoader, manyToOneLoader, getMany } from './base.loader';
 
+export enum ELoaderType {
+  Polymorphic = 'Polymorphic',
+  ManyToOne = 'ManyToOne',
+  OneToMany = 'OneToMany',
+  Many = 'Many',
+}
+
+interface LoaderData {
+  type: ELoaderType,
+  data: any;
+}
+
 export const Loader = createParamDecorator(
-  (data: any, ctx: ExecutionContext) => {
+  (payload: LoaderData, ctx: ExecutionContext) => {
     // const [root, args, gctx, info] = ctx.getArgs();
     const args = ctx.getArgs();
+    const parent = args[0]
     const gargs: any = args[1];
     const gctx: GraphQLExecutionContext = args[2];
     const info: GraphQLResolveInfo = args[3];
@@ -22,59 +34,83 @@ export const Loader = createParamDecorator(
     const pagination: PaginationInputType = gargs.paginate;
     const order_by: any = gargs.order_by;
 
-    const is_entity =
-      data.prototype &&
-      getMetadataArgsStorage().tables.some((table) => table.target['name'] === data.graphqlName);
 
     const alias = info.fieldNodes[0]?.alias?.value;
+
+    switch (payload.type) {
+      case ELoaderType.ManyToOne: {
+        if (!gctx[payload.data]) {
+          const fields = Array.from(
+            resolverRecursive(info.fieldNodes, payload.data, info.fragments),
+          ).map((field) => payload.data + '.' + field);
     
-    if (is_entity) {
-      // Если лоудер не нужен
-      const entityName: string = pluralize(data.graphqlName).toLowerCase();
+          gctx[payload.data] = manyToOneLoader(
+            fields,
+            payload.data,
+            filters,
+            order_by,
+            pagination,
+            info,
+          );
+        }
+        break;
+      }
+      case ELoaderType.OneToMany: {
+        const entityName: string = payload.data[0];
+        const entityKey: string = payload.data[1];
+        if (!gctx[alias || entityName]) {
+          const fields = Array.from(
+            resolverRecursive(info.fieldNodes, info.fieldName, info.fragments),
+          ).map((field) => pluralize.singular(entityName) + '.' + field);
 
-      const fields = Array.from(
-        resolverRecursive(info.fieldNodes, entityName, info.fragments),
-      ).map((field) => pluralize.singular(entityName) + '.' + field);
+          gctx[alias || entityName] = oneToManyLoader(
+            fields,
+            entityName,
+            entityKey,
+            filters,
+            order_by,
+            pagination,
+            info,
+          );
+        }
+        break;
+      }
+      case ELoaderType.Polymorphic: {
+        const entityName: string = parent[payload.data.typePropertyName].toLowerCase();
+        if (!gctx[entityName]) {
+          const fields = Array.from(
+            resolverRecursive(info.fieldNodes, entityName, info.fragments),
+          ).map((field) => entityName + '.' + field);
+    
+          gctx[entityName] = manyToOneLoader(
+            fields,
+            entityName,
+            filters,
+            order_by,
+            pagination,
+            info,
+          );
+        }
 
-      return getMany(
-        fields,
-        data.graphqlName,
-        filters,
-        order_by,
-        pagination,
-        info,
-      );
-    } else if (typeof data === 'string') {
-      const fields = Array.from(
-        resolverRecursive(info.fieldNodes, data, info.fragments),
-      ).map((field) => data + '.' + field);
+        break;
+      }
+      default: {
+        // Если лоудер не нужен
+        const entityName: string = pluralize(payload.data.graphqlName).toLowerCase();
 
-      gctx[data] = manyToOneLoader(
-        fields,
-        data,
-        filters,
-        order_by,
-        pagination,
-        info,
-      );
-    } else {
-      // One to many
-      const entityName: string = data[0];
-      const entityKey: string = data[1];
-      if (!gctx[alias || entityName]) {
         const fields = Array.from(
-          resolverRecursive(info.fieldNodes, info.fieldName, info.fragments),
+          resolverRecursive(info.fieldNodes, entityName, info.fragments),
         ).map((field) => pluralize.singular(entityName) + '.' + field);
 
-        gctx[alias || entityName] = oneToManyLoader(
+        return getMany(
           fields,
-          entityName,
-          entityKey,
+          payload.data.graphqlName,
           filters,
           order_by,
           pagination,
           info,
         );
+        break;
       }
     }
 
@@ -92,6 +128,11 @@ function resolverRecursive(
 
   if (from_fragment) {
     for (const resolver of resolvers) {
+      if (resolver.kind === 'Field') {
+        if (resolver?.name.value === '__typename') {
+          return;
+        }
+      }
       if (resolver.kind === 'Field' && !resolver.selectionSet) {
         results.add(resolver.name.value);
       } else if (resolver.kind === 'FragmentSpread') {
@@ -118,6 +159,11 @@ function resolverRecursive(
     if (resolver.kind === 'Field' && resolver.selectionSet) {
       if (resolver.name.value === field) {
         resolver.selectionSet.selections.forEach((item) => {
+          if (item.kind === 'Field') {
+            if (item?.name.value === '__typename') {
+              return;
+            }
+          }
           if (item.kind === 'Field' && !item.selectionSet) {
             results.add(item.name.value);
           } else if (
