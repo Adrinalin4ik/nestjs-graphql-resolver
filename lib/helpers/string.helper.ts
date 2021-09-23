@@ -1,3 +1,5 @@
+import { snakeCase } from "snake-case";
+
 export const capitalize = (str: string) => {
   const firstLeter = str[0].toUpperCase();
   const otherLetters = str.slice(1);
@@ -13,3 +15,7 @@ export const castValueType = (str: string) => {
     return str;
   }
 };
+
+export const unifyEntityName = (str: string) => {
+  return snakeCase(str, {delimiter: '_'});
+}

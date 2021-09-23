@@ -49,7 +49,8 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
           // Paginate(),
         ],
         callback: (loader: GraphQLExecutionContext, parent) => {
-          return loader[parent[r.typePropertyName].toLowerCase()].load(parent[r.idPropertyName]);
+          const loaderName = parent[r.typePropertyName];
+          return loader[loaderName].load(parent[r.idPropertyName]);
         },
       });
 

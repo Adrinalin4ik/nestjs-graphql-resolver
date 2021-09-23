@@ -11,6 +11,8 @@ import { PaginationInputType } from '../pagination/pagination.dto';
 import { oneToManyLoader, manyToOneLoader, getMany } from './base.loader';
 import storage from '../storage';
 
+import { unifyEntityName } from 'lib/helpers/string.helper';
+
 export enum ELoaderType {
   Polymorphic = 'Polymorphic',
   ManyToOne = 'ManyToOne',
@@ -77,15 +79,18 @@ export const Loader = createParamDecorator(
         break;
       }
       case ELoaderType.Polymorphic: {
-        const entityName: string = parent[payload.data.typePropertyName].toLowerCase();
+        const entityName: string = parent[payload.data.typePropertyName];
+        const unifiedEntityName = unifyEntityName(entityName);
         if (!gctx[entityName]) {
           const fields = Array.from(
-            resolverRecursive(info.fieldNodes, entityName, info.fragments),
-          ).map((field) => entityName + '.' + field);
-    
+            resolverRecursive(info.fieldNodes, unifiedEntityName, info.fragments),
+          ).map((field) => unifiedEntityName + '.' + field);
+            
+          
+
           gctx[entityName] = manyToOneLoader(
             fields,
-            entityName,
+            unifiedEntityName,
             filters,
             order_by,
             pagination,
@@ -111,7 +116,6 @@ export const Loader = createParamDecorator(
           pagination,
           info,
         );
-        break;
       }
     }
 

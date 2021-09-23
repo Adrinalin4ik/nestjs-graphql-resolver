@@ -610,7 +610,7 @@ type Material {
   groupAgg: [MaterialGroupType!]
 }
 
-union ResultUnion = User | Task
+union ResultUnion = User | Task | UserCompetency
 
 type Query {
   seniorities(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType, paginate: PaginationInputType): [Seniority!]!
