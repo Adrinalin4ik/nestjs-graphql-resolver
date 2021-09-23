@@ -11,7 +11,7 @@ import { PaginationInputType } from '../pagination/pagination.dto';
 import { oneToManyLoader, manyToOneLoader, getMany } from './base.loader';
 import storage from '../storage';
 
-import { unifyEntityName } from 'lib/helpers/string.helper';
+import { unifyEntityName } from '../helpers/string.helper';
 
 export enum ELoaderType {
   Polymorphic = 'Polymorphic',
