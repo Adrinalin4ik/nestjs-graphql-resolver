@@ -18,7 +18,7 @@ import { ESubscriberType, generateSubscriberName } from '../helpers/subscribers'
 import { pubsub } from '../pubsub';
 import storage from '../storage';
 import * as pluralize from 'pluralize';
-import { unifyEntityName } from 'lib/helpers/string.helper';
+import { unifyEntityName } from '../helpers/string.helper';
 export interface IAutoResolverOptions {
   subscribers?: ESubscriberType[]
 }
