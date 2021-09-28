@@ -45,4 +45,7 @@ export class Competency extends BaseEntity {
     onDelete: 'CASCADE',
   })
   user_competencies: UserCompetency[];
+
+  @Column({type: 'uuid', nullable: true})
+  test_uuid: string;
 }

@@ -5,7 +5,7 @@ import { AutoMutation, AutoResolver } from '../../../lib';
 import { getRepository, Repository } from 'typeorm';
 import { CompetencyObjectType, CreateCompetency, DeleteCompetencyResult, UpdateCompetency } from './competency.dto';
 
-console.log(typeof CompetencyObjectType)
+// console.log(typeof CompetencyObjectType)
 @AutoResolver(CompetencyObjectType)
 @Resolver(() => CompetencyObjectType)
 export class CompetencyResolver {
@@ -33,7 +33,7 @@ export class CompetencyResolver {
   async createCompetency(
     @Args('competency') inputCompetency: CreateCompetency,
   ) {
-    console.log(inputCompetency);
+    // console.log(inputCompetency);
     const competency = new Competency();
     competency.seniority_id = inputCompetency.seniority_id;
     competency.title = inputCompetency.title;

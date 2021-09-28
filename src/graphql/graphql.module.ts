@@ -5,7 +5,6 @@ import {
   GraphQLModule,
 } from '@nestjs/graphql';
 import { join } from 'path';
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 
 @Injectable()
 export class GraphqlOptions implements GqlOptionsFactory {
@@ -14,15 +13,14 @@ export class GraphqlOptions implements GqlOptionsFactory {
       debug: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       installSubscriptionHandlers: true,
-      emitTypenameField: true,
+      path: '/graphql',
       definitions: {
         emitTypenameField: true,
       },
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       // subscriptions: {
       //   path: '/subscriptions',
       // },
-    } as any;
+    };
   }
 }
 

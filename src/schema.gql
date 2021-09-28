@@ -6,16 +6,11 @@ type SubcompetencyPrimitiveFieldType {
   id: Float
   title: String
   competency_id: Float
-  date_time_with_timezone: DateTime
-  created_at: DateTime
-  updated_at: DateTime
+  date_time_with_timezone: String
+  created_at: String
+  updated_at: String
   test_bool: Boolean
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type SubcompetencyGroupType {
   by: SubcompetencyPrimitiveFieldType
@@ -47,6 +42,7 @@ input CompetencyEntityFilterInputType {
   id: Number_property_filter_type
   title: String_property_filter_type
   seniority_id: Number_property_filter_type
+  test_uuid: String_property_filter_type
   and: [CompetencyEntityFilterInputType!]
   or: [CompetencyEntityFilterInputType!]
   avg: CompetencyEntityFilterInputType
@@ -228,6 +224,7 @@ input CompetencyEntityOrderInputType {
   id: OrderTypeEnum
   title: OrderTypeEnum
   seniority_id: OrderTypeEnum
+  test_uuid: OrderTypeEnum
   avg: CompetencyEntityOrderInputType
   sum: CompetencyEntityOrderInputType
   count: CompetencyEntityOrderInputType
@@ -349,6 +346,11 @@ input TaskEntityOrderInputType {
   min: TaskEntityOrderInputType
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type TaskPrimitiveFieldType {
   title: String
   description: String
@@ -406,11 +408,11 @@ input AssigneeEntityOrderInputType {
 }
 
 type UserSubcompetencyPrimitiveFieldType {
-  id: DateTime
+  id: String
   subcompetency_id: Float
   user_id: Float
-  created_at: DateTime
-  updated_at: DateTime
+  created_at: String
+  updated_at: String
 }
 
 type UserSubcompetencyGroupType {
@@ -480,8 +482,8 @@ type UserCompetencyPrimitiveFieldType {
   id: Float
   competency_id: Float
   user_id: Float
-  created_at: DateTime
-  updated_at: DateTime
+  created_at: String
+  updated_at: String
 }
 
 type UserCompetencyGroupType {
@@ -514,6 +516,7 @@ type CompetencyPrimitiveFieldType {
   id: Float
   title: String
   seniority_id: Float
+  test_uuid: String
 }
 
 type CompetencyGroupType {
@@ -533,6 +536,7 @@ type Competency {
   seniority(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType): Seniority!
   subcompetencies(where: SubcompetencyEntityFilterInputType, order_by: SubcompetencyEntityOrderInputType): [Subcompetency!]
   user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType): [UserCompetency!]
+  tast_uuid: String!
   groupAgg: [CompetencyGroupType!]
 }
 
@@ -561,8 +565,8 @@ type Seniority {
 
 type CustomerPrimitiveFieldType {
   id: Float
-  created_at: DateTime
-  updated_at: DateTime
+  created_at: String
+  updated_at: String
   name: String
 }
 

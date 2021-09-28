@@ -66,4 +66,7 @@ export class CompetencyObjectType {
 
   @Field(() => [UserCompetencyObjectType], { nullable: true })
   user_competencies: UserCompetencyObjectType[];
+
+  @Field()
+  tast_uuid: string;
 }

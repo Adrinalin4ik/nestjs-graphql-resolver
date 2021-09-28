@@ -5,15 +5,23 @@ const storage: IStorage = {
   objectTypes: [],
   relations:[],
   polymorphicRelations: [],
+  config: {}
 };
 
 export default storage;
 
+interface IConfig {
+  scoping?: {
+    headerName?: string;
+    urlParamName?: string;
+  }
+}
 
 interface IStorage {
   relations: IRelation[];
   objectTypes: IObjectType[];
   polymorphicRelations: (IPolymorphicRelation & IPolymorphicRelationParams)[];
+  config: IConfig;
 }
 
 interface IRelation {

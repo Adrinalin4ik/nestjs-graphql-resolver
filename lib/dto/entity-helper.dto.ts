@@ -38,19 +38,26 @@ const generateEntityAggregationParametersType = (entity: GqlType) => {
       const key = col.propertyName.toLowerCase();
       EntityPrimitiveFieldEnum[key] = key;
 
+      let objType;
+      if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {
+        objType = col.options?.type;
+      } else {
+        switch(col.options?.type) {
+          case 'uuid':
+            objType = String;
+            break;
+          default: objType = String;
+        }
+      }
+
       registerEnumType(EntityPrimitiveFieldEnum, {
         name: `${entityName}PrimitiveEnum`,
       });
-
+      
       decorateField(
         EntityPrimitiveFieldType,
         col.propertyName.toLowerCase(),
-        () => (builtInPremitiveGQLType.has(
-            col.options?.type?.['prototype']?.constructor?.name?.toLowerCase(),
-            )
-              ? col.options?.type
-              : GraphQLISODateTime) as any
-      );
+        () => objType);
     }
 
     EntityAggregationParametersEnum.set(entityName, EntityPrimitiveFieldEnum);
