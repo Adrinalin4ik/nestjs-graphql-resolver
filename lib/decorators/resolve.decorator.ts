@@ -60,7 +60,7 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
     relations.forEach((r) => {
       if (BaseResolverClass.prototype[r.propertyName]) return;
 
-      const relationMeta = storage.relations.find(x => x.fromTable === r.target && x.toTable === (r.type as any)());
+      const relationMeta = storage.relations.find(x => x.fromTable === r.target && x.toTable === (r.type as any)() && x.propertyName === r.propertyName);
 
       if (r.relationType === 'many-to-one') {
         // Many to one. Example: competencies => seniority

@@ -42,7 +42,7 @@ export const generateOrderInputType = (propName: string) => {
 
   relations.forEach(rel => {
     const propertyName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
-    const relationMeta = storage.relations.find(x => x.fromTable === rel.target && x.toTable === (rel?.type as any)());
+    const relationMeta = storage.relations.find(x => x.fromTable === rel.target && x.toTable === (rel?.type as any)() && x.propertyName === rel.propertyName);
     const relationTable =  capitalize(camelCase(pluralize.singular((relationMeta?.toTable.name.toLowerCase() || propertyName))));
     
     decorateField(EntityOrderInputType, rel.propertyName, () => inputTypes.get(relationTable));

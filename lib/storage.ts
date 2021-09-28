@@ -25,6 +25,7 @@ interface IStorage {
 }
 
 interface IRelation {
+  propertyName: string;
   fromTable: typeof BaseEntity, 
   toTable: typeof BaseEntity, 
   joinPropertyName: string
