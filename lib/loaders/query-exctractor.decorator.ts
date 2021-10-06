@@ -102,15 +102,15 @@ export const Loader = createParamDecorator(
       }
       default: {
         // Если лоудер не нужен
-        const entityName: string = pluralize(payload.data.graphqlName).toLowerCase();
+        const entityName: string = unifyEntityName(payload.data.graphqlName).toLowerCase();
 
         const fields = Array.from(
-          resolverRecursive(info.fieldNodes, entityName, info.fragments),
+          resolverRecursive(info.fieldNodes, pluralize(entityName), info.fragments),
         ).map((field) => pluralize.singular(entityName) + '.' + field);
 
         return getMany(
           fields,
-          payload.data.graphqlName,
+          entityName,
           filters,
           order_by,
           pagination,
@@ -162,7 +162,8 @@ function resolverRecursive(
 
   for (const resolver of resolvers) {
     if (resolver.kind === 'Field' && resolver.selectionSet) {
-      if (resolver.name.value === field) {
+      const unifiedName = unifyEntityName(resolver.name.value);
+      if (unifiedName === field) {
         resolver.selectionSet.selections.forEach((item) => {
           if (item.kind === 'Field') {
             if (item?.name.value === '__typename') {
