@@ -27,7 +27,7 @@ type Subcompetency {
   title: String!
   competency_id: Int!
   competency(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): Competency
-  user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [Competency!]
+  user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType, paginate: PaginationInputType): [Competency!]
   date_time_with_timezone: DateTime
   created_at: DateTime!
   updated_at: DateTime!
@@ -346,6 +346,11 @@ input TaskEntityOrderInputType {
   min: TaskEntityOrderInputType
 }
 
+input PaginationInputType {
+  page: Float!
+  per_page: Float!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -385,7 +390,7 @@ type Task {
   created_at: String!
   updated_at: String!
   task(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): Task
-  subtasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
+  subtasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]
   groupAgg: [TaskGroupType!]
 }
 
@@ -472,9 +477,9 @@ type User {
   is_active: Boolean!
   seniority_id: Int!
   seniority(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType): Seniority
-  user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType): [UserCompetency!]
-  user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [UserSubcompetency!]
-  tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
+  user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType, paginate: PaginationInputType): [UserCompetency!]
+  user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType, paginate: PaginationInputType): [UserSubcompetency!]
+  tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]
   groupAgg: [UserGroupType!]
 }
 
@@ -534,8 +539,8 @@ type Competency {
   title: String!
   seniority_id: Int!
   seniority(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType): Seniority!
-  subcompetencies(where: SubcompetencyEntityFilterInputType, order_by: SubcompetencyEntityOrderInputType): [Subcompetency!]
-  user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType): [UserCompetency!]
+  subcompetencies(where: SubcompetencyEntityFilterInputType, order_by: SubcompetencyEntityOrderInputType, paginate: PaginationInputType): [Subcompetency!]
+  user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType, paginate: PaginationInputType): [UserCompetency!]
   tast_uuid: String!
   groupAgg: [CompetencyGroupType!]
 }
@@ -558,8 +563,8 @@ type SeniorityGroupType {
 type Seniority {
   id: Int!
   title: String!
-  competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): [Competency!]
-  users(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType): [User!]
+  competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType, paginate: PaginationInputType): [Competency!]
+  users(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType, paginate: PaginationInputType): [User!]
   groupAgg: [SeniorityGroupType!]
 }
 
@@ -627,11 +632,6 @@ type Query {
   tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]!
   customers(where: CustomerEntityFilterInputType, order_by: CustomerEntityOrderInputType, paginate: PaginationInputType): [Customer!]!
   materials(where: MaterialEntityFilterInputType, order_by: MaterialEntityOrderInputType, paginate: PaginationInputType): [Material!]!
-}
-
-input PaginationInputType {
-  page: Float!
-  per_page: Float!
 }
 
 input CustomerEntityFilterInputType {

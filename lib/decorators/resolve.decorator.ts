@@ -120,6 +120,7 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
               Parent(),
               Filters(relationTable),
               Order(relationTable),
+              Paginate(),
               Context()
             ],
             callback: (loader: GraphQLExecutionContext, parent, a, b, ctx) => {
