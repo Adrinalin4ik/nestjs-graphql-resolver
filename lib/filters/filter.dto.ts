@@ -92,7 +92,7 @@ export const generateFilterInputType = (propName: string) => {
   
   colums.forEach(col => {
     let objType;
-    const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && x.objectName === dtoObjectMeta.objectName );
+    const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && (x.objectName === dtoObjectMeta.objectName || x.objectName === dtoObjectMeta.extendedObjectName));
     if (gqlPropType) {
       objType = gqlPropType.propertyType;
     } else if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {

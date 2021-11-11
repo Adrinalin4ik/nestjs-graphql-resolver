@@ -28,15 +28,16 @@ interface IStorage {
 
 interface IRelation {
   propertyName: string;
-  fromTable: typeof BaseEntity, 
-  toTable: typeof BaseEntity, 
-  joinPropertyName: string
+  fromTable: typeof BaseEntity; 
+  toTable: typeof BaseEntity; 
+  joinPropertyName: string;
 }
 
 interface IObjectType {
-  graphqlName: string,
-  tableName: string,
-  objectName: string
+  graphqlName: string;
+  tableName: string;
+  objectName: string;
+  extendedObjectName?: string;
 }
 
 interface IPolymorphicRelation {

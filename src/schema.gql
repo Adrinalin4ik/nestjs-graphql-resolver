@@ -71,9 +71,9 @@ input UserEntityFilterInputType {
   user_competencies: UserCompetencyEntityFilterInputType
   user_subcompetencies: UserSubcompetencyEntityFilterInputType
   tasks: TaskEntityFilterInputType
-  id: Number_property_filter_type
-  created_at: String_property_filter_type
-  updated_at: String_property_filter_type
+  id: Int_property_filter_type
+  created_at: Date_property_filter_type
+  updated_at: Date_property_filter_type
   identification_number: Number_property_filter_type
   email: String_property_filter_type
   fname: String_property_filter_type
@@ -233,6 +233,27 @@ input TaskEntityFilterInputType {
   min: TaskEntityFilterInputType
 }
 
+input Date_property_filter_type {
+  eq: DateTime
+  neq: DateTime
+  gt: DateTime
+  gte: DateTime
+  lt: DateTime
+  lte: DateTime
+  in: [DateTime!]
+  ilike: DateTime
+  notilike: DateTime
+  between: [DateTime!]
+  notbetween: [DateTime!]
+  null: Boolean
+  notnull: Boolean
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 input CompetencyEntityOrderInputType {
   seniority: SeniorityEntityOrderInputType
   subcompetencies: SubcompetencyEntityOrderInputType
@@ -362,11 +383,6 @@ input TaskEntityOrderInputType {
   min: TaskEntityOrderInputType
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type TaskPrimitiveFieldType {
   title: String
   description: String
@@ -476,8 +492,8 @@ type UserGroupType {
 
 type User {
   id: Int!
-  created_at: String!
-  updated_at: String!
+  created_at: DateTime!
+  updated_at: DateTime!
   identification_number: Int!
   email: String!
   fname: String!
@@ -580,9 +596,9 @@ type Seniority {
 }
 
 type CustomerPrimitiveFieldType {
-  id: Float
-  created_at: String
-  updated_at: String
+  id: Int
+  created_at: DateTime
+  updated_at: DateTime
   name: String
 }
 
@@ -598,8 +614,8 @@ type CustomerGroupType {
 
 type Customer {
   id: Int!
-  created_at: String!
-  updated_at: String!
+  created_at: DateTime!
+  updated_at: DateTime!
   name: String!
   groupAgg: [CustomerGroupType!]
 }
@@ -651,9 +667,9 @@ input PaginationInputType {
 }
 
 input CustomerEntityFilterInputType {
-  id: Number_property_filter_type
-  created_at: String_property_filter_type
-  updated_at: String_property_filter_type
+  id: Int_property_filter_type
+  created_at: Date_property_filter_type
+  updated_at: Date_property_filter_type
   name: String_property_filter_type
   and: [CustomerEntityFilterInputType!]
   or: [CustomerEntityFilterInputType!]

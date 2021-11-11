@@ -40,7 +40,7 @@ const generateEntityAggregationParametersType = (entity: GqlType) => {
       EntityPrimitiveFieldEnum[key] = key;
 
       let objType;
-      const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && x.objectName === dtoObjectMeta.objectName );
+      const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && (x.objectName === dtoObjectMeta.objectName || x.objectName === dtoObjectMeta.extendedObjectName) );
 
       if (gqlPropType) {
         objType = gqlPropType.propertyType;

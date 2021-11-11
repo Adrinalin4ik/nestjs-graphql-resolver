@@ -1,7 +1,7 @@
-import { Field, ObjectType, ObjectTypeOptions, Subscription } from '@nestjs/graphql';
+import { Field, ObjectType, ObjectTypeOptions } from '@nestjs/graphql';
+import { getMetadataArgsStorage } from 'typeorm';
 import { generateGroupAggType } from '../aggregations/aggregations.dto';
 import { GqlType } from '../helpers/classes';
-import { getMetadataArgsStorage } from 'typeorm';
 import { addDecoratedMethodToClass } from '../helpers/decorators';
 import { ESubscriberType, generateSubscriberName, getDecoratorByOperationType } from '../helpers/subscribers';
 import { pubsub } from '../pubsub';
@@ -32,6 +32,7 @@ export const EntityObjectType = (options?: ObjectTypeOptionsExtended) => {
       graphqlName: typeName,
       tableName: typeName,
       objectName: dto.name,
+      extendedObjectName: dto?.['__proto__']?.name
     })
     
     if (options?.autoSubscriptionEnabled) {

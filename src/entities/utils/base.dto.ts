@@ -1,4 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Int, ObjectType } from '@nestjs/graphql';
+import { Field } from '../../../lib';
 
 @ObjectType()
 export class BaseDTO {
@@ -6,9 +7,9 @@ export class BaseDTO {
   id: number;
 
   // Timestamps
-  @Field(() => String)
+  @Field(() => Date)
   created_at: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
   updated_at: Date;
 }
