@@ -95,7 +95,7 @@ input UserEntityFilterInputType {
 input UserCompetencyEntityFilterInputType {
   competency: CompetencyEntityFilterInputType
   user: UserEntityFilterInputType
-  id: Number_property_filter_type
+  id: Int_property_filter_type
   competency_id: Number_property_filter_type
   user_id: Number_property_filter_type
   created_at: String_property_filter_type
@@ -107,6 +107,22 @@ input UserCompetencyEntityFilterInputType {
   count: UserCompetencyEntityFilterInputType
   max: UserCompetencyEntityFilterInputType
   min: UserCompetencyEntityFilterInputType
+}
+
+input Int_property_filter_type {
+  eq: Int
+  neq: Int
+  gt: Int
+  gte: Int
+  lt: Int
+  lte: Int
+  in: [Int!]
+  ilike: Int
+  notilike: Int
+  between: [Int!]
+  notbetween: [Int!]
+  null: Boolean
+  notnull: Boolean
 }
 
 input Number_property_filter_type {
@@ -479,7 +495,7 @@ type User {
 }
 
 type UserCompetencyPrimitiveFieldType {
-  id: Float
+  id: Int
   competency_id: Float
   user_id: Float
   created_at: String

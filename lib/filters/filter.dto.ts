@@ -1,13 +1,12 @@
-import { InputType, GraphQLISODateTime } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { camelCase } from 'change-case';
+import * as pluralize from 'pluralize';
 import { getMetadataArgsStorage } from 'typeorm';
+import { AggregationEnum } from '../aggregations/aggregations.dto';
 import { builtInPremitiveGQLType } from '../dto/entity-helper.dto';
 import { decorateField } from '../helpers/decorators';
-import { camelCase } from 'change-case';
 import { capitalize } from '../helpers/string.helper';
-import * as pluralize from 'pluralize';
-import { AggregationEnum } from '../aggregations/aggregations.dto';
 import storage from '../storage';
-
 export enum OperatorQuery {
   and = 'and',
   or = 'or',
@@ -73,6 +72,7 @@ export const generateFilterInputType = (propName: string) => {
 
   const table = entityMeta.tables.find(x => x.target['name'].toLowerCase() === entityName.toLowerCase())
   const extendedTableName = table?.target['__proto__'].name;
+  const dtoObjectMeta = storage.objectTypes.find(x => x.tableName === entityName);
 
   const relations = entityMeta.relations.filter(
     (x) => [extendedTableName?.toLowerCase(), entityName.toLowerCase()].includes(x.target['name'].toLowerCase()),
@@ -89,10 +89,13 @@ export const generateFilterInputType = (propName: string) => {
   const colums = entityMeta.columns.filter(
     (x) => [extendedTableName?.toLowerCase(), entityName.toLowerCase()].includes(x.target['name'].toLowerCase()),
   );
-
+  
   colums.forEach(col => {
     let objType;
-    if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {
+    const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && x.objectName === dtoObjectMeta.objectName );
+    if (gqlPropType) {
+      objType = gqlPropType.propertyType;
+    } else if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {
       objType = col.options?.type;
     } else {
       switch(col.options?.type) {

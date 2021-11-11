@@ -1,12 +1,11 @@
 import {
-  GraphQLISODateTime,
-  InputType,
   ObjectType,
-  registerEnumType,
+  registerEnumType
 } from '@nestjs/graphql';
-import { GqlType } from '../helpers/classes';
 import { BaseEntity, getMetadataArgsStorage } from 'typeorm';
+import { GqlType } from '../helpers/classes';
 import { decorateField } from '../helpers/decorators';
+import storage from '../storage';
 
 export const builtInPremitiveGQLType = new Set(['string', 'number', 'boolean']);
 
@@ -17,6 +16,7 @@ export const EntityAggregationParametersType = new Map();
 const generateEntityAggregationParametersType = (entity: GqlType) => {
   const entityName = entity.graphqlName;
   const entityMeta = getMetadataArgsStorage();
+  const dtoObjectMeta = storage.objectTypes.find(x => x.tableName === entityName);
 
   if (!EntityAggregationParametersEnum.has(entityName)) {
     enum EntityPrimitiveFieldEnum {}
@@ -33,13 +33,18 @@ const generateEntityAggregationParametersType = (entity: GqlType) => {
     //     x.target['name'] == entityName
     //   );
     // });
-
+    
+    
     for (const col of columns) {
       const key = col.propertyName.toLowerCase();
       EntityPrimitiveFieldEnum[key] = key;
 
       let objType;
-      if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {
+      const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && x.objectName === dtoObjectMeta.objectName );
+
+      if (gqlPropType) {
+        objType = gqlPropType.propertyType;
+      } else if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {
         objType = col.options?.type;
       } else {
         switch(col.options?.type) {

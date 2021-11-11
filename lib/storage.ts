@@ -5,7 +5,8 @@ const storage: IStorage = {
   objectTypes: [],
   relations:[],
   polymorphicRelations: [],
-  config: {}
+  config: {},
+  fields: []
 };
 
 export default storage;
@@ -22,6 +23,7 @@ interface IStorage {
   objectTypes: IObjectType[];
   polymorphicRelations: (IPolymorphicRelation & IPolymorphicRelationParams)[];
   config: IConfig;
+  fields: IObjectField[];
 }
 
 interface IRelation {
@@ -40,4 +42,10 @@ interface IObjectType {
 interface IPolymorphicRelation {
   objectName: string;
   propertyName: string;
+}
+
+interface IObjectField {
+  propertyName: string | symbol;
+  propertyType: any;
+  objectName: string;
 }

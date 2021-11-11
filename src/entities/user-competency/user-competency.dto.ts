@@ -1,5 +1,5 @@
 import { Field, Int } from "@nestjs/graphql";
-import { EntityObjectType } from "../../../lib";
+import { EntityObjectType, Field as FieldTest } from "../../../lib";
 import { CompetencyObjectType } from "../competency/competency.dto";
 import { UserObjectType } from "../user/user.dto";
 
@@ -7,7 +7,7 @@ import { UserObjectType } from "../user/user.dto";
   name: 'UserCompetency'
 })
 export class UserCompetencyObjectType {
-  @Field(() => Int)
+  @FieldTest(() => Int)
   id: number;
 
   @Field(() => Int)
