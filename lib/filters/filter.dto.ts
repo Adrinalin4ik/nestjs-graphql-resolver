@@ -81,7 +81,7 @@ export const generateFilterInputType = (propName: string) => {
   relations.forEach(rel => {
     const propertyName = capitalize(camelCase(pluralize.singular(rel.propertyName)));
     const relationMeta = storage.relations.find(x => x.fromTable === rel.target && x.toTable === (rel?.type as any)() && x.propertyName === rel.propertyName);
-    const relationTable =  capitalize(camelCase(pluralize.singular((relationMeta?.toTable.name.toLowerCase() || propertyName))));
+    const relationTable =  capitalize(camelCase(pluralize.singular((relationMeta?.toTable.name || propertyName))));
     
     decorateField(EntityFilterInputType, rel.propertyName, () => inputTypes.get(relationTable));
   });
@@ -92,7 +92,7 @@ export const generateFilterInputType = (propName: string) => {
   
   colums.forEach(col => {
     let objType;
-    const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && (x.objectName === dtoObjectMeta.objectName || x.objectName === dtoObjectMeta.extendedObjectName));
+    const gqlPropType = storage.fields.find(x => x.propertyName === col.propertyName && (x.objectName === dtoObjectMeta?.objectName || x.objectName === dtoObjectMeta?.extendedObjectName));
     if (gqlPropType) {
       objType = gqlPropType.propertyType;
     } else if (builtInPremitiveGQLType.has(col.options?.type?.['prototype']?.constructor?.name?.toLowerCase())) {

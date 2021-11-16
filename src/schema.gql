@@ -2,387 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type SubcompetencyPrimitiveFieldType {
-  id: Float
-  title: String
-  competency_id: Float
-  date_time_with_timezone: String
-  created_at: String
-  updated_at: String
-  test_bool: Boolean
-}
-
-type SubcompetencyGroupType {
-  by: SubcompetencyPrimitiveFieldType
-  count: Float
-  fields: [Subcompetency!]
-  avg: SubcompetencyPrimitiveFieldType
-  sum: SubcompetencyPrimitiveFieldType
-  max: SubcompetencyPrimitiveFieldType
-  min: SubcompetencyPrimitiveFieldType
-}
-
-type Subcompetency {
-  id: Int!
-  title: String!
-  competency_id: Int!
-  competency(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): Competency
-  user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [Competency!]
-  date_time_with_timezone: DateTime
-  created_at: DateTime!
-  updated_at: DateTime!
-  test_bool: Boolean!
-  groupAgg: [SubcompetencyGroupType!]
-}
-
-input CompetencyEntityFilterInputType {
-  seniority: SeniorityEntityFilterInputType
-  subcompetencies: SubcompetencyEntityFilterInputType
-  user_competencies: UserCompetencyEntityFilterInputType
-  id: Number_property_filter_type
-  title: String_property_filter_type
-  seniority_id: Number_property_filter_type
-  test_uuid: String_property_filter_type
-  and: [CompetencyEntityFilterInputType!]
-  or: [CompetencyEntityFilterInputType!]
-  avg: CompetencyEntityFilterInputType
-  sum: CompetencyEntityFilterInputType
-  count: CompetencyEntityFilterInputType
-  max: CompetencyEntityFilterInputType
-  min: CompetencyEntityFilterInputType
-}
-
-input SeniorityEntityFilterInputType {
-  competencies: CompetencyEntityFilterInputType
-  users: UserEntityFilterInputType
-  id: Number_property_filter_type
-  title: String_property_filter_type
-  and: [SeniorityEntityFilterInputType!]
-  or: [SeniorityEntityFilterInputType!]
-  avg: SeniorityEntityFilterInputType
-  sum: SeniorityEntityFilterInputType
-  count: SeniorityEntityFilterInputType
-  max: SeniorityEntityFilterInputType
-  min: SeniorityEntityFilterInputType
-}
-
-input UserEntityFilterInputType {
-  seniority: SeniorityEntityFilterInputType
-  user_competencies: UserCompetencyEntityFilterInputType
-  user_subcompetencies: UserSubcompetencyEntityFilterInputType
-  tasks: TaskEntityFilterInputType
-  id: Int_property_filter_type
-  created_at: Date_property_filter_type
-  updated_at: Date_property_filter_type
-  identification_number: Number_property_filter_type
-  email: String_property_filter_type
-  fname: String_property_filter_type
-  lname: String_property_filter_type
-  mname: String_property_filter_type
-  age: Number_property_filter_type
-  phone: String_property_filter_type
-  is_active: Boolean_property_filter_type
-  seniority_id: Number_property_filter_type
-  and: [UserEntityFilterInputType!]
-  or: [UserEntityFilterInputType!]
-  avg: UserEntityFilterInputType
-  sum: UserEntityFilterInputType
-  count: UserEntityFilterInputType
-  max: UserEntityFilterInputType
-  min: UserEntityFilterInputType
-}
-
-input UserCompetencyEntityFilterInputType {
-  competency: CompetencyEntityFilterInputType
-  user: UserEntityFilterInputType
-  id: Int_property_filter_type
-  competency_id: Number_property_filter_type
-  user_id: Number_property_filter_type
-  created_at: String_property_filter_type
-  updated_at: String_property_filter_type
-  and: [UserCompetencyEntityFilterInputType!]
-  or: [UserCompetencyEntityFilterInputType!]
-  avg: UserCompetencyEntityFilterInputType
-  sum: UserCompetencyEntityFilterInputType
-  count: UserCompetencyEntityFilterInputType
-  max: UserCompetencyEntityFilterInputType
-  min: UserCompetencyEntityFilterInputType
-}
-
-input Int_property_filter_type {
-  eq: Int
-  neq: Int
-  gt: Int
-  gte: Int
-  lt: Int
-  lte: Int
-  in: [Int!]
-  ilike: Int
-  notilike: Int
-  between: [Int!]
-  notbetween: [Int!]
-  null: Boolean
-  notnull: Boolean
-}
-
-input Number_property_filter_type {
-  eq: Float
-  neq: Float
-  gt: Float
-  gte: Float
-  lt: Float
-  lte: Float
-  in: [Float!]
-  ilike: Float
-  notilike: Float
-  between: [Float!]
-  notbetween: [Float!]
-  null: Boolean
-  notnull: Boolean
-}
-
-input String_property_filter_type {
-  eq: String
-  neq: String
-  gt: String
-  gte: String
-  lt: String
-  lte: String
-  in: [String!]
-  ilike: String
-  notilike: String
-  between: [String!]
-  notbetween: [String!]
-  null: Boolean
-  notnull: Boolean
-}
-
-input UserSubcompetencyEntityFilterInputType {
-  subcompetency: SubcompetencyEntityFilterInputType
-  user: UserEntityFilterInputType
-  id: String_property_filter_type
-  subcompetency_id: Number_property_filter_type
-  user_id: Number_property_filter_type
-  created_at: String_property_filter_type
-  updated_at: String_property_filter_type
-  and: [UserSubcompetencyEntityFilterInputType!]
-  or: [UserSubcompetencyEntityFilterInputType!]
-  avg: UserSubcompetencyEntityFilterInputType
-  sum: UserSubcompetencyEntityFilterInputType
-  count: UserSubcompetencyEntityFilterInputType
-  max: UserSubcompetencyEntityFilterInputType
-  min: UserSubcompetencyEntityFilterInputType
-}
-
-input SubcompetencyEntityFilterInputType {
-  competency: CompetencyEntityFilterInputType
-  user_subcompetencies: UserSubcompetencyEntityFilterInputType
-  id: Number_property_filter_type
-  title: String_property_filter_type
-  competency_id: Number_property_filter_type
-  date_time_with_timezone: String_property_filter_type
-  created_at: String_property_filter_type
-  updated_at: String_property_filter_type
-  test_bool: Boolean_property_filter_type
-  and: [SubcompetencyEntityFilterInputType!]
-  or: [SubcompetencyEntityFilterInputType!]
-  avg: SubcompetencyEntityFilterInputType
-  sum: SubcompetencyEntityFilterInputType
-  count: SubcompetencyEntityFilterInputType
-  max: SubcompetencyEntityFilterInputType
-  min: SubcompetencyEntityFilterInputType
-}
-
-input Boolean_property_filter_type {
-  eq: Boolean
-  neq: Boolean
-  gt: Boolean
-  gte: Boolean
-  lt: Boolean
-  lte: Boolean
-  in: [Boolean!]
-  ilike: Boolean
-  notilike: Boolean
-  between: [Boolean!]
-  notbetween: [Boolean!]
-  null: Boolean
-  notnull: Boolean
-}
-
-input TaskEntityFilterInputType {
-  assignee: UserEntityFilterInputType
-  task: TaskEntityFilterInputType
-  subtasks: TaskEntityFilterInputType
-  id: Number_property_filter_type
-  created_at: String_property_filter_type
-  updated_at: String_property_filter_type
-  title: String_property_filter_type
-  description: String_property_filter_type
-  type_id: Number_property_filter_type
-  priority: Number_property_filter_type
-  story_points: Number_property_filter_type
-  status: Number_property_filter_type
-  assignee_id: Number_property_filter_type
-  task_id: Number_property_filter_type
-  and: [TaskEntityFilterInputType!]
-  or: [TaskEntityFilterInputType!]
-  avg: TaskEntityFilterInputType
-  sum: TaskEntityFilterInputType
-  count: TaskEntityFilterInputType
-  max: TaskEntityFilterInputType
-  min: TaskEntityFilterInputType
-}
-
-input Date_property_filter_type {
-  eq: DateTime
-  neq: DateTime
-  gt: DateTime
-  gte: DateTime
-  lt: DateTime
-  lte: DateTime
-  in: [DateTime!]
-  ilike: DateTime
-  notilike: DateTime
-  between: [DateTime!]
-  notbetween: [DateTime!]
-  null: Boolean
-  notnull: Boolean
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-input CompetencyEntityOrderInputType {
-  seniority: SeniorityEntityOrderInputType
-  subcompetencies: SubcompetencyEntityOrderInputType
-  user_competencies: UserCompetencyEntityOrderInputType
-  id: OrderTypeEnum
-  title: OrderTypeEnum
-  seniority_id: OrderTypeEnum
-  test_uuid: OrderTypeEnum
-  avg: CompetencyEntityOrderInputType
-  sum: CompetencyEntityOrderInputType
-  count: CompetencyEntityOrderInputType
-  max: CompetencyEntityOrderInputType
-  min: CompetencyEntityOrderInputType
-}
-
-input SeniorityEntityOrderInputType {
-  competencies: CompetencyEntityOrderInputType
-  users: UserEntityOrderInputType
-  id: OrderTypeEnum
-  title: OrderTypeEnum
-  avg: SeniorityEntityOrderInputType
-  sum: SeniorityEntityOrderInputType
-  count: SeniorityEntityOrderInputType
-  max: SeniorityEntityOrderInputType
-  min: SeniorityEntityOrderInputType
-}
-
-input UserEntityOrderInputType {
-  seniority: SeniorityEntityOrderInputType
-  user_competencies: UserCompetencyEntityOrderInputType
-  user_subcompetencies: UserSubcompetencyEntityOrderInputType
-  tasks: TaskEntityOrderInputType
-  id: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
-  identification_number: OrderTypeEnum
-  email: OrderTypeEnum
-  fname: OrderTypeEnum
-  lname: OrderTypeEnum
-  mname: OrderTypeEnum
-  age: OrderTypeEnum
-  phone: OrderTypeEnum
-  is_active: OrderTypeEnum
-  seniority_id: OrderTypeEnum
-  avg: UserEntityOrderInputType
-  sum: UserEntityOrderInputType
-  count: UserEntityOrderInputType
-  max: UserEntityOrderInputType
-  min: UserEntityOrderInputType
-}
-
-input UserCompetencyEntityOrderInputType {
-  competency: CompetencyEntityOrderInputType
-  user: UserEntityOrderInputType
-  id: OrderTypeEnum
-  competency_id: OrderTypeEnum
-  user_id: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
-  avg: UserCompetencyEntityOrderInputType
-  sum: UserCompetencyEntityOrderInputType
-  count: UserCompetencyEntityOrderInputType
-  max: UserCompetencyEntityOrderInputType
-  min: UserCompetencyEntityOrderInputType
-}
-
-enum OrderTypeEnum {
-  desc
-  desc_null_first
-  desc_null_last
-  asc
-  asc_null_first
-  asc_null_last
-}
-
-input UserSubcompetencyEntityOrderInputType {
-  subcompetency: SubcompetencyEntityOrderInputType
-  user: UserEntityOrderInputType
-  id: OrderTypeEnum
-  subcompetency_id: OrderTypeEnum
-  user_id: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
-  avg: UserSubcompetencyEntityOrderInputType
-  sum: UserSubcompetencyEntityOrderInputType
-  count: UserSubcompetencyEntityOrderInputType
-  max: UserSubcompetencyEntityOrderInputType
-  min: UserSubcompetencyEntityOrderInputType
-}
-
-input SubcompetencyEntityOrderInputType {
-  competency: CompetencyEntityOrderInputType
-  user_subcompetencies: UserSubcompetencyEntityOrderInputType
-  id: OrderTypeEnum
-  title: OrderTypeEnum
-  competency_id: OrderTypeEnum
-  date_time_with_timezone: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
-  test_bool: OrderTypeEnum
-  avg: SubcompetencyEntityOrderInputType
-  sum: SubcompetencyEntityOrderInputType
-  count: SubcompetencyEntityOrderInputType
-  max: SubcompetencyEntityOrderInputType
-  min: SubcompetencyEntityOrderInputType
-}
-
-input TaskEntityOrderInputType {
-  assignee: UserEntityOrderInputType
-  task: TaskEntityOrderInputType
-  subtasks: TaskEntityOrderInputType
-  id: OrderTypeEnum
-  created_at: OrderTypeEnum
-  updated_at: OrderTypeEnum
-  title: OrderTypeEnum
-  description: OrderTypeEnum
-  type_id: OrderTypeEnum
-  priority: OrderTypeEnum
-  story_points: OrderTypeEnum
-  status: OrderTypeEnum
-  assignee_id: OrderTypeEnum
-  task_id: OrderTypeEnum
-  avg: TaskEntityOrderInputType
-  sum: TaskEntityOrderInputType
-  count: TaskEntityOrderInputType
-  max: TaskEntityOrderInputType
-  min: TaskEntityOrderInputType
-}
-
 type TaskPrimitiveFieldType {
   title: String
   description: String
@@ -419,6 +38,7 @@ type Task {
   task(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): Task
   subtasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
   groupAgg: [TaskGroupType!]
+  materialabl: Task!
 }
 
 input AssigneeEntityFilterInputType {
@@ -437,6 +57,418 @@ input AssigneeEntityOrderInputType {
   count: AssigneeEntityOrderInputType
   max: AssigneeEntityOrderInputType
   min: AssigneeEntityOrderInputType
+}
+
+input TaskEntityFilterInputType {
+  assignee: UserEntityFilterInputType
+  task: TaskEntityFilterInputType
+  subtasks: TaskEntityFilterInputType
+  id: Number_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
+  title: String_property_filter_type
+  description: String_property_filter_type
+  type_id: Number_property_filter_type
+  priority: Number_property_filter_type
+  story_points: Number_property_filter_type
+  status: Number_property_filter_type
+  assignee_id: Number_property_filter_type
+  task_id: Number_property_filter_type
+  and: [TaskEntityFilterInputType!]
+  or: [TaskEntityFilterInputType!]
+  avg: TaskEntityFilterInputType
+  sum: TaskEntityFilterInputType
+  count: TaskEntityFilterInputType
+  max: TaskEntityFilterInputType
+  min: TaskEntityFilterInputType
+}
+
+input UserEntityFilterInputType {
+  seniority: SeniorityEntityFilterInputType
+  user_competencies: UserCompetencyEntityFilterInputType
+  user_subcompetencies: UserSubcompetencyEntityFilterInputType
+  tasks: TaskEntityFilterInputType
+  id: Int_property_filter_type
+  created_at: Date_property_filter_type
+  updated_at: Date_property_filter_type
+  identification_number: Number_property_filter_type
+  email: String_property_filter_type
+  fname: String_property_filter_type
+  lname: String_property_filter_type
+  mname: String_property_filter_type
+  age: Number_property_filter_type
+  phone: String_property_filter_type
+  is_active: Boolean_property_filter_type
+  seniority_id: Number_property_filter_type
+  and: [UserEntityFilterInputType!]
+  or: [UserEntityFilterInputType!]
+  avg: UserEntityFilterInputType
+  sum: UserEntityFilterInputType
+  count: UserEntityFilterInputType
+  max: UserEntityFilterInputType
+  min: UserEntityFilterInputType
+}
+
+input SeniorityEntityFilterInputType {
+  competencies: CompetencyEntityFilterInputType
+  users: UserEntityFilterInputType
+  id: Number_property_filter_type
+  title: String_property_filter_type
+  and: [SeniorityEntityFilterInputType!]
+  or: [SeniorityEntityFilterInputType!]
+  avg: SeniorityEntityFilterInputType
+  sum: SeniorityEntityFilterInputType
+  count: SeniorityEntityFilterInputType
+  max: SeniorityEntityFilterInputType
+  min: SeniorityEntityFilterInputType
+}
+
+input CompetencyEntityFilterInputType {
+  seniority: SeniorityEntityFilterInputType
+  subcompetencies: SubcompetencyEntityFilterInputType
+  user_competencies: UserCompetencyEntityFilterInputType
+  id: Number_property_filter_type
+  title: String_property_filter_type
+  seniority_id: Number_property_filter_type
+  test_uuid: String_property_filter_type
+  and: [CompetencyEntityFilterInputType!]
+  or: [CompetencyEntityFilterInputType!]
+  avg: CompetencyEntityFilterInputType
+  sum: CompetencyEntityFilterInputType
+  count: CompetencyEntityFilterInputType
+  max: CompetencyEntityFilterInputType
+  min: CompetencyEntityFilterInputType
+}
+
+input SubcompetencyEntityFilterInputType {
+  competency: CompetencyEntityFilterInputType
+  user_subcompetencies: UserSubcompetencyEntityFilterInputType
+  id: Number_property_filter_type
+  title: String_property_filter_type
+  competency_id: Number_property_filter_type
+  date_time_with_timezone: String_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
+  test_bool: Boolean_property_filter_type
+  and: [SubcompetencyEntityFilterInputType!]
+  or: [SubcompetencyEntityFilterInputType!]
+  avg: SubcompetencyEntityFilterInputType
+  sum: SubcompetencyEntityFilterInputType
+  count: SubcompetencyEntityFilterInputType
+  max: SubcompetencyEntityFilterInputType
+  min: SubcompetencyEntityFilterInputType
+}
+
+input UserSubcompetencyEntityFilterInputType {
+  subcompetency: SubcompetencyEntityFilterInputType
+  user: UserEntityFilterInputType
+  id: String_property_filter_type
+  subcompetency_id: Number_property_filter_type
+  user_id: Number_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
+  and: [UserSubcompetencyEntityFilterInputType!]
+  or: [UserSubcompetencyEntityFilterInputType!]
+  avg: UserSubcompetencyEntityFilterInputType
+  sum: UserSubcompetencyEntityFilterInputType
+  count: UserSubcompetencyEntityFilterInputType
+  max: UserSubcompetencyEntityFilterInputType
+  min: UserSubcompetencyEntityFilterInputType
+}
+
+input String_property_filter_type {
+  eq: String
+  neq: String
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  in: [String!]
+  ilike: String
+  notilike: String
+  between: [String!]
+  notbetween: [String!]
+  null: Boolean
+  notnull: Boolean
+}
+
+input Number_property_filter_type {
+  eq: Float
+  neq: Float
+  gt: Float
+  gte: Float
+  lt: Float
+  lte: Float
+  in: [Float!]
+  ilike: Float
+  notilike: Float
+  between: [Float!]
+  notbetween: [Float!]
+  null: Boolean
+  notnull: Boolean
+}
+
+input Boolean_property_filter_type {
+  eq: Boolean
+  neq: Boolean
+  gt: Boolean
+  gte: Boolean
+  lt: Boolean
+  lte: Boolean
+  in: [Boolean!]
+  ilike: Boolean
+  notilike: Boolean
+  between: [Boolean!]
+  notbetween: [Boolean!]
+  null: Boolean
+  notnull: Boolean
+}
+
+input UserCompetencyEntityFilterInputType {
+  competency: CompetencyEntityFilterInputType
+  user: UserEntityFilterInputType
+  id: Int_property_filter_type
+  competency_id: Number_property_filter_type
+  user_id: Number_property_filter_type
+  created_at: String_property_filter_type
+  updated_at: String_property_filter_type
+  and: [UserCompetencyEntityFilterInputType!]
+  or: [UserCompetencyEntityFilterInputType!]
+  avg: UserCompetencyEntityFilterInputType
+  sum: UserCompetencyEntityFilterInputType
+  count: UserCompetencyEntityFilterInputType
+  max: UserCompetencyEntityFilterInputType
+  min: UserCompetencyEntityFilterInputType
+}
+
+input Int_property_filter_type {
+  eq: Int
+  neq: Int
+  gt: Int
+  gte: Int
+  lt: Int
+  lte: Int
+  in: [Int!]
+  ilike: Int
+  notilike: Int
+  between: [Int!]
+  notbetween: [Int!]
+  null: Boolean
+  notnull: Boolean
+}
+
+input Date_property_filter_type {
+  eq: DateTime
+  neq: DateTime
+  gt: DateTime
+  gte: DateTime
+  lt: DateTime
+  lte: DateTime
+  in: [DateTime!]
+  ilike: DateTime
+  notilike: DateTime
+  between: [DateTime!]
+  notbetween: [DateTime!]
+  null: Boolean
+  notnull: Boolean
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input TaskEntityOrderInputType {
+  assignee: UserEntityOrderInputType
+  task: TaskEntityOrderInputType
+  subtasks: TaskEntityOrderInputType
+  id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  title: OrderTypeEnum
+  description: OrderTypeEnum
+  type_id: OrderTypeEnum
+  priority: OrderTypeEnum
+  story_points: OrderTypeEnum
+  status: OrderTypeEnum
+  assignee_id: OrderTypeEnum
+  task_id: OrderTypeEnum
+  avg: TaskEntityOrderInputType
+  sum: TaskEntityOrderInputType
+  count: TaskEntityOrderInputType
+  max: TaskEntityOrderInputType
+  min: TaskEntityOrderInputType
+}
+
+input UserEntityOrderInputType {
+  seniority: SeniorityEntityOrderInputType
+  user_competencies: UserCompetencyEntityOrderInputType
+  user_subcompetencies: UserSubcompetencyEntityOrderInputType
+  tasks: TaskEntityOrderInputType
+  id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  identification_number: OrderTypeEnum
+  email: OrderTypeEnum
+  fname: OrderTypeEnum
+  lname: OrderTypeEnum
+  mname: OrderTypeEnum
+  age: OrderTypeEnum
+  phone: OrderTypeEnum
+  is_active: OrderTypeEnum
+  seniority_id: OrderTypeEnum
+  avg: UserEntityOrderInputType
+  sum: UserEntityOrderInputType
+  count: UserEntityOrderInputType
+  max: UserEntityOrderInputType
+  min: UserEntityOrderInputType
+}
+
+input SeniorityEntityOrderInputType {
+  competencies: CompetencyEntityOrderInputType
+  users: UserEntityOrderInputType
+  id: OrderTypeEnum
+  title: OrderTypeEnum
+  avg: SeniorityEntityOrderInputType
+  sum: SeniorityEntityOrderInputType
+  count: SeniorityEntityOrderInputType
+  max: SeniorityEntityOrderInputType
+  min: SeniorityEntityOrderInputType
+}
+
+input CompetencyEntityOrderInputType {
+  seniority: SeniorityEntityOrderInputType
+  subcompetencies: SubcompetencyEntityOrderInputType
+  user_competencies: UserCompetencyEntityOrderInputType
+  id: OrderTypeEnum
+  title: OrderTypeEnum
+  seniority_id: OrderTypeEnum
+  test_uuid: OrderTypeEnum
+  avg: CompetencyEntityOrderInputType
+  sum: CompetencyEntityOrderInputType
+  count: CompetencyEntityOrderInputType
+  max: CompetencyEntityOrderInputType
+  min: CompetencyEntityOrderInputType
+}
+
+input SubcompetencyEntityOrderInputType {
+  competency: CompetencyEntityOrderInputType
+  user_subcompetencies: UserSubcompetencyEntityOrderInputType
+  id: OrderTypeEnum
+  title: OrderTypeEnum
+  competency_id: OrderTypeEnum
+  date_time_with_timezone: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  test_bool: OrderTypeEnum
+  avg: SubcompetencyEntityOrderInputType
+  sum: SubcompetencyEntityOrderInputType
+  count: SubcompetencyEntityOrderInputType
+  max: SubcompetencyEntityOrderInputType
+  min: SubcompetencyEntityOrderInputType
+}
+
+input UserSubcompetencyEntityOrderInputType {
+  subcompetency: SubcompetencyEntityOrderInputType
+  user: UserEntityOrderInputType
+  id: OrderTypeEnum
+  subcompetency_id: OrderTypeEnum
+  user_id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  avg: UserSubcompetencyEntityOrderInputType
+  sum: UserSubcompetencyEntityOrderInputType
+  count: UserSubcompetencyEntityOrderInputType
+  max: UserSubcompetencyEntityOrderInputType
+  min: UserSubcompetencyEntityOrderInputType
+}
+
+enum OrderTypeEnum {
+  desc
+  desc_null_first
+  desc_null_last
+  asc
+  asc_null_first
+  asc_null_last
+}
+
+input UserCompetencyEntityOrderInputType {
+  competency: CompetencyEntityOrderInputType
+  user: UserEntityOrderInputType
+  id: OrderTypeEnum
+  competency_id: OrderTypeEnum
+  user_id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  avg: UserCompetencyEntityOrderInputType
+  sum: UserCompetencyEntityOrderInputType
+  count: UserCompetencyEntityOrderInputType
+  max: UserCompetencyEntityOrderInputType
+  min: UserCompetencyEntityOrderInputType
+}
+
+type UserCompetencyPrimitiveFieldType {
+  id: Int
+  competency_id: Float
+  user_id: Float
+  created_at: String
+  updated_at: String
+}
+
+type UserCompetencyGroupType {
+  by: UserCompetencyPrimitiveFieldType
+  count: Float
+  fields: [UserCompetency!]
+  avg: UserCompetencyPrimitiveFieldType
+  sum: UserCompetencyPrimitiveFieldType
+  max: UserCompetencyPrimitiveFieldType
+  min: UserCompetencyPrimitiveFieldType
+}
+
+type UserCompetency {
+  id: Int!
+  competency_id: Int!
+  user_id: Int!
+  competency(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): Competency
+  user(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType): User
+  created_at: String!
+  updated_at: String!
+  groupAgg: [UserCompetencyGroupType!]
+  materialabl: UserCompetency!
+}
+
+type SubcompetencyPrimitiveFieldType {
+  id: Float
+  title: String
+  competency_id: Float
+  date_time_with_timezone: String
+  created_at: String
+  updated_at: String
+  test_bool: Boolean
+}
+
+type SubcompetencyGroupType {
+  by: SubcompetencyPrimitiveFieldType
+  count: Float
+  fields: [Subcompetency!]
+  avg: SubcompetencyPrimitiveFieldType
+  sum: SubcompetencyPrimitiveFieldType
+  max: SubcompetencyPrimitiveFieldType
+  min: SubcompetencyPrimitiveFieldType
+}
+
+type Subcompetency {
+  id: Int!
+  title: String!
+  competency_id: Int!
+  competency(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): Competency
+  user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [Competency!]
+  date_time_with_timezone: DateTime
+  created_at: DateTime!
+  updated_at: DateTime!
+  test_bool: Boolean!
+  groupAgg: [SubcompetencyGroupType!]
+  materialabl: Subcompetency!
 }
 
 type UserSubcompetencyPrimitiveFieldType {
@@ -466,6 +498,7 @@ type UserSubcompetency {
   created_at: String!
   updated_at: String!
   groupAgg: [UserSubcompetencyGroupType!]
+  materialabl: UserSubcompetency!
 }
 
 type UserPrimitiveFieldType {
@@ -508,35 +541,31 @@ type User {
   user_subcompetencies(where: UserSubcompetencyEntityFilterInputType, order_by: UserSubcompetencyEntityOrderInputType): [UserSubcompetency!]
   tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): [Task!]
   groupAgg: [UserGroupType!]
+  materialabl: User!
 }
 
-type UserCompetencyPrimitiveFieldType {
-  id: Int
-  competency_id: Float
-  user_id: Float
-  created_at: String
-  updated_at: String
+type SeniorityPrimitiveFieldType {
+  id: Float
+  title: String
 }
 
-type UserCompetencyGroupType {
-  by: UserCompetencyPrimitiveFieldType
+type SeniorityGroupType {
+  by: SeniorityPrimitiveFieldType
   count: Float
-  fields: [UserCompetency!]
-  avg: UserCompetencyPrimitiveFieldType
-  sum: UserCompetencyPrimitiveFieldType
-  max: UserCompetencyPrimitiveFieldType
-  min: UserCompetencyPrimitiveFieldType
+  fields: [Seniority!]
+  avg: SeniorityPrimitiveFieldType
+  sum: SeniorityPrimitiveFieldType
+  max: SeniorityPrimitiveFieldType
+  min: SeniorityPrimitiveFieldType
 }
 
-type UserCompetency {
+type Seniority {
   id: Int!
-  competency_id: Int!
-  user_id: Int!
-  competency(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): Competency
-  user(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType): User
-  created_at: String!
-  updated_at: String!
-  groupAgg: [UserCompetencyGroupType!]
+  title: String!
+  competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): [Competency!]
+  users(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType): [User!]
+  groupAgg: [SeniorityGroupType!]
+  materialabl: Seniority!
 }
 
 type DeleteCompetencyResult {
@@ -570,29 +599,6 @@ type Competency {
   user_competencies(where: UserCompetencyEntityFilterInputType, order_by: UserCompetencyEntityOrderInputType): [UserCompetency!]
   tast_uuid: String!
   groupAgg: [CompetencyGroupType!]
-}
-
-type SeniorityPrimitiveFieldType {
-  id: Float
-  title: String
-}
-
-type SeniorityGroupType {
-  by: SeniorityPrimitiveFieldType
-  count: Float
-  fields: [Seniority!]
-  avg: SeniorityPrimitiveFieldType
-  sum: SeniorityPrimitiveFieldType
-  max: SeniorityPrimitiveFieldType
-  min: SeniorityPrimitiveFieldType
-}
-
-type Seniority {
-  id: Int!
-  title: String!
-  competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType): [Competency!]
-  users(where: UserEntityFilterInputType, order_by: UserEntityOrderInputType): [User!]
-  groupAgg: [SeniorityGroupType!]
 }
 
 type CustomerPrimitiveFieldType {
@@ -648,6 +654,116 @@ type Material {
 
 union ResultUnion = User | Task | UserCompetency
 
+type TaskCommentPrimitiveFieldType {
+  id: Int
+  html_content: String
+  author_id: Int
+  task_id: Int
+  parent_id: Int
+}
+
+type TaskCommentGroupType {
+  by: TaskCommentPrimitiveFieldType
+  count: Float
+  fields: [TaskComment!]
+  avg: TaskCommentPrimitiveFieldType
+  sum: TaskCommentPrimitiveFieldType
+  max: TaskCommentPrimitiveFieldType
+  min: TaskCommentPrimitiveFieldType
+}
+
+type TaskComment {
+  id: Int!
+  created_at: DateTime!
+  updated_at: DateTime!
+  task_id: Int!
+  author_id: Int!
+  html_content: String!
+  author(where: AuthorEntityFilterInputType, order_by: AuthorEntityOrderInputType): User!
+  parent_id: Int
+  parent(where: ParentEntityFilterInputType, order_by: ParentEntityOrderInputType): TaskComment
+  replies(where: TaskCommentEntityFilterInputType, order_by: TaskCommentEntityOrderInputType): [TaskComment!]
+  groupAgg: [TaskCommentGroupType!]
+  materialabl: TaskComment!
+  task(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType): TaskComment!
+}
+
+input AuthorEntityFilterInputType {
+  and: [AuthorEntityFilterInputType!]
+  or: [AuthorEntityFilterInputType!]
+  avg: AuthorEntityFilterInputType
+  sum: AuthorEntityFilterInputType
+  count: AuthorEntityFilterInputType
+  max: AuthorEntityFilterInputType
+  min: AuthorEntityFilterInputType
+}
+
+input AuthorEntityOrderInputType {
+  avg: AuthorEntityOrderInputType
+  sum: AuthorEntityOrderInputType
+  count: AuthorEntityOrderInputType
+  max: AuthorEntityOrderInputType
+  min: AuthorEntityOrderInputType
+}
+
+input ParentEntityFilterInputType {
+  and: [ParentEntityFilterInputType!]
+  or: [ParentEntityFilterInputType!]
+  avg: ParentEntityFilterInputType
+  sum: ParentEntityFilterInputType
+  count: ParentEntityFilterInputType
+  max: ParentEntityFilterInputType
+  min: ParentEntityFilterInputType
+}
+
+input ParentEntityOrderInputType {
+  avg: ParentEntityOrderInputType
+  sum: ParentEntityOrderInputType
+  count: ParentEntityOrderInputType
+  max: ParentEntityOrderInputType
+  min: ParentEntityOrderInputType
+}
+
+input TaskCommentEntityFilterInputType {
+  task: TaskEntityFilterInputType
+  author: UserEntityFilterInputType
+  parent: TaskCommentEntityFilterInputType
+  replies: TaskCommentEntityFilterInputType
+  id: Int_property_filter_type
+  created_at: Date_property_filter_type
+  updated_at: Date_property_filter_type
+  html_content: String_property_filter_type
+  author_id: Int_property_filter_type
+  task_id: Int_property_filter_type
+  parent_id: Int_property_filter_type
+  and: [TaskCommentEntityFilterInputType!]
+  or: [TaskCommentEntityFilterInputType!]
+  avg: TaskCommentEntityFilterInputType
+  sum: TaskCommentEntityFilterInputType
+  count: TaskCommentEntityFilterInputType
+  max: TaskCommentEntityFilterInputType
+  min: TaskCommentEntityFilterInputType
+}
+
+input TaskCommentEntityOrderInputType {
+  task: TaskEntityOrderInputType
+  author: UserEntityOrderInputType
+  parent: TaskCommentEntityOrderInputType
+  replies: TaskCommentEntityOrderInputType
+  id: OrderTypeEnum
+  created_at: OrderTypeEnum
+  updated_at: OrderTypeEnum
+  html_content: OrderTypeEnum
+  author_id: OrderTypeEnum
+  task_id: OrderTypeEnum
+  parent_id: OrderTypeEnum
+  avg: TaskCommentEntityOrderInputType
+  sum: TaskCommentEntityOrderInputType
+  count: TaskCommentEntityOrderInputType
+  max: TaskCommentEntityOrderInputType
+  min: TaskCommentEntityOrderInputType
+}
+
 type Query {
   seniorities(where: SeniorityEntityFilterInputType, order_by: SeniorityEntityOrderInputType, paginate: PaginationInputType): [Seniority!]!
   competencies(where: CompetencyEntityFilterInputType, order_by: CompetencyEntityOrderInputType, paginate: PaginationInputType): [Competency!]!
@@ -659,11 +775,12 @@ type Query {
   tasks(where: TaskEntityFilterInputType, order_by: TaskEntityOrderInputType, paginate: PaginationInputType): [Task!]!
   customers(where: CustomerEntityFilterInputType, order_by: CustomerEntityOrderInputType, paginate: PaginationInputType): [Customer!]!
   materials(where: MaterialEntityFilterInputType, order_by: MaterialEntityOrderInputType, paginate: PaginationInputType): [Material!]!
+  task_comments(where: TaskCommentEntityFilterInputType, order_by: TaskCommentEntityOrderInputType, paginate: PaginationInputType): [TaskComment!]!
 }
 
 input PaginationInputType {
-  page: Float!
-  per_page: Float!
+  page: Int!
+  per_page: Int!
 }
 
 input CustomerEntityFilterInputType {
@@ -779,4 +896,7 @@ type Subscription {
   MaterialCreateSubscriber: Material!
   MaterialUpdateSubscriber: Material!
   MaterialDeleteSubscriber: Material!
+  TaskCommentCreateSubscriber: TaskComment!
+  TaskCommentUpdateSubscriber: TaskComment!
+  TaskCommentDeleteSubscriber: TaskComment!
 }

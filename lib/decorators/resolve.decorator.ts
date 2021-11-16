@@ -4,29 +4,29 @@ import {
   Parent,
   Query,
   ResolveField,
-  Subscription,
+  Subscription
 } from '@nestjs/graphql';
-import { getMetadataArgsStorage } from 'typeorm';
 import * as plularize from 'pluralize';
-import { ELoaderType, Loader } from '../loaders/query-exctractor.decorator';
-import { Paginate } from '../pagination/pagination.decorator';
-import { addDecoratedMethodToClass } from '../helpers/decorators';
+import * as pluralize from 'pluralize';
+import { getMetadataArgsStorage } from 'typeorm';
 import { Filters } from '../filters/filtrable-field.decorator';
 import { GqlType } from '../helpers/classes';
-import { Order } from '../order/order.decorator';
+import { addDecoratedMethodToClass } from '../helpers/decorators';
+import { unifyEntityName } from '../helpers/string.helper';
 import { ESubscriberType, generateSubscriberName } from '../helpers/subscribers';
+import { ELoaderType, Loader } from '../loaders/query-exctractor.decorator';
+import { Order } from '../order/order.decorator';
+import { Paginate } from '../pagination/pagination.decorator';
 import { pubsub } from '../pubsub';
 import storage from '../storage';
-import * as pluralize from 'pluralize';
-import { unifyEntityName } from '../helpers/string.helper';
 export interface IAutoResolverOptions {
   subscribers?: ESubscriberType[]
 }
 
 export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): any => {
   return (BaseResolverClass) => {
-    const entityMeta = getMetadataArgsStorage();
-    const relations = entityMeta.relations.filter(
+    const typeormMeta = getMetadataArgsStorage();
+    const relations = typeormMeta.relations.filter(
       (x) => x.target['name'] == entity.graphqlName,
     );
 
@@ -59,17 +59,16 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
 
     relations.forEach((r) => {
       if (BaseResolverClass.prototype[r.propertyName]) return;
-
+      const entityMeta = typeormMeta.tables.find(x => x.target['name'] === entity.tableName);
       const relationMeta = storage.relations.find(x => x.fromTable === r.target && x.toTable === (r.type as any)() && x.propertyName === r.propertyName);
 
       if (r.relationType === 'many-to-one') {
         // Many to one. Example: competencies => seniority
         const methodName = r.propertyName;
-        const relationTable = relationMeta?.toTable.name.toLowerCase() || 
-          methodName;
+        const relationTable = unifyEntityName(relationMeta?.toTable.name || 
+          methodName);
         const relationField = relationMeta?.joinPropertyName || `${relationTable + '_id'}`
           methodName;
-
         if (!BaseResolverClass.prototype[methodName]) {
           addDecoratedMethodToClass({
             resolverClass: BaseResolverClass,
@@ -100,8 +99,8 @@ export const AutoResolver = (entity: GqlType, options?: IAutoResolverOptions): a
         const methodName = r.propertyName;
         const relationField = 
           relationMeta?.joinPropertyName || `${entity.graphqlName}_id`;
-        const relationTable =  pluralize(relationMeta?.toTable.name.toLowerCase() || 
-        methodName);
+        const relationTable =  unifyEntityName(pluralize(relationMeta?.toTable.name || 
+        methodName));
 
         if (!BaseResolverClass.prototype[methodName]) {
           addDecoratedMethodToClass({
