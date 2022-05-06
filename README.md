@@ -1,7 +1,7 @@
 # NestJS graphql resolver
 
 This library provides functionality which allow to generate resolvers automatically.
-
+#### Examples inside src folder
 ----
 ## Installation
 
