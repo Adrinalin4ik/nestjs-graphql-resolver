@@ -129,6 +129,9 @@ export class FilterBuilder<Entity> {
         }
       case OperationQuery.in:
         if (value instanceof Array) {
+          if (value.length === 0) {
+            return 'true'
+          }
           const values = value.map((value) => {
             const paramName = `${field}_filter_${++this.paramsCount}`;
             this.params[paramName] = castValueType(value);
